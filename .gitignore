@@ -1,0 +1,6 @@
+/dist
+/.eggs
+/.mypy_cache
+/.venv
+/build
+poetry.lock

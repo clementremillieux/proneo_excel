@@ -1,0 +1,1252 @@
+Exploring sheet: Page de garde (Visible: True)
+A48: Organisme certificateur : PRONÉO CERTIFICATION, 8 rue Octave Feuillet 75116 PARIS – RCS Paris 829590546
+A49: PRONÉO CERTIFICATION est une marque déposée – FORM RNQ 029 32
+
+Exploring sheet: OPAC (Visible: True)
+A3: Audit réalisé selon la version en vigueur du guide de lecture : 
+A4: Guide référentiel national qualité
+A6: Date de début de l'audit
+E6: V32 du rapport (applicable au 08/07/2024)
+A7: Fin de l'audit
+A8: Durée de l'audit en jours
+E8: Nom et Prénom de l'auditeur
+A9: Audit monosite
+E9: Téléphone
+A10: Audit multisite
+E10: Email
+A12: Nom de l'organisme audité
+E12: Modalités d'audit
+A13: Adresse
+E13: A choisir dans la liste de la cellule ci-dessous (menu déroulant)
+A14: CP
+E14: Audit sur site
+A15: Ville
+A16: SIREN
+E16: Si l'audit a été réalisé à distance
+F16: Oui
+G16: Non
+A17: NDA
+E17: L'audit s'est-il déroulé dans des conditions d'audit similaires à un audit sur site ?
+E18: Est-ce que l'audit a été efficace et les objectifs de l'audit ont été atteints ?
+E19: Quel outil a été utilisé pour réaliser l'audit à distance ?
+A20: Contact principal de l'organisme de formation
+A21: Nom et Prénom
+E21: Catégories d'actions auditées (cocher les cases)
+F21: Activité existante
+G21: Nouvel entrant
+A22: Fonction
+E22: Actions de formation
+F22: True
+G22: False
+I22: AF, 
+A23: Téléphone
+E23: Bilan de compétences
+F23: True
+I23: BC, 
+A24: Email
+E24: Validation des acquis par l'expérience
+F24: False
+G24: False
+E25: Formation par apprentissage
+G25: False
+A26: Contact du site audité (si différent)
+A27: Nom et Prénom
+E27: Type d'audit
+A28: Fonction
+E28: Audit initial
+F28: False
+A29: Téléphone
+E29: Audit de surveillance
+A30: Email
+E30: Audit de renouvellement
+E31: Audit d'extension
+A32: L'organisme propose-t-il des prestations :
+B32: Oui
+C32: Non
+E32: Audit complémentaire
+A33: En tout ou partie à distance (FOAD) ? (cf. BPF)
+E33: Ajout de site
+A34: De formation (AF ou CFA) prévoyant une période en entreprise (formations en alternance, stages en entreprise ou AFEST, etc.) ? (cf. BPF)
+E34: Autre audit (merci de préciser)
+A36: Présence de prestations de plus de 2 jours (plus de 14 heures) au total
+F36: Oui
+G36: Non
+H36: Non applicable
+A37: Inscrites au RNCP (donc certifiantes) ? (cf. BPF)
+E37: Certificat CNEFOP actif (en audit initial uniquement)
+A38: Inscrites au répertoire spécifique (RS) ? (cf. BPF)
+A39: Dont la réalisation est confiée à un autre organisme (à un sous-traitant) ? (cf. BPF)
+E39: Audit de surveillance/de renouvellement
+F39: Oui
+G39: Non
+H39: Non applicable
+A40: Réalisées pour le compte d'un autre organisme (en tant que sous-traitant) ? (cf. BPF)
+E40: Si l'audit initial était aménagé (CNEFOP), l'auditeur a-t-il audité les indicateurs non visés par l'audit en initial ? (en audit de surveillance uniquement)
+A41: L'organisme a-t-il accueilli des PSH ?
+E41: L'audit précédent comportait-il des non-conformités ? (Si "Non" à cette question, ne pas répondre aux trois ci-dessous)
+A42: Sous-traitance à 100%
+A43: Pour quelles catégories l'OPAC réalise-t-il des prestations uniquement comme sous-traitant (pas de prestations en direct) ?
+E43: Si oui, indiquer le numéro des indicateurs concernés :
+E44: L'auditeur a-t-il audité les indicateurs ayant donné lieu à non-conformité lors de l'audit précédent ?
+A45: Description du contexte de l'organisme (A renseigner obligatoirement) 
+A46:  (ex. : taille de l'organisme, type de formations dispensées, RNCP / RS / intra / inter/ CA BPF , site web….)
+E46: Les actions correctives mises en œuvre à la suite des non-conformités de l’audit précédent ont-elles toutes été efficaces ?
+E48: Si des non-conformités sont reconduites (actions correctives non efficaces), indiquer le numéro des indicateurs concernés :
+E51: Nombre de non-conformités :
+E52: Non-conformité(s) majeure(s)
+G52: 2
+E53: Non-conformité(s) mineure(s)
+G53: 1
+E54: Le décompte des non-conformités majeures inclut-il une non-conformité majeure induite par la présence d'au moins 5 non-conformités mineures ?
+G54: Non
+E57: Date d'envoi des documents
+E58: Date d'envoi du plan d'audit à l'organisme audité (au plus tard 15 jours avant l'audit)
+A59: Echantillonnage des actions réalisé par l'auditeur
+E59: Date d'envoi du rapport à l'audité (provisoire si non-conformités) (sous 7 jours après l'audit)
+A60: Dossiers échantillonnés pour actions de formation (quelles prestations, quelles sessions, pour qui...) :
+E60: Date d'envoi du rapport définitif à l'organisme audité et PRONEO (après réponse aux NC)
+E62: Avis de l'auditeur
+A63: Justification échantillonnage pour actions de formation (représentativité, nouveauté, spécificités, etc.) :
+E63: Avis favorable
+E64: Avis défavorable
+A66: Dossiers échantillonnés pour bilan de compétences (quelles prestations, quelles sessions, pour qui...) :
+E66: Confidentialité : ce rapport d'audit est confidentiel et uniquement diffusé au sein de Pronéo Certification et à l'organisme audité. Il est la propriété exclusive de Pronéo Certification.
+A69: Justification échantillonnage pour bilan de compétences (représentativité, nouveauté, spécificités, etc.) :
+E69: Signature des conclusions d'audit par l'auditeur après rédaction du rapport définitif (insérer ici la signature de l'auditeur)
+A72: Dossiers échantillonnés pour VAE (quelles prestations, quelles sessions, pour qui...) :
+A75: Justification échantillonnage pour VAE (représentativité, nouveauté, spécificités, etc.) :
+A78: Dossiers échantillonnés pour apprentissage (quelles prestations, quelles sessions, pour qui...) :
+A81: Justification échantillonnage pour apprentissage (représentativité, nouveauté, spécificités, etc.) :
+
+Exploring sheet: OPAC multisite (Visible: True)
+A1: Audit de certification Qualiopi multisite
+A3: Ce rapport contient t-il ?
+F3: Oui
+G3: Non
+A4: Ce rapport contient-il les rapports de tous les sites du multisite ?
+A5: Ce rapport contient-il le rapport de la fonction centrale ?
+A6: Ce rapport contient-il le rapport du site de réalisation de la fonction centrale dans le cas où il a été audité ?
+A7: Ce rapport contient-il le rapport d'autres sites de réalisation ?
+A8: Ce rapport contient-t-il des constats pour les exigences multisites ?
+A10: Adresses des sites audités dans ce rapport
+B10: Adresse
+E10: CP
+F10: Ville
+G10: Modalités d'audit
+A11: Fonction centrale
+A12: Site de réalisation
+A13: Site de réalisation
+A14: Site de réalisation
+A15: Site de réalisation
+A16: Site de réalisation
+A17: Site de réalisation
+
+Exploring sheet: Plan d'audit (Visible: True)
+A2: Planning d'audit QUALIOPI
+A3: Référentiel national qualité
+A5: Nom de l’organisme
+B5: 0
+A6: Nom du site (multisite)
+A7: Référentiel(s) audité(s) 
+B7: Référentiel national qualité
+A8: Nom de l'auditeur
+B8: 0
+A9: Modalités d'audit 
+B9: Audit sur site
+A10: Type d'audit
+A11: Date de début - Date de Fin
+B11: 00:00:00
+C11: au
+D11: 00:00:00
+A12: Catégories d'action auditées :
+C12: AF, BC, 
+A14: Date et horaire
+B14: Critères
+C14: Indicateurs
+D14: Auditeurs
+E14: Nom et fonction des personnes auditées
+A15: Note : l'audit ne peut être réalisé qu'en présence du dirigeant, d'un salarié ou d'une personne qui occupe une fonction externalisée sous contrat, depuis plusieurs mois au moins. Pour un audit sur site, ce représentant doit être présent physiquement.
+A16: 00:00:00
+B16: 1ère journée - Nom du site : 
+A17: 9h00
+B17: Réunion d'ouverture:
+- présentation des interlocuteurs
+- objectifs de l'audit, périmètre, échantillonnage, validation du plan d'audit
+- règles en cas de non-conformités
+- changements éventuels depuis le dernier audit
+- modifications du plan d'audit
+D17: 0
+E17: , 
+B18: Analyse de l'efficacité des actions correctives des non-conformités  relevées lors de l'audit précédent et des plaintes, le cas échéant
+A19: 9h45
+B19: Critère 1 : Les conditions d'information du public sur les prestations proposées, les délais pour y accéder et les résultats obtenus.
+C19: 1,2,3,
+A20: 10h40
+B20: Critère 2 : L’identification précise des objectifs des prestations proposées et l’adaptation de ces prestations aux publics bénéficiaires lors de la conception des prestations
+C20: 4,5,6,7,8,
+A21: 11h35
+B21: Critère 3 : L’adaptation aux publics bénéficiaires des prestations et des modalités d’accueil, d’accompagnement, de suivi et d’évaluation mises en oeuvre
+C21: 9,10,11,12,13,16,
+A22: 12h30
+B22: Pause déjeuner
+A23: 13h20
+B23: Critère 4 :L’adéquation des moyens pédagogiques, techniques et d’encadrement aux prestations mises en oeuvre
+C23: 17,18,19,
+A24: 14h10
+B24: Critère 5 :La qualification et le développement des connaissances et compétences des personnels chargés de mettre en oeuvre les prestations
+C24: 21,22,
+A25: 15h00
+B25: Critère 6 :L’inscription et l’investissement du prestataire dans son environnement professionnel
+C25: 23,24,25,26,27,28,
+A26: 15h50
+B26: Critère 7:Le recueil et la prise en compte des appréciations et des réclamations formulées par les parties prenantes aux prestations délivrées
+C26: 30,31,32,
+A27: 16h40
+B27: Exigences 8 et 9 (enregistrement des réclamations ; respect de la charte d'utilisation du logo et de la marque)
+B28: Exigences 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 pour les organismes multisites
+A29: 17h15
+B29: Préparation de la réunion de clôture
+• Eventuels compléments d’audit
+• Préparation des fiches de non-conformité
+E29: Auditeur seul
+A30: 17h00-17h30
+B30: Réunion de clôture
+• Remerciements, éventuelles difficultés rencontrées lors de l’audit
+• Rappel des principes et limites de l’échantillonnage d’audit
+• Restitution des conclusions et non-conformités de l’audit
+• Phases et étapes qui suivent cet audit 
+E30: , 
+B32: Indicateurs applicables
+B33: Organisme nouvel entrant
+C33: Organisme non nouvel entrant
+A34: Audit initial
+B34: Tous mais certains indicateurs ne sont audités  qu'au niveau de la formalisation du processus mis en place (cf guide de lecture)
+C34: Tous les indicateurs de la ou les catégories auditées
+A35: Audit de surveillance
+B35: Tous les indicateurs de la ou des catégories sont audités
+C35: L'auditeur audite tous les indicateurs de la ou des catégories du périmètre.
+ Il peut aussi décider en audit, par manque de temps, de restreindre l'audit à minima sur :
+- les indicateurs ayant fait l'objet de non-conformités à l'audit précédent ;
+- les indicateurs ne pouvant donner lieu qu'à des non-conformités majeures mentionnés à l'article 5, applicables à l'organisme audité (4, 5, 6, 7, 10, 11, 14, 15, 16, 20, 21, 22, 26, 27, 29, 31, 32) ;
+- les indicateurs 1, 3, 17, 19 ;
+- pour les organismes ayant bénéficié d'un audit initial aménagé (CNEFOP), les indicateurs n'ayant pas été vérifiés à l'audit initial ;
+- les exigences 33 et 34.
+A36: Audit de renouvellement
+B36: Un organisme ne peut pas être nouvel entrant en audit de renouvellement
+C36: Tous les indicateurs de la ou les catégories auditées
+A37: Audit d'extension
+(Ajout d'une nouvelle catégorie d'actions)
+B37: Tous les indicateurs sont audités mais certains ne sont audités qu'au niveau de la formalisation du processus mis en place (cf guide de lecture)
+A39: Cas particuliers
+C39: Indicateurs particuliers applicables
+A40: Si les prestations conduisent à une certification professionnelle
+C40: 3,7 et 16
+A41: Si l'organisme fait de l'alternance
+C41: 13
+A42: Si l'organisme fait appel à la sous-traitance
+C42: 27
+A43: Si les prestations comprennent des périodes de formation en situation de travail
+C43: 28
+A45: Indicateurs applicables spécifiques à un organisme uniquement sous-traitant
+F45: Indicateurs applicables à tous les sous-traitants selon la catégorie pour laquelle ils veulent être certifiés
+A46: Lorsque la prestation échantillonnée est une prestation pour laquelle l’organisme intervient en sous-traitance 
+A47: L’indicateur n’est pas applicable car l’information doit être réalisée par le donneur d’ordres.
+B47: Le prestataire démontre qu’il tient compte des objectifs définis par le donneur d’ordre
+C47: le prestataire démontre qu’il dispose d’un réseau de partenaires/experts/acteurs du champ du handicap ou que son donneur d’ordre lui a communiqué la liste de ses partenaires mobilisables pour orienter les PSH et mettre en place des mesures spécifiques.
+D47: Le prestataire recueille l’appréciation des bénéficiaires et de son donneur d’ordres sur la prestation réalisée.
+E47: L’organisme certificateur tient compte des missions confiées pour l’appréciation de cet indicateur
+A48: NON APPLICABLE AU SOUS-TRAITANT
+A49: 1 – 2 – 3
+B49: 5
+C49: 26
+D49: 30
+E49: 7 – 9 – 13 – 16 – 28
+F49: 4 – 6 – 8 – 10 – 11 – 12 – 14 – 15
+F50: 17 à 32 (sauf 26, 28, 30) 
+F51: Exigences 8 et 9
+
+Exploring sheet: Rapport d'audit (Visible: True)
+A2: Site audité:
+B2: , , , , 
+A3: Périmètre :
+B3: V16 : Formation
+B4: AF
+C4: BC
+D4: VAE
+E4: CFA
+F4: CNEFOP
+G4: Critère
+H4: Indicateur
+I4: Niveau attendu
+J4: Conformité / NC mineure ou majeure
+K4: Type de constat
+L4: Constats d'audit : formation AF
+N4: Constats d'audit : BC
+P4: Constats d'audit : VAE
+R4: Constats d'audit : CFA
+T4: Indications d'audit complémentaires
+B5: x
+C5: x
+D5: x
+E5: x
+F5: x
+G5: Critère 1 : Les conditions d’information du public sur les prestations proposées, les délais pour y accéder et les résultats obtenus.
+H5: 1) Le prestataire diffuse une information accessible au public, détaillée et vérifiable sur les prestations proposées : prérequis, objectifs, durée, modalités et délais d’accès, tarifs, contacts, méthodes mobilisées et modalités d’évaluation, accessibilité aux personnes handicapées.
+I5: Donner une information accessible, exhaustive sur la prestation, c'est-à-dire sur son contenu et sur l'intégralité des items mentionnés. Cette information doit être à jour.
+K5: Description du processus/fonctionnement de l'organisme
+T5: Précisions : vérifier que TOUS les 10 items sont présents.
+Obligation spécifique RNCP/RS : 5 items d'information.
+Exemples de preuves BC : cadre légal et réglementaire.
+Obligation spécifique VAE : exigences particulières formalisées et communiquées.
+Sous-traitant à 100% : non applicable.
+K6: Références ou noms des éléments de preuve consultés
+K7: Vérification des niveaux attendus
+L7: Information à jour (Une date n'est pas synonyme d'information à jour)
+N7: Information à jour (Une date n'est pas synonyme d'information à jour)
+P7: Information à jour (Une date n'est pas synonyme d'information  à jour)
+R7: Information à jour (Une date n'est pas synonyme d'information à jour)
+L8: Présence des 10 items
+N8: Présence des 9 items
+P8: Présence des 10 items
+R8: Présence des 10 items
+L9: Si RNCP/RS, 4 items d'information (libellé, code, certificateur, date)
+P9: 4 items d'information RNCP/RS (libellé, code, certificateur, date)
+R9: 4 items d'information RNCP/RS (libellé, code, certificateur, date)
+P10: Exigences VAE particulières satisfaites
+B11: x
+C11: x
+D11: x
+E11: x
+F11: x
+G11: Critère 1 : Les conditions d’information du public sur les prestations proposées, les délais pour y accéder et les résultats obtenus.
+H11: 2) Le prestataire diffuse des indicateurs de résultats adaptés à la nature des prestations mises en œuvre et des publics accueillis.
+I11: Donner une information chiffrée permettant de suivre les résultats de la prestation au regard des objectifs.
+K11: Description du processus/fonctionnement de l'organisme
+T11: Au moins 2 indicateurs.
+Obligations spécifiques CFA : indicateurs L.61118, mise à disposition sur InserJeunes.
+Sous-traitant à 100% : non applicable.
+K12: Références ou noms des éléments de preuve consultés
+L13: Information chiffrée permettant le suivi des résultats
+N13: Information chiffrée permettant le suivi des résultats
+P13: Information chiffrée permettant le suivi des résultats
+R13: Information chiffrée permettant le suivi des résultats avec au moins 2 indicateurs
+K14: Vérification des niveaux attendus
+L14: Présence d'au moins 2 indicateurs
+N14: Présence d'au moins 2 indicateurs
+P14: Présence d'au moins 2 indicateurs
+R14: Communication des indicateurs de l'article L6111-8 via inserjeunes ou communication équivalente à défaut
+B15: x
+D15: x
+E15: x
+F15: x
+G15: Critère 1 Indicateur spécifique d’appréciation
+H15: 3) Lorsque le prestataire met en œuvre des prestations conduisant à une certification professionnelle, il informe sur les taux d’obtention des certifications préparées, les possibilités de valider un/ou des blocs de compétences, ainsi que sur les équivalences, passerelles, suites de parcours et les débouchés.
+I15: Donner au public une information accessible exhaustive (c'est-à-dire sur l'intégralité des items mentionnés) et actualisée (informations à jour).
+K15: Description du processus/fonctionnement de l'organisme
+T15: Préciser formation concernée, taux d'obtention indiqué, possibilité de valider des blocs, équivalences, passerelles, suite de parcours et débouchés.
+Nouvel entrant : communication sur taux auditée à partir de la 1ère surveillance.
+Sous-traitant à 100% : non applicable.
+K16: Références ou noms des éléments de preuve consultés
+K17: Vérification des niveaux attendus
+L17: Information complète (taux + blocs compétences + équivalences + passerelles + suites de parcours + débouchés)
+P17: Information complète (taux + blocs compétences + équivalences + passerelles + suites de parcours + débouchés)
+R17: Information complète (taux + blocs compétences + équivalences + passerelles + suites de parcours + débouchés)
+L18: Taux d'obtention mis en relation avec le taux de présentation à l'examen
+P18: Taux d'obtention mis en relation avec le taux de présentation à l'examen
+R18: Taux d'obtention mis en relation avec le taux de présentation à l'examen
+L19: Information sur les débouchés comprenant le taux d'insertion global dans l'emploi et le taux d'insertion dans le métier visé
+P19: Information sur les débouchés comprenant le taux d'insertion global dans l'emploi et le taux d'insertion dans le métier visé
+R19: Information sur les débouchés comprenant le taux d'insertion global dans l'emploi et le taux d'insertion dans le métier visé
+B20: x
+C20: x
+D20: x
+E20: x
+G20: Critère 2 : L’identification précise des objectifs des prestations proposées et l’adaptation de ces 
+prestations aux publics bénéficiaires, lors de la conception de prestations.
+H20: 4) Le prestataire analyse le besoin du bénéficiaire en lien avec l’entreprise et/ou le financeur concerné(s).
+I20: Démontrer comment le besoin du
+bénéficiaire est analysé en fonction de la
+finalité de la prestation.
+K20: Description du processus/fonctionnement de l'organisme
+T20: Obligation spécifique : si l'OPAC a accueilli des PSH, prise en compte des situations et besoins.
+Obligation spécifique BC : co-construction programme.
+Obligation spécifique CFA : analyse au moins en amont contrat + vérification missions.
+Sous-traitant : applicable.
+K21: Références ou noms des éléments de preuve consultés
+K22: Vérification des niveaux attendus
+L22: Analyse du besoin en fonction de la finalité
+N22: Analyse du besoin en fonction de la finalité
+P22: Analyse du besoin en fonction de la finalité
+R22: Analyse du besoin en fonction de la finalité
+L23: Lien avec l'entreprise et/ou le financeur, le cas échéant
+N23: Lien avec l'entreprise et/ou le financeur, le cas échéant
+P23: Lien avec l'entreprise et/ou le financeur, le cas échéant
+R23: Lien avec l'entreprise et/ou le financeur, le cas échéant
+L24: Si l'OPAC accueilli des PSH, prise en compte des situations et besoins
+N24: Si l'OPAC accueilli des PSH, prise en compte des situations et besoins
+P24: Si l'OPAC accueilli des PSH, prise en compte des situations et besoins
+R24: Si l'OPAC accueilli des PSH, prise en compte des situations et besoins
+L25: Si alternance, analyse amont et vérification des missions
+N25: Co-construction d'un programme (BC)
+R25: Analyse amont et vérification des missions (CFA ou alternance)
+B26: x
+C26: x
+D26: x
+E26: x
+G26: Critère 2 : L’identification précise des objectifs des prestations proposées et l’adaptation de ces 
+prestations aux publics bénéficiaires, lors de la conception des prestations.
+H26: 5) Le prestataire définit les objectifs opérationnels et évaluables de la prestation.
+I26: Démontrer que les objectifs spécifiques à la prestation ont été définis et peuvent faire l'objet d'une évaluation.
+K26: Description du processus/fonctionnement de l'organisme
+T26: Obligation spécifique RNCP/RS : objectifs de la certification.
+Obligation spécifique BC : co-définition objectifs.
+Obligation spécifique VAE : engagements respectifs.
+Obligation spécifique CFA et alternance : objectifs en compétences.
+Sous-traitant : tenir compte des objectifs définis par le donneur d'ordre.
+K27: Références ou noms des éléments de preuve consultés
+K28: Vérification des niveaux attendus
+L28: Définition d'objectifs spécifiques à la prestation
+N28: Définition d'objectifs spécifiques à la prestation
+P28: Définition d'objectifs spécifiques à la prestation
+R28: Définition d'objectifs spécifiques à la prestation
+L29: Objectifs pouvant être évalués
+N29: Objectifs pouvant être évalués
+P29: Objectifs pouvant être évalués
+R29: Objectifs pouvant être évalués
+L30: Si alternance, objectifs exprimés en compétences et/ou capacités professionnelles et/ou certifications visées
+N30: Codéfinition des objectifs (BC)
+P30: Objectifs conformes aux objectifs de la prestation (RNCP/RS)
+R30: Objectifs exprimés en compétences et/ou capacités professionnelles et/ou certifications visées (CFA ou alternance)
+L31: Si RNCP/RS, objectifs conformes aux objectifs de la prestation
+N31: Contrat et engagements respectifs (BC)
+R31: Objectifs conformes aux objectifs de la prestation (RNCP/RS)
+B32: x
+C32: x
+D32: x
+E32: x
+G32: Critère 2 : L’identification précise des objectifs des prestations proposées et l’adaptation de ces 
+prestations aux publics bénéficiaires, lors de la conception des prestations.
+H32: 6) Le prestataire établit les contenus et les modalités de mise en œuvre de la prestation, adaptés aux objectifs définis et aux publics bénéficiaires.
+I32: Démontrer que les contenus et modalités
+de mise en oeuvre des prestations sont
+adaptés aux objectifs définis en fonction
+des bénéficiaires.
+K32: Description du processus/fonctionnement de l'organisme
+T32: Obligation spécifique RNCP/RS : cohérence du contenu de la formation.
+Obligation spécifique si l'OPAC a accueilli des PSH : prise en compte pour conception et mise en œuvre.
+Sous-traitant : applicable.
+K33: Références ou noms des éléments de preuve consultés
+K34: Vérification des niveaux attendus
+L34: Contenus et modalités adaptés aux objectifs en fonction des bénéficiaires
+N34: Contenus et modalités adaptés aux objectifs en fonction des bénéficiaires
+P34: Contenus et modalités adaptés aux objectifs en fonction des bénéficiaires
+R34: Contenus et modalités adaptés aux objectifs en fonction des bénéficiaires
+L35: Si RNCP/RS, contenu cohérent avec les objectifs
+N35: Si l'OPAC accueilli des PSH, prise en compte dans la conception et la mise en oeuvre
+P35: Contenu cohérent avec les objectifs (RNCP/RS)
+R35: Contenu cohérent avec les objectifs (RNCP/RS)
+L36: Si l'OPAC accueilli des PSH, prise en compte dans la conception et la mise en oeuvre
+P36: Si l'OPAC accueilli des PSH, prise en compte dans la conception et la mise en oeuvre
+R36: Si l'OPAC accueilli des PSH, prise en compte dans la conception et la mise en oeuvre
+B37: x
+E37: x
+F37: x
+G37: Critère 2 Indicateurs spécifiques d’appréciation
+H37: 7) Lorsque le prestataire met en œuvre des prestations conduisant à une certification professionnelle, il s’assure de l’adéquation du ou des contenus de la prestation aux exigences de la certification visée.
+I37: Démontrer l’adéquation du contenu aux
+compétences ciblées et aux épreuves
+d’évaluation de la certification.
+K37: Description du processus/fonctionnement de l'organisme
+T37: Sous-traitant : tenir compte des missions confiées pour l’appréciation de cet indicateur.
+K38: Références ou noms des éléments de preuve consultés
+K39: Vérification des niveaux attendus
+L39: Contenu en adéquation avec les compétences du référentiel
+R39: Contenu en adéquation avec les compétences du référentiel
+L40: Contenu adapté aux épreuves d'évaluation de la certification
+R40: Contenu adapté aux épreuves d'évaluation de la certification
+B41: x
+E41: x
+F41: x
+G41: Critère 2 Indicateurs spécifiques d’appréciation
+H41: 8) Le prestataire détermine les procédures de positionnement et d’évaluation des acquis à l’entrée de la prestation.
+I41: Démontrer l'existence de procédures de positionnement et d'évaluation des acquis à l'entrée de la prestation adaptée aux publics et modalités de formations.
+K41: Description du processus/fonctionnement de l'organisme
+T41: Obligation spécifique RNCP/RS : prérequis cohérents avec ceux de la certification.
+Sous-traitant : applicable.
+K42: Références ou noms des éléments de preuve consultés
+K43: Vérification des niveaux attendus
+L43: Existence de procédures de positionnement
+R43: Existence de procédures de positionnement
+L44: Existence d'évaluation des acquis à l'entrée adaptée ou absence de prérequis
+R44: Existence d'évaluation des acquis à l'entrée adaptée ou absence de prérequis
+L45: Si RNCP/RS, prérequis cohérents avec ceux de la certification
+R45: Prérequis cohérents avec ceux de la certification (RNCP/RS)
+B46: x
+C46: x
+D46: x
+E46: x
+G46: Critère 3 : L’adaptation aux publics bénéficiaires des prestations et des modalités d’accueil, d’accompagnement, de suivi et d’évaluation mises en œuvre.
+H46: 9) Le prestataire informe les publics bénéficiaires sur les conditions de déroulement de la prestation.
+I46: Les modalités d’accueil et les conditions
+de déroulement de la prestation sont
+formalisées et diffusées.
+K46: Description du processus/fonctionnement de l'organisme
+T46: Obligation spécifique BC : engagements déontologiques.
+Sous-traitant : tenir compte des missions confiées pour l’appréciation de cet indicateur.
+K47: Références ou noms des éléments de preuve consultés
+K48: Vérification des niveaux attendus
+L48: Modalités d'accueil formalisées et diffusées
+N48: Modalités d'accueil formalisées et diffusées
+P48: Modalités d'accueil formalisées et diffusées
+R48: Modalités d'accueil formalisées et diffusées
+L49: Conditions de déroulement formalisées et diffusées
+N49: Conditions de déroulement formalisées et diffusées
+P49: Conditions de déroulement formalisées et diffusées
+R49: Conditions de déroulement formalisées et diffusées
+L50: Si FOAD, informations spécifiques liés à l’utilisation des moyens techniques prévus
+N50: Information sur les engagements déontologiques (BC)
+R50: Si FOAD, informations spécifiques liés à l’utilisation des moyens techniques prévus
+B51: x
+C51: x
+D51: x
+E51: x
+G51: Critère 3 : L’adaptation aux publics bénéficiaires des prestations et des modalités d’accueil, d’accompagnement, de suivi et d’évaluation mises en œuvre.
+H51: 10) Le prestataire met en œuvre et adapte la prestation, l’accompagnement et le suivi aux publics bénéficiaires.
+I51: La prestation est adaptée aux situations et profils des bénéficiaires, lorsque l'analyse du besoin en établis la nécessité : contenus (outils et méthodes), accompagnement, suivi (durées, emplois du temps, adaptation des rythmes).
+K51: Description du processus/fonctionnement de l'organisme
+T51: Obligation spécifique BC : convention avec mentions précises.
+Obligation spécifique VAE : mise en œuvre phases individuelles et collectives + adaptation durée.
+Obligation spécifique CFA : accompagnement apprentis.
+Sous-traitant : applicable.
+K52: Références ou noms des éléments de preuve consultés
+K53: Vérification des niveaux attendus
+L53: Adaptation des contenus
+N53: Adaptation des contenus
+P53: Adaptation des contenus
+R53: Adaptation des contenus
+L54: Adaptation de l'accompagnement
+N54: Adaptation de l'accompagnement
+P54: Adaptation de l'accompagnement
+R54: Adaptation de l'accompagnement
+L55: Adaptation du suivi
+N55: Adaptation du suivi
+P55: Adaptation du suivi
+R55: Adaptation du suivi
+N56: Convention contenant 5 mentions obligatoires (BC)
+P56: Mise en oeuvre des phases individuelles et collectives et adaptation de la durée (VAE)
+R56: Mise en oeuvre des obligations de la loi (L6231-2, alinéa 1, 2 et 11) pour l'accompagnement (CFA)
+B57: x
+C57: x
+D57: x
+E57: x
+F57: x
+G57: Critère 3 : L’adaptation aux publics bénéficiaires des prestations et des modalités d’accueil, d’accompagnement, de suivi et d’évaluation mises en œuvre.
+H57: 11) Le prestataire évalue l’atteinte par les publics bénéficiaires des objectifs de la prestation.
+I57: Démontrer que des mesures formalisées
+existent et sont mises en oeuvre.
+K57: Description du processus/fonctionnement de l'organisme
+T57: Nouvel entrant : processus évaluation formalisé.
+Obligation spécifique VAE : dossier suivi candidat progression.
+Sous-traitant : applicable.
+K58: Références ou noms des éléments de preuve consultés
+K59: Vérification des niveaux attendus
+L59: Processus formalisé
+N59: Processus formalisé
+P59: Processus formalisé
+R59: Processus formalisé
+L60: Processus d'évaluation mis en oeuvre ou nouvel entrant
+N60: Processus d'évaluation mis en oeuvre ou nouvel entrant
+P60: Processus d'évaluation mis en oeuvre ou nouvel entrant
+R60: Processus d'évaluation mis en oeuvre ou nouvel entrant
+P61: Présence du dossier de suivi du candidat (VAE)
+B62: x
+C62: x
+D62: x
+E62: x
+F62: x
+G62: Critère 3 : L’adaptation aux publics bénéficiaires des prestations et des modalités d’accueil, d’accompagnement, de suivi et d’évaluation mises en œuvre.
+H62: 12) Le prestataire décrit et met en œuvre les mesures pour favoriser l’engagement des bénéficiaires et prévenir les ruptures de parcours.
+I62: Démontrer que des mesures formalisées pour favoriser l'engagement des bénéficiaires et prévenir les ruptures de parcours existent et sont mises en oeuvre.
+K62: Description du processus/fonctionnement de l'organisme
+T62: Précisions : indicateur applicable si prestation de plus de 2 jours.
+Préciser : nom de la procédure écrite pour la gestion de l'abandon, exemples de mesures mises en place.
+Obligation spécifique CFA : accompagnement spécifique.
+Sous-traitant : applicable.
+K63: Références ou noms des éléments de preuve consultés
+K64: Vérification des niveaux attendus
+L64: Procédures formalisées existantes
+N64: Procédures formalisées existantes
+P64: Procédures formalisées existantes
+R64: Procédures formalisées existantes
+L65: Procédures formalisées mises en oeuvre
+N65: Procédures formalisées mises en oeuvre
+P65: Procédures formalisées mises en oeuvre
+R65: Procédures formalisées mises en oeuvre
+R66: Accompagnement conforme à l'obligation spécifique (CFA)
+B67: x
+E67: x
+F67: x
+G67: Critère 3 Indicateurs spécifiques d’appréciation
+H67: 13) Pour les formations en alternance, le prestataire, en lien avec l’entreprise, anticipe avec l’apprenant les missions confiées, à court, moyen et long terme, et assure la coordination et la progressivité des apprentissages réalisés en centre de formation et en entreprise.
+I67: Démontrer que les principes de la pédagogie de l'alternance sont mis en œuvre, grâce à un processus formalisé d'articulation itératif des apprentissages entre le centre de formation et l'entreprise.
+K67: Description du processus/fonctionnement de l'organisme
+T67: Nouvel entrant : processus d'articulation formalisé (écrit) pour les 2 lieux de formation.
+Sous-traitant : tenir compte des missions confiées pour l’appréciation de cet indicateur.
+K68: Références ou noms des éléments de preuve consultés
+K69: Vérification des niveaux attendus
+L69: Existence d'un processus d'articulation itératif formalisé entre le centre de formation et l'entreprise
+R69: Existence d'un processus d'articulation itératif formalisé entre le centre de formation et l'entreprise
+L70: Si nouvel entrant, processus d'articulation formalisé pour les 2 lieux de formation
+R70: Si nouvel entrant, processus d'articulation formalisé pour les 2 lieux de formation
+E71: x
+F71: x
+G71: Critère 3 Indicateurs spécifiques d’appréciation
+H71: 14) Le prestataire met en œuvre un accompagnement socio-professionnel, éducatif et relatif à l’exercice de la citoyenneté.
+I71: Démontrer que l’accompagnement de
+l’apprenant est formalisé et mis en oeuvre
+par la mise en place de projets spécifiques.
+K71: Description du processus/fonctionnement de l'organisme
+T71: Nouvel entrant : accompagnement formalisé.
+Sous-traitant : applicable.
+K72: Références ou noms des éléments de preuve consultés
+K73: Vérification des niveaux attendus
+R73: Accompagnement formalisé
+R74: Accompagnement mis en oeuvre par la mise en place de projets spécifiques ou nouvel entrant
+R75: Preuves présentées pour les 5 missions listées à l'article 6231-2 du Code du travail
+E76: x
+F76: x
+G76: Critère 3 Indicateurs spécifiques d’appréciation
+H76: 15) Le prestataire informe les apprentis de leurs droits et devoirs en tant qu’apprentis et salariés ainsi que des
+règles applicables en matière de santé et de sécurité en milieu professionnel.
+I76: Démontrer que les apprentis sont informés
+des droits et devoirs des salariés /apprentis
+et sur les règles applicables en matière de
+santé et de sécurité en milieu professionnel.
+K76: Description du processus/fonctionnement de l'organisme
+T76: Sous-traitant : applicable.
+K77: Références ou noms des éléments de preuve consultés
+K78: Vérification des niveaux attendus
+R78: Information sur les droits et devoirs
+R79: Information sur les règles applicables sur la santé et la sécurité
+B80: x
+D80: x
+E80: x
+F80: x
+G80: Critère 3 Indicateurs spécifiques d’appréciation
+H80: 16) Lorsque le prestataire met en œuvre des formations conduisant à une certification professionnelle, il s’assure que les conditions de présentation des bénéficiaires à la certification respectent les exigences formelles de l’autorité de certification.
+I80: Le prestataire respecte les exigences
+formelles de l’autorité de certification
+lorsqu’il présente des candidats à la
+certification qu’il propose.
+K80: Description du processus/fonctionnement de l'organisme
+T80: Obligation spécifique VAE : conditions de présentation examens.
+Sous-traitant : tenir compte des missions confiées pour l’appréciation de cet indicateur.
+K81: Références ou noms des éléments de preuve consultés
+K82: Vérification des niveaux attendus
+L82: Si RNCP, respect des exigences formelles de l'autorité de certification
+P82: Respect des exigences formelles de l'autorité de certification (RNCP)
+R82: Respect des exigences formelles de l'autorité de certification (RNCP)
+P83: Demande au certificateur des conditions de présentation (VAE)
+B84: x
+C84: x
+D84: x
+E84: x
+G84: Critère 4 : L’adéquation des moyens pédagogiques, techniques et d’encadrement aux prestations mises en œuvre.
+H84: 17) Le prestataire met à disposition ou s’assure de la mise à disposition des moyens humains et techniques adaptés et d’un environnement approprié (conditions, locaux, équipements, plateaux techniques…).
+I84: Démontrer que les locaux, les
+équipements, les moyens humains sont en
+adéquation avec la ou les prestation(s).
+K84: Description du processus/fonctionnement de l'organisme
+T84: Obligation spécifique BC : moyens dédiés, confidentialité, discrétion, habilitation tests.
+Sous-traitant : applicable.
+K85: Références ou noms des éléments de preuve consultés - Moyens humains
+K86: Références ou noms des éléments de preuve consultés - Moyens matériels
+K87: Références ou noms des éléments de preuve consultés - Moyens environnement
+K88: Vérification des niveaux attendus
+L88: Locaux en adéquation avec les objectifs de la prestation
+N88: Locaux en adéquation avec les objectifs de la prestation
+P88: Locaux en adéquation avec les objectifs de la prestation
+R88: Locaux en adéquation avec les objectifs de la prestation
+L89: Equipements en adéquation avec les objectifs de la prestation
+N89: Equipements en adéquation avec les objectifs de la prestation
+P89: Equipements en adéquation avec les objectifs de la prestation
+R89: Equipements en adéquation avec les objectifs de la prestation
+L90: Moyens humains en adéquation avec les objectifs de la prestation
+N90: Moyens humains en adéquation avec les objectifs de la prestation
+P90: Moyens humains en adéquation avec les objectifs de la prestation
+R90: Moyens humains en adéquation avec les objectifs de la prestation
+N91: Moyens adaptés, confidentialité des échanges, habilitation des personnes pour les tests, le cas échéant (BC)
+B92: x
+C92: x
+D92: x
+E92: x
+G92: Critère 4 : L’adéquation des moyens pédagogiques, techniques et d’encadrement aux prestations mises en œuvre.
+H92: 18) Le prestataire mobilise et coordonne les différents intervenants internes et/ou externes (pédagogiques, administratifs, logistiques, commerciaux …).
+I92: Le prestataire identifie, selon les fonctions nécessaires aux prestations, les intervenants dont il assure la coordination.
+K92: Description du processus/fonctionnement de l'organisme
+T92: Obligation spécifique VAE : intervenants ni certificateurs ni financeurs.
+Sous-traitant : applicable.
+K93: Références ou noms des éléments de preuve consultés
+K94: Vérification des niveaux attendus
+L94: Intervenants identifiés selon les fonctions nécessaires aux prestations
+N94: Intervenants identifiés selon les fonctions nécessaires aux prestations
+P94: Intervenants identifiés selon les fonctions nécessaires aux prestations
+R94: Intervenants identifiés selon les fonctions nécessaires aux prestations
+L95: Intervenants coordonnés ou prestataire indépendant
+N95: Intervenants coordonnés ou prestataire indépendant
+P95: Intervenants coordonnés ou prestataire indépendant
+R95: Intervenants coordonnés ou prestataire indépendant
+P96: Intervenants externes non certificateurs et non financeurs (VAE)
+B97: x
+C97: x
+D97: x
+E97: x
+G97: Critère 4 : L’adéquation des moyens pédagogiques, techniques et d’encadrement aux prestations mises en œuvre.
+H97: 19) Le prestataire met à disposition du bénéficiaire des ressources pédagogiques et permet à celui-ci de se les approprier.
+I97: Démontrer que les ressources
+pédagogiques existent, sont actualisées
+et disponibles et démontrer que des
+dispositions sont mises en place afin de
+permettre aux bénéficiaires de se les
+approprier.
+K97: Description du processus/fonctionnement de l'organisme
+T97: Nouvel entrant : ressources prévues.
+Obligation spécifique formation à distance, mise en œuvre avec assistance technique et pédagogique.
+Sous-traitant : applicable.
+K98: Références ou noms des éléments de preuve consultés
+K99: Vérification des niveaux attendus
+L99: Ressources pédagogiques cohérentes avec les objectifs
+N99: Ressources pédagogiques cohérentes avec les objectifs
+P99: Ressources pédagogiques cohérentes avec les objectifs
+R99: Ressources pédagogiques cohérentes avec les objectifs
+L100: Ressources pédagogiques disponibles
+N100: Ressources pédagogiques disponibles
+P100: Ressources pédagogiques disponibles
+R100: Ressources pédagogiques disponibles
+L101: Dispositions mises en place pour se les approprier
+N101: Dispositions mises en place pour se les approprier
+P101: Dispositions mises en place pour se les approprier
+R101: Dispositions mises en place pour se les approprier
+L102: Si FOAD, mise en oeuvre comprenant une assistance technique et pédagogique
+N102: Si nouvel entrant, ressources pédagogiques prévues
+P102: Si nouvel entrant, ressources pédagogiques prévues
+R102: Si FOAD, mise en oeuvre comprenant une assistance technique et pédagogique
+L103: Si nouvel entrant, ressources pédagogiques prévues
+R103: Si nouvel entrant, ressources pédagogiques prévues
+E104: x
+F104: x
+G104: Critère 4 Indicateur spécifique d’appréciation
+H104: 20) Le prestataire dispose d’un personnel dédié à l’appui à la mobilité nationale et internationale, d’un référent handicap et d’un conseil de perfectionnement.
+I104: Le prestataire présente :
+- la liste des membres du conseil de perfectionnement, le dernier compte rendu et/ou procès-verbal ;
+- la liste des personnes dédiées à la mobilité (nationale et internationale) et les actions mises en oeuvre en faveur de la mobilité ;
+- le nom et le contact du référent handicap et les actions qu'il met en oeuvre pour accompagner les publics en situation de handicap.
+K104: Description du processus/fonctionnement de l'organisme
+T104: Sous-traitant : applicable.
+K105: Références ou noms des éléments de preuve consultés
+K106: Vérification des niveaux attendus
+R106: Présentation de la liste des membres du conseil de perfectionnement, du dernier compte rendu et/ou procès-verbal
+R107: Présentation de la liste des personnes dédiées à la mobilité
+R108: Actions mises en oeuvre en faveur de la mobilité
+R109: Présentation des nom et contact du référent handicap
+R110: Actions mises en oeuvre pour accompagner les PSH
+B111: x
+C111: x
+D111: x
+E111: x
+F111: x
+G111: Critère 5 : La qualification et le développement des connaissances et compétences des personnels chargés de mettre en œuvre les prestations.
+H111: 21) Le prestataire détermine, mobilise et évalue les compétences des différents intervenants internes et/ou externes, adaptées aux prestations.
+I111: Démontrer que les compétences requises
+pour réaliser les prestations ont été
+définies en amont et sont adaptées aux
+prestations.
+La maîtrise de ces compétences par les intervenants est vérifiée par le prestataire.
+K111: Description du processus/fonctionnement de l'organisme
+T111: Obligation spécifique VAE : accompagnateurs formés analyse référentiel.
+Sous-traitant : applicable.
+K112: Références ou noms des éléments de preuve consultés
+K113: Vérification des niveaux attendus
+L113: Compétences requises définies en amont
+N113: Compétences requises définies en amont
+P113: Compétences requises définies en amont
+R113: Compétences requises définies en amont
+L114: Compétences requises adaptées
+N114: Compétences requises adaptées
+P114: Compétences requises adaptées
+R114: Compétences requises adaptées
+L115: Vérification par le prestataire des compétences des intervenants
+N115: Vérification par le prestataire des compétences des intervenants
+P115: Accompagnateurs formés à l'analyse des référentiels métiers, certifications et méthodologie (VAE)
+R115: Vérification par le prestataire des compétences des intervenants
+B116: x
+C116: x
+D116: x
+E116: x
+F116: x
+G116: Critère 5 : La qualification et le développement des connaissances et compétences des personnels chargés de mettre en œuvre les prestations.
+H116: 22) Le prestataire entretient et développe les compétences de ses salariés, adaptées aux prestations qu’il délivre.
+I116: Démontrer la mobilisation des différents leviers de formation et de professionnalisation pour l'ensemble de son personnel.
+K116: Description du processus/fonctionnement de l'organisme
+T116: Nouvel entrant : mise en oeuvre auditée en surveillance.
+Sous-traitant : applicable.
+K117: Références ou noms des éléments de preuve consultés
+K118: Vérification des niveaux attendus
+L118: Leviers de formation et de professionalisation mobilisés
+N118: Leviers de formation et de professionalisation mobilisés
+P118: Leviers de formation et de professionalisation mobilisés
+R118: Leviers de formation et de professionalisation mobilisés
+L119: L'ensemble du personnel est couvert
+N119: L'ensemble du personnel est couvert
+P119: L'ensemble du personnel est couvert
+R119: L'ensemble du personnel est couvert
+B120: x
+C120: x
+D120: x
+E120: x
+G120: Critère 6 : L’inscription et l’investissement du prestataire dans son environnement professionnel.
+H120: 23) Le prestataire réalise une veille légale et réglementaire sur le champ de la formation professionnelle et en exploite les enseignements.
+I120: Démontrer la mise en place d'une veille légale et réglementaire, sa prise en compte par le prestataire et sa communication en interne.
+K120: Description du processus/fonctionnement de l'organisme
+T120: Sous-traitant : applicable.
+K121: Références ou noms des éléments de preuve consultés - Preuves de veille
+K122: Références ou noms des éléments de preuve consultés - Preuves d'exploitation de la veille
+K123: Vérification des niveaux attendus
+L123: Veille légale et réglementaire réalisée
+N123: Veille légale et réglementaire réalisée
+P123: Veille légale et réglementaire réalisée
+R123: Veille légale et réglementaire réalisée
+L124: Veille prise en compte
+N124: Veille prise en compte
+P124: Veille prise en compte
+R124: Veille prise en compte
+L125: Veille communiquée en interne ou prestataire indépendant
+N125: Veille communiquée en interne ou prestataire indépendant
+P125: Veille communiquée en interne ou prestataire indépendant
+R125: Veille communiquée en interne ou prestataire indépendant
+B126: x
+C126: x
+D126: x
+E126: x
+F126: x
+G126: Critère 6 : L’inscription et l’investissement du prestataire dans son environnement professionnel.
+H126: 24) Le prestataire réalise une veille sur les évolutions des compétences, des métiers et des emplois dans ses secteurs d’intervention et en exploite les enseignements.
+I126: Démontrer la mise en place d’une veille sur
+les thèmes de l’indicateur et son impact
+éventuel sur les prestations.
+K126: Description du processus/fonctionnement de l'organisme
+T126: Nouvel entrant : impact vu en surveillance.
+Sous-traitant : applicable.
+K127: Références ou noms des éléments de preuve consultés - Preuves de veille
+K128: Références ou noms des éléments de preuve consultés - Preuves d'exploitation de la veille
+K129: Vérification des niveaux attendus
+L129: Mise en place de la veille
+N129: Mise en place de la veille
+P129: Mise en place de la veille
+R129: Mise en place de la veille
+L130: Prise en compte de l'impact de la veille, le cas échéant
+N130: Prise en compte de l'impact de la veille, le cas échéant
+P130: Prise en compte de l'impact de la veille, le cas échéant
+R130: Prise en compte de l'impact de la veille, le cas échéant
+B131: x
+C131: x
+D131: x
+E131: x
+F131: x
+G131: Critère 6 : L’inscription et l’investissement du prestataire dans son environnement professionnel.
+H131: 25) Le prestataire réalise une veille sur les innovations pédagogiques et technologiques permettant une évolution de ses prestations et en exploite les enseignements.
+I131: Démontrer la mise en place d’une veille sur
+les thèmes de l’indicateur et son impact
+éventuel sur les prestations.
+K131: Description du processus/fonctionnement de l'organisme
+T131: Nouvel entrant : impact vu en surveillance.
+Sous-traitant : applicable.
+K132: Références ou noms des éléments de preuve consultés - Preuves de veille
+K133: Références ou noms des éléments de preuve consultés - Preuves d'exploitation de la veille
+K134: Vérification des niveaux attendus
+L134: Mise en place de la veille
+N134: Mise en place de la veille
+P134: Mise en place de la veille
+R134: Mise en place de la veille
+L135: Prise en compte de l'impact de la veille, le cas échéant
+N135: Prise en compte de l'impact de la veille, le cas échéant
+P135: Prise en compte de l'impact de la veille, le cas échéant
+R135: Prise en compte de l'impact de la veille, le cas échéant
+B136: x
+C136: x
+D136: x
+E136: x
+F136: x
+G136: Critère 6 : L’inscription et l’investissement du prestataire dans son environnement professionnel.
+H136: 26) Le prestataire mobilise les expertises, outils et réseaux nécessaires pour accueillir, accompagner/former ou orienter les publics en situation de handicap.
+I136: Démontrer l'identification d'un réseau de partenaires/experts/acteurs du champ du handicap, mobilisable par les personnels. Dans le cas d'accueil de personnes en situation de handicap, préciser les modalités de recours à ce réseau et les mesures spécifiques d'accompagnement ou d'orientation mises en oeuvre.
+K136: Description du processus/fonctionnement de l'organisme
+T136: Nouvel entrant : démontrer mise en place réseau.
+Sous-traitant : le prestataire démontre qu’il dispose d’un réseau de partenaires/experts/acteurs du champ du handicap ou que son donneur d’ordre lui a communiqué la liste de ses partenaires mobilisables pour orienter les PSH et mettre en place des mesures spécifiques.
+K137: Références ou noms des éléments de preuve consultés
+K138: Vérification des niveaux attendus
+L138: Réseau identifié
+N138: Réseau identifié
+P138: Réseau identifié
+R138: Réseau identifié
+L139: Si l'OPAC a accueilli des PSH, précision des modalités de recours au réseau et mesures spécifiques d'accompagnement ou d'orientation
+N139: Si l'OPAC a accueilli des PSH, précision des modalités de recours au réseau et mesures spécifiques d'accompagnement ou d'orientation
+P139: Si l'OPAC a accueilli des PSH, précision des modalités de recours au réseau et mesures spécifiques d'accompagnement ou d'orientation
+R139: Si l'OPAC a accueilli des PSH, précision des modalités de recours au réseau et mesures spécifiques d'accompagnement ou d'orientation
+L140: Si l'OPAC a accueilli des PSH, précision des mesures d'accompagnement ou d'orientation mises en oeuvre
+N140: Si l'OPAC a accueilli des PSH, précision des mesures d'accompagnement ou d'orientation mises en oeuvre
+P140: Si l'OPAC a accueilli des PSH, précision des mesures d'accompagnement ou d'orientation mises en oeuvre
+R140: Si l'OPAC a accueilli des PSH, précision des mesures d'accompagnement ou d'orientation mises en oeuvre
+B141: x
+C141: x
+D141: x
+E141: x
+F141: x
+G141: Critère 6 : L’inscription et l’investissement du prestataire dans son environnement professionnel.
+H141: 27) Lorsque le prestataire fait appel à la sous-traitance ou au portage salarial, il s’assure du respect de la conformité au présent référentiel.
+I141: Démontrer les dispositions mises en place
+pour vérifier le respect de la conformité au
+présent référentiel par le sous-traitant ou le
+salarié porté.
+K141: Description du processus/fonctionnement de l'organisme
+T141: Sous-traitant : applicable.
+K142: Références ou noms des éléments de preuve consultés
+K143: Vérification des niveaux attendus
+L143: Existence de dispositions pour vérifier la conformité des sous-traitants
+N143: Existence de dispositions pour vérifier la conformité des sous-traitants
+P143: Existence de dispositions pour vérifier la conformité des sous-traitants
+R143: Existence de dispositions pour vérifier la conformité des sous-traitants
+L144: Prise en compte de tous les sous-traitants (hors formateurs vacataires, ou occasionnels) : formateurs, intervenants, prestataires, organismes de formation, etc.
+N144: Prise en compte de tous les sous-traitants (hors formateurs vacataires, ou occasionnels) : formateurs, intervenants, prestataires, organismes de formation, etc.
+P144: Prise en compte de tous les sous-traitants (hors formateurs vacataires, ou occasionnels) : formateurs, intervenants, prestataires, organismes de formation, etc.
+R144: Prise en compte de tous les sous-traitants (hors formateurs vacataires, ou occasionnels) : formateurs, intervenants, prestataires, organismes de formation, etc.
+B145: x
+E145: x
+F145: x
+G145: Critère 6 Indicateurs spécifiques d’appréciation
+H145: 28) Lorsque les prestations dispensées au bénéficiaire comprennent des périodes de formation en situation de travail, le prestataire mobilise son réseau de partenaires socio-économiques pour co-construire  l’ingénierie de formation et favoriser l’accueil en entreprise.
+I145: Démontrer l’existence d’un réseau de
+partenaires socio-économiques mobilisé
+tout au long de la prestation
+K145: Description du processus/fonctionnement de l'organisme
+T145: Sous-traitant : tenir compte des missions confiées pour l’appréciation de cet indicateur.
+K146: Références ou noms des éléments de preuve consultés
+K147: Vérification des niveaux attendus
+L147: Existence du réseau de partenaires
+R147: Existence du réseau de partenaires
+L148: Mobilisation du réseau tout au long de la prestation pour co-construction
+R148: Mobilisation du réseau tout au long de la prestation pour co-construction
+E149: x
+F149: x
+G149: Critère 6 Indicateurs spécifiques d’appréciation
+H149: 29) Le prestataire développe des actions qui concourent à l’insertion professionnelle ou la poursuite d’étude par la voie de l’apprentissage ou par toute autre voie permettant de développer leurs connaissances et leurs compétences.
+I149: Démontrer l’existence d’actions qui
+concourent à l’insertion professionnelle ou
+la poursuite d’études
+K149: Description du processus/fonctionnement de l'organisme
+T149: Sous-traitant : applicable.
+K150: Références ou noms des éléments de preuve consultés
+K151: Vérification des niveaux attendus
+R151: Actions concourant à l'insertion professionnelle (apprentissage ou autre voie)
+R152: Actions concourant à la poursuite d'études (apprentissage ou autre voie)
+B153: x
+C153: x
+D153: x
+E153: x
+G153: Critère 7 : Le recueil et la prise en compte des appréciations et des réclamations formulées par les parties prenantes aux prestations délivrées.
+H153: 30) Le prestataire recueille les appréciations des parties prenantes : bénéficiaires, financeurs, équipes pédagogiques et entreprises concernées.
+I153: Démontrer la sollicitation des appréciations à une fréquence pertinente, incluant des dispositifs de relance et permettant une libre expression.
+K153: Description du processus/fonctionnement de l'organisme
+T153: Sous-traitant : recueil de l'appréciation des bénéficiaires et de son donneur d'ordre sur la prestation réalisée.
+K154: Références ou noms des éléments de preuve consultés - Bénéficiaires
+K155: Références ou noms des éléments de preuve consultés - Financeurs
+K156: Références ou noms des éléments de preuve consultés - Equipes pédagogiques
+K157: Références ou noms des éléments de preuve consultés - Entreprises concernées
+K158: Vérification des niveaux attendus
+L158: Fréquence de sollicitation pertinente
+N158: Fréquence de sollicitation pertinente
+P158: Fréquence de sollicitation pertinente
+R158: Fréquence de sollicitation pertinente
+L159: Dispositif de relance prévu
+N159: Dispositif de relance prévu
+P159: Dispositif de relance prévu
+R159: Dispositif de relance prévu
+L160: Libre expression permise
+N160: Libre expression permise
+P160: Libre expression permise
+R160: Libre expression permise
+B161: x
+C161: x
+D161: x
+E161: x
+G161: Critère 7 : Le recueil et la prise en compte des appréciations et des réclamations formulées par les parties prenantes aux prestations délivrées.
+H161: 31) Le prestataire met en œuvre des modalités de traitement des difficultés rencontrées par les parties prenantes, des réclamations exprimées par ces dernières, des aléas survenus en cours de prestation.
+I161: Démontrer la mise en place de modalités
+de traitement des aléas, difficultés et
+réclamations.
+K161: Description du processus/fonctionnement de l'organisme
+T161: Sous-traitant : applicable.
+K162: Références ou noms des éléments de preuve consultés
+K163: Vérification des niveaux attendus
+L163: Modalités incluant les 3 cas : aléas + difficultés + réclamations
+N163: Modalités incluant les 3 cas : aléas + difficultés + réclamations
+P163: Modalités incluant les 3 cas : aléas + difficultés + réclamations
+R163: Modalités incluant les 3 cas : aléas + difficultés + réclamations
+B164: x
+C164: x
+D164: x
+E164: x
+F164: x
+G164: Critère 7 : Le recueil et la prise en compte des appréciations et des réclamations formulées par les parties prenantes aux prestations délivrées.
+H164: 32) Le prestataire met en œuvre des mesures d’amélioration à partir de l’analyse des appréciations et des réclamations.
+I164: Démontrer la mise en place d’une
+démarche d’amélioration continue.
+K164: Description du processus/fonctionnement de l'organisme
+T164: Nouvel entrant : mise en oeuvre auditée en surveillance.
+Sous-traitant : applicable.
+K165: Références ou noms des éléments de preuve consultés
+K166: Vérification des niveaux attendus
+L166: Démarche d'amélioration continue mise en place
+N166: Démarche d'amélioration continue mise en place
+P166: Démarche d'amélioration continue mise en place
+R166: Démarche d'amélioration continue mise en place
+B167: x
+C167: x
+D167: x
+E167: x
+F167: x
+G167:  Exigence 8 : L’organisme a-t-il conservé un enregistrement de toutes les réclamations dont il a eu connaissance concernant la conformité aux exigences de certification et mis ces enregistrements à la disposition de l'organisme de certification sur demande.
+H167:  L’organisme a-t-il conservé un enregistrement de toutes les réclamations dont il a eu connaissance concernant la conformité aux exigences de certification et mis ces enregistrements à la disposition de l'organisme de certification sur demande (exigence issue de la norme d'accréditation ISO 17065)
+K167: Description du processus/fonctionnement de l'organisme
+K168: Références ou noms des éléments de preuve consultés
+K169: Vérification des niveaux attendus
+L169: Le cas échéant, réclamations enregistrées
+N169: Le cas échéant, réclamations enregistrées
+P169: Le cas échéant, réclamations enregistrées
+R169: Le cas échéant, réclamations enregistrées
+B170: x
+C170: x
+D170: x
+E170: x
+F170: x
+G170: Exigence 9 : L’organisme respecte-t-il la charte d’utilisation de la marque de certification Qualiopi et affiche-t-il son certificat ?
+H170: L’organisme respecte-t-il la charte d’utilisation du logo de certification Qualiopi ? L'organisme ne peut également pas utiliser le logo de Pronéo. Si l'organisme n'est pas encore certifié, l'organisme ne doit pas faire référence à la certification. (exigence issue de la norme d'acréditation ISO 17065)
+L'organisme certifié affiche-t-il son certificat dans ses locaux et sur son site web ? En l'absence de site web ou de locaux, en communique-t-il une copie à tout candidat, stagiaire, apprenti ou financeur mentionné à l'article L. 6316-1 du code du travail qui en fait la demande ?
+K170: Description du processus/fonctionnement de l'organisme
+K171: Références ou noms des éléments de preuve consultés
+K172: Vérification des niveaux attendus
+L172: Marque non utilisée sur des supports associés à des prestations en particulier (pour tout audit)
+N172: Marque non utilisée sur des supports associés à des prestations en particulier (pour tout audit)
+P172: Marque non utilisée sur des supports associés à des prestations en particulier (pour tout audit)
+R172: Marque non utilisée sur des supports associés à des prestations en particulier (pour tout audit)
+L173: Mention des actions certifiées de police inférieure ou égale à "processus certifié" (NA en audit initial)
+N173: Mention des actions certifiées de police inférieure ou égale à "processus certifié" (NA en audit initial)
+P173: Mention des actions certifiées de police inférieure ou égale à "processus certifié" (NA en audit initial)
+R173: Mention des actions certifiées de police inférieure ou égale à "processus certifié" (NA en audit initial)
+L174: Pas d'utilisation de la double Marianne (pour tout audit)
+N174: Pas d'utilisation de la double Marianne (pour tout audit)
+P174: Pas d'utilisation de la double Marianne (pour tout audit)
+R174: Pas d'utilisation de la double Marianne (pour tout audit)
+L175: Certificat affiché sur le site web ou communiqué sur demande (NA en audit initial)
+N175: Certificat affiché sur le site web ou communiqué sur demande (NA en audit initial)
+P175: Certificat affiché sur le site web ou communiqué sur demande (NA en audit initial)
+R175: Certificat affiché sur le site web ou communiqué sur demande (NA en audit initial)
+L176: Certificat affiché dans les locaux ou communiqué sur demande (NA en audit initial)
+N176: Certificat affiché dans les locaux ou communiqué sur demande (NA en audit initial)
+P176: Certificat affiché dans les locaux ou communiqué sur demande (NA en audit initial)
+R176: Certificat affiché dans les locaux ou communiqué sur demande (NA en audit initial)
+B177: Exigence 10 pour le siège du multisite : L’organisme demandeur ne dispose que d’un seul numéro de déclaration d’activité identique pour tous ses sites.
+B178: Exigence 11 pour le siège du multisite : Tous les sites concernés ont un lien juridique ou contractuel avec la fonction centrale de l’organisme.
+B179: Exigence12 pour le siège du multisite : L’organisme multisites n'est bien couvert que par un seul système qualité sous la responsabilité d’une fonction centrale (pas nécessairement le siège).
+B180: Exigence 13 pour le siège du multisite : La fonction centrale veille à ce que les données de chaque site soient collectées et analysées.
+B181: Exigence 14 pour le siège du multisite : La fonction centrale est capable de démontrer son autorité et sa capacité à amorcer au besoin des changements organisationnels.
+B182: Exigence 15 pour le siège du multisite : La fonction centrale (pas nécessairement le siège) régit plusieurs sites sur lesquels tout ou partie des activités (administrative, commerciale, ingénierie…) entrent dans le champ de la certification.
+B183: Exigence 16 pour le siège du multisite : Tous les sites concernés font l’objet d’une surveillance régulière définie par la fonction centrale (exemples : audit interne, reporting, revue de direction, etc.).
+B184: Exigence 17 pour le siège du multisite : La fonction centrale est responsable des mesures correctives nécessaires sur les sites.
+B185: Exigence 18 pour le siège du multisite : La fonction qualité est internalisée au sein de l’organisme.
+F187: Indicateurs applicables
+F188: Organisme nouvel entrant
+H188: Organisme non nouvel entrant
+A189: Audit initial
+F189: Tous mais certains indicateurs ne sont audités  qu'au niveau de la formalisation du processus mis en place (cf. guide de lecture)
+H189: Tous les indicateurs de la ou les catégories auditées
+A190: Audit de surveillance
+F190: Tous les indicateurs de la ou des catégories sont audités
+H190: L'auditeur audite tous les indicateurs de la ou des catégories du périmètre.
+ Il peut aussi décider en audit, par manque de temps, de restreindre l'audit à minima sur :
+- les indicateurs ayant fait l'objet de non-conformités à l'audit précédent ;
+- les indicateurs ne pouvant donner lieu qu'à des non-conformités majeures mentionnés à l'article 5, applicables à l'organisme audité (4, 5, 6, 7, 10, 11, 14, 15, 16, 20, 21, 22, 26, 27, 29, 31, 32) ;
+- les indicateurs 1, 3, 17, 19 ;
+- pour les organismes ayant bénéficié d'un audit initial aménagé (CNEFOP), les indicateurs n'ayant pas été vérifiés à l'audit initial ;
+- les exigences 33 et 34.
+A191: Audit de renouvellement
+F191: Un organisme ne peut pas être nouvel entrant en audit de renouvellement
+H191: Tous les indicateurs de la ou les catégories auditées
+A192: Audit d'extension
+(Ajout de nouvelle catégorie d'actions)
+F192: Tous les indicateurs sont audités mais certains ne sont audités qu'au niveau de la formalisation du processus mis en place (cf guide de lecture)
+G194: Cas particuliers
+I194: Indicateurs particuliers applicables
+G195: Si les prestations conduisent à une certification professionnelle
+I195: 3,7 et 16
+G196: Si l'organisme fait de l'alternance
+I196: 13
+G197: Si l'organisme fait appel à la sous-traitance
+I197: 27
+G198: Si les prestations comprennent des périodes de formation en situation de travail
+I198: 28
+G200: Indicateurs applicables spécifiques à un organisme uniquement sous-traitant
+L200: Indicateurs applicables à tous les sous-traitants selon la catégorie pour laquelle ils veulent être certifiés
+G201: Lorsque la prestation échantillonnée est une prestation pour laquelle l’organisme intervient en sous-traitance 
+G202: L’indicateur n’est pas applicable car l’information doit être réalisée par le donneur d’ordres.
+H202: Le prestataire démontre qu’il tient compte des objectifs définis par le donneur d’ordre
+I202: le prestataire démontre qu’il dispose d’un réseau de partenaires/experts/acteurs du champ du handicap ou que son donneur d’ordre lui a communiqué la liste de ses partenaires mobilisables pour orienter les PSH et mettre en place des mesures spécifiques.
+J202: Le prestataire recueille l’appréciation des bénéficiaires et de son donneur d’ordres sur la prestation réalisée.
+K202: L’organisme certificateur tient compte des missions confiées pour l’appréciation de cet indicateur
+G203: NON APPLICABLE AU SOUS-TRAITANT
+G204: 1 – 2 – 3
+H204: 5
+I204: 26
+J204: 30
+K204: 7 – 9 – 13 – 16 – 28
+L204: 4 – 6 – 8 – 10 – 11 – 12 – 14 – 15
+L205: 17 à 32 (sauf 26, 28, 30) 
+L206: Exigences 8 et 9
+
+Exploring sheet: Feuille de présence (Visible: True)
+D8: Feuille de présence
+B10: Nom de l'organisme audité :
+D10: 0
+B11: Site (multisite) : 
+B12: Type audit :
+D12: V16 : Formation
+C14: Date réunion d'ouverture :
+D14: 00:00:00
+C15: Nom
+D15: Prénom
+E15: Fonction
+C24: Date réunion de clôture :
+D24: 00:00:00
+C25: Nom
+D25: Prénom
+E25: Fonction
+A34: Pronéo Certification, 8 rue Octave Feuillet 75116 Paris – Tel : 01 76 50 44 22 - RCS Paris 829 590 546
+A35: FORM 028 01
+
+Exploring sheet: Traitement des NC (Visible: True)
+B1: Traitement des non-conformités
+A3: Définition d'une non-conformité
+H3: Délai pour traiter les non-conformités :
+A4: i
+B4: Une non-conformité est un écart par rapport à un ou plusieurs indicateurs du référentiel. 
+H4: Pour les non-conformités mineures 
+A5: i
+B5: Elle peut être mineure ou majeure.
+H5: i
+I5: Le plan d'action doit être envoyé sous 7 jours à l'auditeur afin qu'il le valide. Le délai part du jour de la réception du rapport d'audit que vous recevez de l'auditeur. 
+A6: i
+B6: Sauf indication contraire pour un indicateur en particulier dans le guide de lecture en vigueur, la non-conformité mineure est la prise en compte partielle d’un indicateur ne remettant pas en cause la qualité de la prestation délivrée.
+H6: i
+I6: Vous avez 6 mois pour mettre en œuvre les actions correctives.
+A7: i
+B7: Sauf indication contraire pour un indicateur en particulier dans le guide de lecture en vigueur,la non-conformité majeure est la non prise en compte d’un indicateur ou sa prise en compte partielle remettant en cause la qualité de la prestation délivrée. 
+H7: i
+I7: L'auditeur vérifie lors de l'audit de surveillance, la mise en œuvre et l'efficacité du plan d'action.
+A8: i
+B8: L’absence de preuve le jour de l’audit fait l’objet d’une non-conformité.
+A9: i
+B9: 5 non-conformités mineures ou plus aboutissent à une non-conformité majeure.
+H9: Pour les non-conformités majeures
+B10: PRONEO Certification
+H10: i
+I10: Le plan d'action doit être envoyé sous 7 jours à l'auditeur afin qu'il le valide. Le délai part du jour de la réception du rapport d'audit que vous recevez de l'auditeur.
+H11: i
+I11: Vous avez 3 mois au maximum pour apporter les preuves de la mise en œuvre des actions correctives. L'auditeur acceptera les preuves ou pourra les refuser. Dans ce cas, vous devez refournir de nouvelles preuves.
+H12: i
+I12: En cas de non-acceptation des preuves par l'auditeur, l'organisme audité dispose de 7 jours pour envoyer de nouveaux éléments tout en ne dépassant la delai de 3 mois depuis la livraison du rapport.
+
+Exploring sheet: Fiche NC Maj si 5 Min ou + (Visible: True)
+B8: Nom de l'organisme audité :
+D8: 0
+A11: Nom de l'auditeur :
+B11: 0
+D11: Nom du représentant du client :
+E11: 0
+A12: Type d'audit :
+D12: Site du constat :
+E12: 0
+A13: Numéro du critère :
+A14: Numéro des indicateurs :
+A16: AUDITEUR (nom si différent du RA) : 
+A17: Constat et preuve(s) associée(s) - Reprendre les constats de toutes les NC mineures
+A22: Date :
+B22: 00:00:00
+D22: Nom :
+E22: 0
+A24: REPONSE DE L’ENTREPRISE 
+A25: L'entreprise doit décrire ci-dessous son plan d'action pour corriger la non-conformité
+A30: L'entreprise doit indiquer ci-dessous le nom de la preuve qu'elle a envoyée à l'auditeur et préciser la date de mise en œuvre de l'action
+A34: Date de mise en œuvre :
+A35: Date :
+D35: Nom :
+A37: APPRECIATION DE L’AUDITEUR 
+A38: La réponse de l’entreprise auditée est :
+E38:  Acceptée 
+E39:  Refusée en l’état et doit être revue
+A40: Commentaires de l'auditeur
+A44: Date :
+D44: Nom :
+E44: 0
+
+Exploring sheet: Ex non conformite (Visible: False)
+A7: Fiche de non-conformité
+B9: Nom de l'organisme audité :
+D9: 0
+C10: Non-conformité numéro :
+D11: Ici on note si non-conformité majeure ou mineure
+A13: Nom de l'auditeur :
+B13: 0
+D13: Nom du représentant du client :
+E13: 0
+A14: Type d'audit :
+B14: V16 : Formation
+D14: Site du constat :
+E14:   
+A15: Critère :
+A16: Indicateur :
+A18: AUDITEUR (nom si différent du RA) : 
+A19: Constat et preuve(s) associée(s)
+A20: Préciser la catégorie d'action concernée par la non-conformité :
+
+A21: Défaillance identifiée au regard de l'exigence :
+
+
+
+
+
+
+
+A22: Preuve, constat factuel :
+
+
+
+A23: Risque associé :
+A24: Date :
+B24: 00:00:00
+D24: Nom :
+E24: 0
+A26: REPONSE DE L’ENTREPRISE 
+A27: L'entreprise doit décrire ci-dessous son plan d'action pour corriger la non-conformité
+A32: L'entreprise doit indiquer ci-dessous le nom de la preuve de mise en conformité et préciser la date de mise en œuvre de l'action
+A36: Date de mise en œuvre :
+A37: Date :
+D37: Nom :
+A39: APPRECIATION DE L’AUDITEUR 
+A40: La réponse de l’entreprise auditée est :
+E40:  Acceptée 
+E41:  Refusée en l’état et doit être revue
+A42: Commentaires de l'auditeur
+A46: Date :
+D46: Nom :
+E46: 0
+
