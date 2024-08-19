@@ -1,8 +1,3 @@
-"""_summary_
-
-Returns:
-    _type_: _description_
-"""
 import os
 import shutil
 from typing import Dict, List, Optional
@@ -40,12 +35,15 @@ def update_state() -> Dict[str, List[UIReportCell]]:
 
 class Worker(QThread):
     update_completed = pyqtSignal(dict)
+    error_occurred = pyqtSignal(str)
 
     def run(self):
-        # Perform the time-consuming update_state task
-        report_ui = update_state()
-        # Emit a signal when done
-        self.update_completed.emit(report_ui)
+        try:
+            # Perform the time-consuming task in a separate thread
+            report_ui = update_state()
+            self.update_completed.emit(report_ui)
+        except Exception as e:
+            self.error_occurred.emit(str(e))
 
 
 class ColoredCircle(QWidget):
@@ -112,11 +110,6 @@ class MainWindow(QMainWindow):
         self.load_button.clicked.connect(self.load_excel_file)
         self.main_layout.addWidget(self.load_button)
 
-        # self.check_button = QPushButton("Vérifier")
-        # self.check_button.setFixedSize(80, 30)
-        # self.check_button.clicked.connect(self.check_and_refresh)
-        # self.main_layout.addWidget(self.check_button)
-
         self.new_file_button = QPushButton("Nouveau Excel")
         self.new_file_button.setFixedSize(120, 30)
         self.new_file_button.clicked.connect(self.create_new_excel)
@@ -138,8 +131,11 @@ class MainWindow(QMainWindow):
         self.init_timer()
 
         self.worker = Worker()
-
         self.worker.update_completed.connect(self.on_update_completed)
+        self.worker.error_occurred.connect(self.on_worker_error)
+
+    def on_worker_error(self, error_message):
+        logger.error(f"Worker error: {error_message}")
 
     def init_timer(self):
         """Initialize the timer to call check_and_refresh every X seconds."""
@@ -154,13 +150,6 @@ class MainWindow(QMainWindow):
 
     def on_update_completed(self, report_ui: dict):
         """Handle the completion of the update and refresh the tabs."""
-        self.refresh_tabs(report_ui)
-
-    def check_and_refresh(self):
-        """Calls update_state and refreshes the tabs."""
-
-        report_ui = update_state()
-
         self.refresh_tabs(report_ui)
 
     def create_new_excel(self):
