@@ -242,6 +242,9 @@ class ExcelHandler:
             cell_address (str): L'adresse de la cellule à sélectionner (par exemple, "E34").
         """
 
+        if self.excel_abs_path:
+            self.load_excel(excel_abs_path=self.excel_abs_path)
+
         try:
             sheet = self.wb.sheets[sheet_name]
 

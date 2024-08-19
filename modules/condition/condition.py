@@ -16,7 +16,38 @@ from modules.excel import excel_handler
 
 from modules.sheet.schemas import SheetName
 
-REF_TO_NB_INDIC = {"V1": 21, "V2": 17, "V3": 21, "V4": 21, "V5": 21, "V6": 17}
+REF_TO_NB_INDIC = {
+    "V1": 21,
+    "V2": 17,
+    "V3": 21,
+    "V4": 21,
+    "V5": 21,
+    "V6": 17,
+    "V7": 17,
+    "V8": 21,
+    "V9": 13,
+    "V10": 21,
+    "V11": 21,
+    "V12": 17,
+    "V13": 11,
+    "V14": 13,
+    "V15": 21,
+    "V16": 30,
+    "V17": 34,
+    "V18": 34,
+    "V19": 30,
+    "V20": 30,
+    "V21": 34,
+    "V22": 30,
+    "V23": 34,
+    "V24": 34,
+    "V25": 26,
+    "V26": 34,
+    "V27": 34,
+    "V28": 24,
+    "V29": 26,
+    "V30": 34
+}
 
 
 class CellsConditions:
