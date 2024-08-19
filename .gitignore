@@ -4,3 +4,14 @@
 /.venv
 /build
 poetry.lock
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Cython cache
+*.so
+*.c
+*.cpp
