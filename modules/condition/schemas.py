@@ -23,6 +23,8 @@ class ConditionType(Enum):
 
     DATE_DURATION_BEETWEEN = "date_duration_beetween"
 
+    CELL_HAS_TO_BE_VALUE = "cell_has_to_be_value"
+
     CELL_HAS_TO_BE_FILLED = "cell_has_to_be_filled"
 
     CELL_HAS_TO_BE_FILLED_IF_VALUE_FROM_OTHER = "cell_has_to_be_filled_if_value_from_other"
@@ -34,6 +36,16 @@ class ConditionType(Enum):
     ONE_BOX_CHECKED_AMONG_LIST = "one_box_checked_among_list"
 
     MAX_ONE_BOX_CHECKED_AMONG_LIST = "max_one_box_checked_among_list"
+
+    CHECK_ALL_SHEET_DESCRIPTION = "check_all_sheet_description"
+
+    CHECK_ALL_SHEET_REFERENCE = "check_all_sheet_reference"
+
+    CHECK_ALL_SHEET_DROP_DOWN = "check_all_sheet_dropdown"
+
+    CHECK_NC_ALL_J_CHOOSED = "check_nc_all_j_choosed"
+
+    HAS_NC = "has_nc"
 
 
 class Condition():

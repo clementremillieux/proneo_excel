@@ -6,9 +6,9 @@ from modules.params.schemas import AppParams
 
 from config.logger_config import logger
 
-SHEET_NAME = "Rapport d'audit"
+SHEET_NAME = "Rapprt d'audit"
 
-CELLS_ADDRESS = "M13"
+CELLS_ADDRESS = "F4"
 
 excel_handler = ExcelHandler(excel_abs_path=AppParams().excel_abs_path)
 

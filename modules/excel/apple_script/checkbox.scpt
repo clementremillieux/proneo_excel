@@ -4,18 +4,16 @@ on run argv
     end if
     
     set checkboxName to item 1 of argv
-    set workbookPath to item 2 of argv
+    set workbookName to item 2 of argv
     
     tell application "Microsoft Excel"
         try
-            open workbookPath
-            
-            tell workbook 1
+
+            tell workbook workbookName
                 if exists sheet "OPAC" then
                     tell sheet "OPAC"
                         try
-                            set checkboxState to value of checkbox checkboxName
-                            return checkboxState
+                            return value of checkbox checkboxName
                         on error
                             return "checkbox off"
                         end try
