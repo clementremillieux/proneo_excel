@@ -27,7 +27,6 @@ class ExcelHandler:
         """
 
         try:
-            self.excel_abs_path: str = excel_abs_path
 
             self.app = xw.apps.active
 
@@ -42,8 +41,6 @@ class ExcelHandler:
             else:
 
                 self.wb = self.app.books.open(excel_abs_path)
-
-            self.app.screen_updating = True
 
             self.wb.activate()
 

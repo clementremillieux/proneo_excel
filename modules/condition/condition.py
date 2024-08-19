@@ -13,9 +13,10 @@ from modules.cells.schemas import BoxToCheck, CheckBoxToCheck, DateToCheck
 from modules.condition.schemas import Condition, ConditionType, CellsConditionReport, CellsConditionState
 
 from modules.excel import excel_handler
+
 from modules.sheet.schemas import SheetName
 
-REF_TO_NB_INDIC = {"V1": 21}
+REF_TO_NB_INDIC = {"V1": 21, "V2": 17, "V3": 21, "V4": 21, "V5": 21, "V6": 17}
 
 
 class CellsConditions:

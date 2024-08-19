@@ -23,6 +23,11 @@ checker = Checker(cells_conditions=CELLS_CONDITIONS)
 
 def update_state() -> Dict[str, List[UIReportCell]]:
     """Appelée pour mettre à jour l'état."""
+
+    if excel_handler.excel_abs_path:
+
+        excel_handler.load_excel(excel_abs_path=excel_handler.excel_abs_path)
+
     cells_condition_report: List[
         CellsConditionReport] = checker.check_cells_conditions()
 
