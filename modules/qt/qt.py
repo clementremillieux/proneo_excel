@@ -25,7 +25,6 @@ def update_state() -> Dict[str, List[UIReportCell]]:
     """Appelée pour mettre à jour l'état."""
 
     if excel_handler.excel_abs_path:
-
         excel_handler.load_excel(excel_abs_path=excel_handler.excel_abs_path)
 
     cells_condition_report: List[
@@ -108,6 +107,7 @@ class MainWindow(QMainWindow):
             f"{self.file_path_intro} {excel_handler.excel_abs_path}"
             if excel_handler.excel_abs_path else
             f"{self.file_path_intro} veuillez séléctionnez un fichier")
+
         self.main_layout.addWidget(self.file_path_label)
 
         self.load_button = QPushButton("Charger Excel")
@@ -172,6 +172,7 @@ class MainWindow(QMainWindow):
 
             # Get the user's Desktop directory
             desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+
             destination_file_path = os.path.join(desktop_path, new_file_name)
 
             try:
@@ -179,7 +180,8 @@ class MainWindow(QMainWindow):
                 shutil.copy(source_file_path, destination_file_path)
 
                 # Update the label with the new file path
-                self.file_path_label.setText(destination_file_path)
+                self.file_path_label.setText(
+                    f"{self.file_path_intro} {destination_file_path}")
 
                 # Load the new Excel file and update the UI
                 excel_handler.load_excel(excel_abs_path=destination_file_path)
