@@ -74,6 +74,8 @@ class CheckBoxToCheck(CellToCheck):
 
     checkbox_params: CheckboxParams
 
+    alias_name: Optional[str] = None
+
     def get_value(self) -> bool:
         """_summary_
 

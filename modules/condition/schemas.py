@@ -5,7 +5,7 @@ from abc import abstractmethod
 
 from enum import Enum
 
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -55,10 +55,11 @@ class Condition():
         BaseModel (_type_): _description_
     """
 
-    def __init__(
-            self, condition_type: ConditionType, is_parent_condition: bool,
-            cells_list: List[DateToCheck | CheckBoxToCheck | BoxToCheck]
-    ) -> None:
+    def __init__(self,
+                 condition_type: ConditionType,
+                 is_parent_condition: bool,
+                 cells_list: List[DateToCheck | CheckBoxToCheck | BoxToCheck],
+                 alias_name: Optional[str] = None) -> None:
 
         self.condition_type: ConditionType = condition_type
 
@@ -67,8 +68,10 @@ class Condition():
         self.cells_list: List[DateToCheck | CheckBoxToCheck
                               | BoxToCheck] = cells_list
 
+        self.alias_name: Optional[str] = alias_name
+
     @abstractmethod
-    def check(self) -> CellsConditionReport:
+    def check(self) -> CellsConditionReport | List[CellsConditionReport]:
         """Check the condition based on string inputs.
 
         Args:

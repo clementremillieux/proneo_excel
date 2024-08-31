@@ -41,17 +41,29 @@ class Checker:
 
         for cell_conditions in self.cells_conditions:
             cells_conditions_report: Optional[
-                CellsConditionReport] = cell_conditions.check()
+                CellsConditionReport
+                | List[CellsConditionReport]] = cell_conditions.check()
 
-            if cells_conditions_report:
-                cells_conditions_reports.append(cells_conditions_report)
+            if isinstance(cells_conditions_report, CellsConditionReport):
+                if cells_conditions_report:
+                    cells_conditions_reports.append(cells_conditions_report)
+
+            if isinstance(cells_conditions_report, List):
+                if cells_conditions_report:
+                    cells_conditions_reports += cells_conditions_report
 
         for nc_cell_conditions in self.nc_cells_conditions:
             cells_conditions_report: Optional[
-                CellsConditionReport] = nc_cell_conditions.check()
+                CellsConditionReport
+                | List[CellsConditionReport]] = nc_cell_conditions.check()
 
-            if cells_conditions_report:
-                cells_conditions_reports.append(cells_conditions_report)
+            if isinstance(cells_conditions_report, CellsConditionReport):
+                if cells_conditions_report:
+                    cells_conditions_reports.append(cells_conditions_report)
+
+            if isinstance(cells_conditions_report, List):
+                if cells_conditions_report:
+                    cells_conditions_reports += cells_conditions_report
 
         return cells_conditions_reports
 
@@ -113,7 +125,8 @@ class Checker:
         cell = CheckBoxToCheck(sheet_name=sheet_name,
                                checkbox_name="Check Box 3",
                                cell_address="H20",
-                               checkbox_params=checkbox_params)
+                               checkbox_params=checkbox_params,
+                               alias_name="D20 (Action de formation)")
 
         cell_to_check = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                                         checkbox_name="Check Box 41",
@@ -145,7 +158,8 @@ class Checker:
         cell = CheckBoxToCheck(sheet_name=sheet_name,
                                checkbox_name="Check Box 3",
                                cell_address="I20",
-                               checkbox_params=checkbox_params)
+                               checkbox_params=checkbox_params,
+                               alias_name="D20 (VAE)")
 
         cell_to_check = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                                         checkbox_name="Check Box 41",
@@ -177,7 +191,8 @@ class Checker:
         cell = CheckBoxToCheck(sheet_name=sheet_name,
                                checkbox_name="Check Box 3",
                                cell_address="J20",
-                               checkbox_params=checkbox_params)
+                               checkbox_params=checkbox_params,
+                               alias_name="D20 (Bilan de compétences)")
 
         cell_to_check = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                                         checkbox_name="Check Box 41",
@@ -209,7 +224,8 @@ class Checker:
         cell = CheckBoxToCheck(sheet_name=sheet_name,
                                checkbox_name="Check Box 3",
                                cell_address="K20",
-                               checkbox_params=checkbox_params)
+                               checkbox_params=checkbox_params,
+                               alias_name="D20 (Apprentissage)")
 
         cell_to_check = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                                         checkbox_name="Check Box 41",
@@ -309,7 +325,7 @@ class Checker:
 
         return CellsConditions(conditions=[
             ConditionHasToBeFilled(cell=BoxToCheck(
-                sheet_name="OPAC",
+                sheet_name=SheetName.SHEET_2.value,
                 cell_address="G60",
             ),
                                    is_parent_condition=True),
@@ -329,7 +345,7 @@ class Checker:
 
         return CellsConditions(conditions=[
             ConditionHasToBeFilled(cell=BoxToCheck(
-                sheet_name="OPAC",
+                sheet_name=SheetName.SHEET_2.value,
                 cell_address="G60",
             ),
                                    is_parent_condition=True),
@@ -337,11 +353,13 @@ class Checker:
                 CheckBoxToCheck(sheet_name=sheet_name,
                                 checkbox_name="Check Box 41",
                                 cell_address="H40",
-                                checkbox_params=checkbox_params),
+                                checkbox_params=checkbox_params,
+                                alias_name="E40 (Accepté)"),
                 CheckBoxToCheck(sheet_name=sheet_name,
                                 checkbox_name="Check Box 41",
                                 cell_address="H41",
-                                checkbox_params=checkbox_params)
+                                checkbox_params=checkbox_params,
+                                alias_name="E41 (Refusé)")
             ],
                                           is_parent_condition=False)
         ])

@@ -2,15 +2,11 @@
 
 from datetime import datetime
 
-import subprocess
-
 from typing import List, Optional
 
 import xlwings as xw
 
 import openpyxl
-
-from modules.excel.schemas import CheckboxParams
 
 from config.logger_config import logger
 
@@ -42,12 +38,14 @@ class ExcelHandler:
 
                 self.wb = self.app.books.open(excel_abs_path)
 
-            self.wb.activate()
+            # self.wb.activate()
 
             self.wb_openpyxl = openpyxl.load_workbook(excel_abs_path,
                                                       keep_vba=True)
 
             self.excel_abs_path = excel_abs_path
+
+            # self.wb.save()
 
         except Exception as e:
             logger.error("Error openning excel file : %s", e)
@@ -134,38 +132,38 @@ class ExcelHandler:
         except Exception as e:
             logger.error("Error writing cell : %s", e)
 
-    def get_checkbox_state_old(self, checkbox_params: CheckboxParams,
-                               checkbox_name: str) -> bool:
-        """
-        Vérifie l'état d'une case à cocher dans un fichier Excel.
+    # def get_checkbox_state_old(self, checkbox_params: CheckboxParams,
+    #                            checkbox_name: str) -> bool:
+    #     """
+    #     Vérifie l'état d'une case à cocher dans un fichier Excel.
 
-        Args:
-        checkbox_params (CheckboxParams): Paramètres de la case à cocher
-        checkbox_name (str): Nom de la case à cocher
+    #     Args:
+    #     checkbox_params (CheckboxParams): Paramètres de la case à cocher
+    #     checkbox_name (str): Nom de la case à cocher
 
-        Returns:
-        bool: True si la case est cochée, False sinon
-        """
+    #     Returns:
+    #     bool: True si la case est cochée, False sinon
+    #     """
 
-        try:
-            result = subprocess.run([
-                'osascript', checkbox_params.apple_script_path, checkbox_name,
-                self.excel_abs_path
-            ],
-                                    capture_output=True,
-                                    text=True,
-                                    check=True)
+    #     try:
+    #         result = subprocess.run([
+    #             'osascript', checkbox_params.apple_script_path, checkbox_name,
+    #             self.excel_abs_path
+    #         ],
+    #                                 capture_output=True,
+    #                                 text=True,
+    #                                 check=True)
 
-            # logger.info("Excel read checkbox value => %s", result)
+    #         # logger.info("Excel read checkbox value => %s", result)
 
-            return " on" in result.stdout.strip()
+    #         return " on" in result.stdout.strip()
 
-        except subprocess.CalledProcessError as e:
-            logger.error(
-                "Erreur lors de l'exécution du script AppleScript pour la case à cocher %s : %s",
-                checkbox_name, e)
+    #     except subprocess.CalledProcessError as e:
+    #         logger.error(
+    #             "Erreur lors de l'exécution du script AppleScript pour la case à cocher %s : %s",
+    #             checkbox_name, e)
 
-            return False
+    #         return False
 
     def get_checkbox_state(self, sheet_name: str, cell_address: str) -> bool:
         """
@@ -278,6 +276,26 @@ class ExcelHandler:
 
         return False
 
+    def is_merged(self, sheet_name: str, cell_adress: str) -> bool:
+        """_summary_
+
+        Returns:
+            bool: _description_
+        """
+
+        try:
+            ws = self.wb_openpyxl[sheet_name]
+
+            cell = ws[cell_adress]
+
+            cell.column_letter
+
+            return False
+
+        except Exception as e:
+
+            return True
+
     def is_hidden(self, sheet_name: str, cell_adress: str) -> bool:
         """_summary_
 
@@ -285,13 +303,19 @@ class ExcelHandler:
             bool: _description_
         """
 
-        ws = self.wb_openpyxl[sheet_name]
+        try:
+            ws = self.wb_openpyxl[sheet_name]
 
-        cell = ws[cell_adress]
+            cell = ws[cell_adress]
 
-        column_letter = cell.column_letter
+            column_letter = cell.column_letter
 
-        if ws.column_dimensions[column_letter].hidden:
-            return True
+            if ws.column_dimensions[column_letter].hidden:
 
-        return False
+                return True
+
+            return False
+
+        except Exception:
+
+            return False

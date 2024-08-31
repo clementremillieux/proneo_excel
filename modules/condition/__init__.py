@@ -360,32 +360,38 @@ CELLS_CONDITION_PSH = CellsConditions(conditions=[
 cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                          checkbox_name="Check Box 121",
                          cell_address="D40",
-                         checkbox_params=checkbox_params)
+                         checkbox_params=checkbox_params,
+                         alias_name="B43 (Formation)")
 
 cell_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                          checkbox_name="Check Box 122",
                          cell_address="D41",
-                         checkbox_params=checkbox_params)
+                         checkbox_params=checkbox_params,
+                         alias_name="B43 (BC)")
 
 cell_3 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                          checkbox_name="Check Box 129",
                          cell_address="D42",
-                         checkbox_params=checkbox_params)
+                         checkbox_params=checkbox_params,
+                         alias_name="B43 (VAE)")
 
 cell_4 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                          checkbox_name="Check Box 130",
                          cell_address="D43",
-                         checkbox_params=checkbox_params)
+                         checkbox_params=checkbox_params,
+                         alias_name="B43 (CFA)")
 
 cell_5 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                          checkbox_name="Check Box 131",
                          cell_address="D44",
-                         checkbox_params=checkbox_params)
+                         checkbox_params=checkbox_params,
+                         alias_name="B43 (Aucune)")
 
 CELLS_CONDITION_CONTRACTOR_100 = CellsConditions(conditions=[
     ConditionAtLeastOneCheckBoxAmongList(
         cells=[cell_1, cell_2, cell_3, cell_4, cell_5],
-        is_parent_condition=False)
+        is_parent_condition=False,
+        alias_name="B43")
 ])
 
 ######################################

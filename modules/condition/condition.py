@@ -6,8 +6,6 @@ from datetime import datetime as dt
 
 from typing import List, Optional
 
-from venv import logger
-
 from modules.cells.schemas import BoxToCheck, CheckBoxToCheck, DateToCheck
 
 from modules.condition.schemas import Condition, ConditionType, CellsConditionReport, CellsConditionState
@@ -15,6 +13,8 @@ from modules.condition.schemas import Condition, ConditionType, CellsConditionRe
 from modules.excel import excel_handler
 
 from modules.sheet.schemas import SheetName
+
+from config.logger_config import logger
 
 REF_TO_NB_INDIC = {
     "V1": 21,
@@ -60,7 +60,9 @@ class CellsConditions:
     def __init__(self, conditions: List[Condition]) -> None:
         self.conditions: List[Condition] = conditions
 
-    def check(self) -> Optional[CellsConditionReport]:
+    def check(
+            self
+    ) -> Optional[CellsConditionReport | List[CellsConditionReport]]:
         """_summary_
 
         Returns:
@@ -70,10 +72,21 @@ class CellsConditions:
         try:
 
             for condition in self.conditions:
-                cells_condition_report: CellsConditionReport = condition.check(
-                )
+                cells_condition_report: CellsConditionReport | List[
+                    CellsConditionReport] = condition.check()
 
-                if cells_condition_report.state == CellsConditionState.NOT_OK:
+                if isinstance(
+                        cells_condition_report, CellsConditionReport
+                ) and cells_condition_report.state == CellsConditionState.NOT_OK:
+                    if not condition.is_parent_condition:
+                        break
+
+                    return None
+
+                if isinstance(cells_condition_report, List) and any(
+                        cell_condition_report.state ==
+                        CellsConditionState.NOT_OK
+                        for cell_condition_report in cells_condition_report):
                     if not condition.is_parent_condition:
                         break
 
@@ -258,7 +271,8 @@ class ConditionOneCheckBoxAmongList(Condition):
         ]
 
         checkbox_name: str = " ou ".join(
-            f'{cell.cell_address} [{cell.sheet_name}]' for cell in self.cells)
+            f'{cell.alias_name if cell.alias_name else cell.cell_address} [{cell.sheet_name}]'
+            for cell in self.cells)
 
         if not any(cells_value):
             results: bool = False
@@ -293,14 +307,17 @@ class ConditionAtLeastOneCheckBoxAmongList(Condition):
 
     cells: List[CheckBoxToCheck]
 
-    def __init__(self, cells: List[CheckBoxToCheck],
-                 is_parent_condition: bool) -> None:
+    def __init__(self,
+                 cells: List[CheckBoxToCheck],
+                 is_parent_condition: bool,
+                 alias_name: Optional[str] = None) -> None:
         """Initialize the ConditionDateSup with start and stop dates."""
 
         super().__init__(
             condition_type=ConditionType.AT_LEAST_ONE_BOX_CHECKED_AMONG_LIST,
             is_parent_condition=is_parent_condition,
-            cells_list=cells)
+            cells_list=cells,
+            alias_name=alias_name)
 
         self.cells: List[CheckBoxToCheck] = cells
 
@@ -310,7 +327,8 @@ class ConditionAtLeastOneCheckBoxAmongList(Condition):
         ]
 
         checkbox_name: str = " ou ".join(
-            f'{cell.cell_address} [{cell.sheet_name}]' for cell in self.cells)
+            f'{cell.alias_name if cell.alias_name else cell.cell_address} [{cell.sheet_name}]'
+            for cell in self.cells)
 
         if not any(cells_value):
             results: bool = False
@@ -451,10 +469,10 @@ class ConditionHasToBeChecked(Condition):
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
         if state == CellsConditionState.NOT_OK:
-            report_str = f"La checkbox {self.cell.cell_address} [{self.cell.sheet_name}] doit être remplie"
+            report_str = f"La checkbox {self.cell.alias_name if  self.cell.alias_name else self.cell.cell_address} [{self.cell.sheet_name}] doit être remplie"
 
         else:
-            report_str = f"La checkbox {self.cell.cell_address} [{self.cell.sheet_name}] est remplie"
+            report_str = f"La checkbox {self.cell.alias_name if  self.cell.alias_name else self.cell.cell_address} [{self.cell.sheet_name}] est remplie"
 
         cells_report = CellsConditionReport(condition=self,
                                             state=state,
@@ -488,8 +506,6 @@ class ConditionHasToBeValue(Condition):
 
     def check(self) -> CellsConditionReport:
         cell_value: Optional[str] = self.cell.get_value()
-
-        logger.info("Value list : %s", cell_value)
 
         if not cell_value or cell_value != self.value:
             results: bool = False
@@ -550,8 +566,6 @@ class ConditionIsNCFromCellText(Condition):
             )
 
         ids_nc: List[str] = extract_ids(input_text=cell_value_str)
-
-        logger.info("ID in cell text : %s", ids_nc)
 
         all_sheets: List[str] = excel_handler.get_all_sheets()
 
@@ -620,24 +634,24 @@ class ConditionIsNCFromCellNumber(Condition):
                 f"Les nombre de NC mineure de la cellule {self.cell.cell_address} n'est pas un nombre"
             )
 
-        nb_nc_min_sheet: int = count_nc_min_sheet()
+        #nb_nc_min_sheet: int = count_nc_min_sheet()
 
         nb_nc_min: int = count_nc_min()
 
-        if cell_value_int != nb_nc_min_sheet:
-            results: bool = False
+        # if cell_value_int != nb_nc_min_sheet:
+        #     results: bool = False
 
-            report_str: str = f"Le nombre de NC mineure définie à la cellule {self.cell.cell_address} ({cell_value_int}) ne correspond pas au nombre de fiche NC créée ({nb_nc_min_sheet})"
+        #     report_str: str = f"Le nombre de NC mineure définie à la cellule {self.cell.cell_address} ({cell_value_int}) ne correspond pas au nombre de fiche NC mineur créée ({nb_nc_min_sheet})"
 
-        elif cell_value_int != nb_nc_min:
+        if cell_value_int != nb_nc_min:
             results = False
 
-            report_str = f"Le nombre de NC mineure définie à la cellule {self.cell.cell_address} ({cell_value_int}) ne correspond pas au nombre de NC définie dans la rapport d'audit ({nb_nc_min})"
+            report_str = f"Le nombre de NC mineure définie à la cellule {self.cell.cell_address} ({cell_value_int}) ne correspond pas au nombre de NC mineure définie dans la rapport d'audit ({nb_nc_min})"
 
         else:
             results = True
 
-            report_str = f"Le nombre de NC mineure définie à la cellule {self.cell.cell_address} ({cell_value_int}) correspond au nombre de fiche NC créée ({nb_nc_min_sheet}) et au nombre de NC définie dans la rapport d'audit ({nb_nc_min})"
+            report_str = f"Le nombre de NC mineure définie à la cellule {self.cell.cell_address} ({cell_value_int}) correspond au nombre de NC mineure définie dans la rapport d'audit ({nb_nc_min})"
 
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
@@ -722,7 +736,7 @@ class ConditionHasNc(Condition):
 
     def check(self) -> CellsConditionReport:
 
-        nb_nc_min: int = count_nc_min_sheet()
+        nb_nc_min: int = count_nc_min()
 
         nb_nc_maj: int = count_nc_maj()
 
@@ -810,37 +824,59 @@ class ConditionCheckAllSheetDropDown(Condition):
 
         self.sheet_name = sheet_name
 
-    def check(self) -> CellsConditionReport:
+    def check(self) -> List[CellsConditionReport]:
 
         report_str: str = ""
 
+        cells_reports: List[CellsConditionReport] = []
+
+        current_j_value: Optional[str] = None
+
         for column in ["L", "M", "N", "O", "P", "Q", "R", "S"]:
             for row in range(5, 186):
+
+                if not excel_handler.is_merged(
+                        sheet_name=SheetName.SHEET_5.value,
+                        cell_adress=f"J{row}"):
+                    current_j_value = excel_handler.read_cell_value(
+                        sheet_name=SheetName.SHEET_5.value,
+                        cell_address=f"J{row}")
+
                 cell_adress = f"{column}{row}"
 
-                if excel_handler.is_drop_down(sheet_name=self.sheet_name,
-                                              cell_adress=cell_adress):
+                if excel_handler.is_drop_down(
+                        sheet_name=self.sheet_name, cell_adress=cell_adress
+                ) and not excel_handler.is_hidden(sheet_name=self.sheet_name,
+                                                  cell_adress=cell_adress):
                     cell = BoxToCheck(
                         sheet_name=SheetName.SHEET_5.value,
                         cell_address=cell_adress,
                     )
 
                     if not cell.get_value():
-                        report_str += f"Une valeur doit être choisie pour la cellule {cell_adress}\n"
+                        report_str = f"Une valeur doit être choisie pour la cellule {cell_adress} [{self.sheet_name}]"
 
-        if report_str == "":
-            results: bool = True
+                        self.cells_list = [cell]
 
-        else:
-            results = False
+                        cells_reports.append(
+                            CellsConditionReport(
+                                condition=self,
+                                state=CellsConditionState.NOT_OK,
+                                report_str=report_str))
 
-        state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
+                    if excel_handler.read_cell_value(
+                            sheet_name=SheetName.SHEET_5.value,
+                            cell_address=cell.cell_address
+                    ) == "Non" and current_j_value == "Conformité":
+                        cells_reports.append(
+                            CellsConditionReport(
+                                condition=self,
+                                state=CellsConditionState.NOT_OK,
+                                report_str=
+                                f"La cellule J{row} ne peut pas être conforme car la cellule {cell_adress} [{self.sheet_name}] est Non"
+                            ))
 
-        cells_report = CellsConditionReport(condition=self,
-                                            state=state,
-                                            report_str=report_str)
-
-        return cells_report
+        return cells_reports
 
 
 class ConditionCheckAllSheetDescription(Condition):
@@ -867,7 +903,9 @@ class ConditionCheckAllSheetDescription(Condition):
 
         self.sheet_name = sheet_name
 
-    def check(self) -> CellsConditionReport:
+    def check(self) -> List[CellsConditionReport]:
+
+        cells_reports: List[CellsConditionReport] = []
 
         report_str: str = ""
 
@@ -876,21 +914,21 @@ class ConditionCheckAllSheetDescription(Condition):
         for cell in description_cells:
             if not excel_handler.read_cell_value(
                     sheet_name=SheetName.SHEET_5.value, cell_address=cell):
-                report_str += f"La cellule description {cell} [{SheetName.SHEET_5.value}] ne peut pas être vide\n"
+                report_str = f"La cellule description {cell} [{SheetName.SHEET_5.value}] ne peut pas être vide"
 
-        if report_str == "":
-            results: bool = True
+                self.cells_list = [
+                    BoxToCheck(
+                        sheet_name=SheetName.SHEET_5.value,
+                        cell_address=cell,
+                    )
+                ]
 
-        else:
-            results = False
+                cells_reports.append(
+                    CellsConditionReport(condition=self,
+                                         state=CellsConditionState.NOT_OK,
+                                         report_str=report_str))
 
-        state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
-
-        cells_report = CellsConditionReport(condition=self,
-                                            state=state,
-                                            report_str=report_str)
-
-        return cells_report
+        return cells_reports
 
 
 class ConditionCheckAllSheetReference(Condition):
@@ -917,54 +955,55 @@ class ConditionCheckAllSheetReference(Condition):
 
         self.sheet_name = sheet_name
 
-    def check(self) -> CellsConditionReport:
+    def check(self) -> List[CellsConditionReport]:
+
+        cells_reports: List[CellsConditionReport] = []
 
         report_str: str = ""
 
-        description_cells: List[str] = get_references_cells()
+        references_cells: List[str] = get_references_cells()
 
-        for cell in description_cells:
+        for cell in references_cells:
             if not excel_handler.read_cell_value(
                     sheet_name=SheetName.SHEET_5.value, cell_address=cell):
-                report_str += f"La cellule références {cell} [{SheetName.SHEET_5.value}] ne peut pas être vide\n"
+                report_str = f"La cellule références {cell} [{SheetName.SHEET_5.value}] ne peut pas être vide"
 
-        if report_str == "":
-            results: bool = True
+                self.cells_list = [
+                    BoxToCheck(
+                        sheet_name=SheetName.SHEET_5.value,
+                        cell_address=cell,
+                    )
+                ]
 
-        else:
-            results = False
+                cells_reports.append(
+                    CellsConditionReport(condition=self,
+                                         state=CellsConditionState.NOT_OK,
+                                         report_str=report_str))
 
-        state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
-
-        cells_report = CellsConditionReport(condition=self,
-                                            state=state,
-                                            report_str=report_str)
-
-        return cells_report
+        return cells_reports
 
 
 START_LINE_REPORT_AUDIT = 5
 
 NB_LINE_REPORT_AUDIT = 188
 
+# def get_nb_audit_type() -> int:
+#     """_summary_
 
-def get_nb_audit_type() -> int:
-    """_summary_
+#     Returns:
+#         int: _description_
+#     """
 
-    Returns:
-        int: _description_
-    """
+#     cells_to_check: List[str] = ["B4", "C4", "D4", "E4", "F4"]
 
-    cells_to_check: List[str] = ["B4", "C4", "D4", "E4", "F4"]
+#     nb_audit_type: int = 0
 
-    nb_audit_type: int = 0
+#     for cell in cells_to_check:
+#         if excel_handler.is_hidden(sheet_name=SheetName.SHEET_5.value,
+#                                    cell_adress=cell):
+#             nb_audit_type += 1
 
-    for cell in cells_to_check:
-        if excel_handler.is_hidden(sheet_name=SheetName.SHEET_5.value,
-                                   cell_adress=cell):
-            nb_audit_type += 1
-
-    return nb_audit_type
+#     return nb_audit_type
 
 
 def get_description_cells() -> List[str]:
@@ -976,26 +1015,49 @@ def get_description_cells() -> List[str]:
 
     description_cells: List[str] = []
 
-    nb_audit_type = get_nb_audit_type()
+    is_l_column_hidden: bool = excel_handler.is_hidden(
+        sheet_name=SheetName.SHEET_5.value, cell_adress="L4")
+
+    is_n_column_hidden: bool = excel_handler.is_hidden(
+        sheet_name=SheetName.SHEET_5.value, cell_adress="N4")
+
+    is_p_column_hidden: bool = excel_handler.is_hidden(
+        sheet_name=SheetName.SHEET_5.value, cell_adress="P4")
+
+    is_r_column_hidden: bool = excel_handler.is_hidden(
+        sheet_name=SheetName.SHEET_5.value, cell_adress="R4")
+
+    current_j_value: Optional[str] = None
 
     for row in range(START_LINE_REPORT_AUDIT, NB_LINE_REPORT_AUDIT):
-        cell = f"K{row}"
 
-        cell_value: Optional[str] = excel_handler.read_cell_value(
-            sheet_name=SheetName.SHEET_5.value, cell_address=cell)
+        if not excel_handler.is_merged(sheet_name=SheetName.SHEET_5.value,
+                                       cell_adress=f"J{row}"):
 
-        if cell_value and "Description" in cell_value:
-            if nb_audit_type >= 1:
-                description_cells.append(f"L{row}")
+            current_j_value = excel_handler.read_cell_value(
+                sheet_name=SheetName.SHEET_5.value, cell_address=f"J{row}")
 
-            if nb_audit_type >= 2:
-                description_cells.append(f"N{row}")
+        if current_j_value in [
+                "Non-conformité mineure", "Non-conformité majeure",
+                "Conformité", "None"
+        ] or current_j_value is None:
+            cell = f"K{row}"
 
-            if nb_audit_type >= 3:
-                description_cells.append(f"P{row}")
+            cell_value: Optional[str] = excel_handler.read_cell_value(
+                sheet_name=SheetName.SHEET_5.value, cell_address=cell)
 
-            if nb_audit_type >= 3:
-                description_cells.append(f"R{row}")
+            if cell_value and "Description" in cell_value:
+                if not is_l_column_hidden:
+                    description_cells.append(f"L{row}")
+
+                if not is_n_column_hidden:
+                    description_cells.append(f"N{row}")
+
+                if not is_p_column_hidden:
+                    description_cells.append(f"P{row}")
+
+                if not is_r_column_hidden:
+                    description_cells.append(f"R{row}")
 
     return description_cells
 
@@ -1009,26 +1071,50 @@ def get_references_cells() -> List[str]:
 
     references_cells: List[str] = []
 
-    nb_audit_type = get_nb_audit_type()
+    is_l_column_hidden: bool = excel_handler.is_hidden(
+        sheet_name=SheetName.SHEET_5.value, cell_adress="L4")
+
+    is_n_column_hidden: bool = excel_handler.is_hidden(
+        sheet_name=SheetName.SHEET_5.value, cell_adress="N4")
+
+    is_p_column_hidden: bool = excel_handler.is_hidden(
+        sheet_name=SheetName.SHEET_5.value, cell_adress="P4")
+
+    is_r_column_hidden: bool = excel_handler.is_hidden(
+        sheet_name=SheetName.SHEET_5.value, cell_adress="R4")
+
+    current_j_value: Optional[str] = None
 
     for row in range(START_LINE_REPORT_AUDIT, NB_LINE_REPORT_AUDIT):
-        cell = f"K{row}"
 
-        cell_value: Optional[str] = excel_handler.read_cell_value(
-            sheet_name=SheetName.SHEET_5.value, cell_address=cell)
+        if not excel_handler.is_merged(sheet_name=SheetName.SHEET_5.value,
+                                       cell_adress=f"J{row}"):
 
-        if cell_value and "Références" in cell_value:
-            if nb_audit_type >= 1:
-                references_cells.append(f"L{row}")
+            current_j_value = excel_handler.read_cell_value(
+                sheet_name=SheetName.SHEET_5.value, cell_address=f"J{row}")
 
-            if nb_audit_type >= 2:
-                references_cells.append(f"N{row}")
+        if current_j_value in [
+                "Non-conformité mineure", "Non-conformité majeure",
+                "Conformité", "None"
+        ] or current_j_value is None:
 
-            if nb_audit_type >= 3:
-                references_cells.append(f"P{row}")
+            cell = f"K{row}"
 
-            if nb_audit_type >= 3:
-                references_cells.append(f"R{row}")
+            cell_value: Optional[str] = excel_handler.read_cell_value(
+                sheet_name=SheetName.SHEET_5.value, cell_address=cell)
+
+            if cell_value and "Références" in cell_value:
+                if not is_l_column_hidden:
+                    references_cells.append(f"L{row}")
+
+                if not is_n_column_hidden:
+                    references_cells.append(f"N{row}")
+
+                if not is_p_column_hidden:
+                    references_cells.append(f"P{row}")
+
+                if not is_r_column_hidden:
+                    references_cells.append(f"R{row}")
 
     return references_cells
 
@@ -1248,18 +1334,15 @@ def extract_ids(input_text: Optional[str]) -> List[str]:
         "trentedeux": 32
     }
 
-    # Invert the mapping to create a regex pattern
     word_pattern = "|".join(french_numbers.keys())
 
-    # Find all occurrences of numbers (both numeric and word forms) in the text
     number_matches = re.findall(r'\b\d+\b', input_text)
+
     word_matches = re.findall(r'\b(?:{})\b'.format(word_pattern), input_text,
                               re.IGNORECASE)
 
-    # Convert number strings to integers
     ids = [int(num) for num in number_matches if 1 <= int(num) <= 32]
 
-    # Convert word matches to their corresponding integers
     ids.extend(french_numbers[word.lower()] for word in word_matches
                if word.lower() in french_numbers)
 

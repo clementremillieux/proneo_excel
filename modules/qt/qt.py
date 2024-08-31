@@ -16,6 +16,8 @@ from modules.condition import CELLS_CONDITIONS
 from modules.report.schemas import UIReportCell
 from modules.excel import excel_handler
 
+from modules.utils.utils import get_current_date_hour
+
 from config.logger_config import logger
 
 checker = Checker(cells_conditions=CELLS_CONDITIONS)
@@ -100,13 +102,16 @@ class MainWindow(QMainWindow):
 
         self.main_layout.addWidget(self.title_bar)
 
-        self.file_path_intro = "Fichier vérifié : "
+        self.reminder_label = QLabel(self)
+
+        self.reminder_label.setText(
+            "PENSEZ à SAUVEGARDER le FICHIER pour que toutes les MODIFICATIONS soient prises en compte"
+        )
+
+        self.main_layout.addWidget(self.reminder_label)
 
         self.file_path_label = QLabel(self)
-        self.file_path_label.setText(
-            f"{self.file_path_intro} {excel_handler.excel_abs_path}"
-            if excel_handler.excel_abs_path else
-            f"{self.file_path_intro} veuillez séléctionnez un fichier")
+        self.file_path_label.setText("Veuillez charger ou créer un fichier")
 
         self.main_layout.addWidget(self.file_path_label)
 
@@ -181,7 +186,8 @@ class MainWindow(QMainWindow):
 
                 # Update the label with the new file path
                 self.file_path_label.setText(
-                    f"{self.file_path_intro} {destination_file_path}")
+                    f"Configuration du fichier << {destination_file_path} >> en cours .."
+                )
 
                 # Load the new Excel file and update the UI
                 excel_handler.load_excel(excel_abs_path=destination_file_path)
@@ -207,7 +213,8 @@ class MainWindow(QMainWindow):
             excel_handler.load_excel(excel_abs_path=file_name)
 
             # Update the label with the new file path
-            self.file_path_label.setText(f"{self.file_path_intro} {file_name}")
+            self.file_path_label.setText(
+                f"Configuration du fichier << {file_name} >> en cours ..")
 
             # Refresh the state
             self.start_worker()
@@ -293,6 +300,11 @@ class MainWindow(QMainWindow):
                 if self.tab_widget.tabText(i) == current_tab_name:
                     self.tab_widget.setCurrentIndex(i)
                     break
+
+        if excel_handler.excel_abs_path:
+            self.file_path_label.setText(
+                f"<< {excel_handler.excel_abs_path} >> vérifié le {get_current_date_hour().lower()}"
+            )
 
     def focus_on_cell(self, sheet_name: str,
                       cell_address: Optional[str]) -> None:
