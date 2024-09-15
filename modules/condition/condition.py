@@ -1,10 +1,11 @@
 """_summary_"""
 
+from math import log
 import re
 
 from datetime import datetime as dt
 
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from modules.cells.schemas import BoxToCheck, CheckBoxToCheck, DateToCheck
 
@@ -12,9 +13,14 @@ from modules.condition.schemas import Condition, ConditionType, CellsConditionRe
 
 from modules.excel import excel_handler
 
+from modules.excel.schemas import CheckboxParams
+
 from modules.sheet.schemas import SheetName
 
 from config.logger_config import logger
+
+checkbox_params = CheckboxParams(
+    apple_script_path="modules/excel/apple_script/checkbox.scpt")
 
 REF_TO_NB_INDIC = {
     "V1": 21,
@@ -405,7 +411,18 @@ class ConditionHasToBeFilled(Condition):
 
     cell: BoxToCheck
 
-    def __init__(self, cell: BoxToCheck, is_parent_condition: bool) -> None:
+    size_siren: Optional[int] = 0
+
+    size_nda: Optional[int] = 0
+
+    size_phone: Optional[int] = 0
+
+    def __init__(self,
+                 cell: BoxToCheck,
+                 is_parent_condition: bool,
+                 size_siren: Optional[int] = 0,
+                 size_nda: Optional[int] = 0,
+                 size_phone: Optional[int] = 0) -> None:
         """Initialize the ConditionDateSup with start and stop dates."""
 
         super().__init__(condition_type=ConditionType.CELL_HAS_TO_BE_FILLED,
@@ -413,6 +430,12 @@ class ConditionHasToBeFilled(Condition):
                          cells_list=[cell])
 
         self.cell: BoxToCheck = cell
+
+        self.size_siren: Optional[int] = size_siren
+
+        self.size_nda: Optional[int] = size_nda
+
+        self.size_phone: Optional[int] = size_phone
 
     def check(self) -> CellsConditionReport:
         cell_value: Optional[str] = self.cell.get_value()
@@ -430,6 +453,51 @@ class ConditionHasToBeFilled(Condition):
 
         else:
             report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] est remplie"
+
+        if self.size_siren and cell_value:
+
+            try:
+                int(cell_value)
+
+                if len(str(int(cell_value))) != self.size_siren:
+                    state = CellsConditionState.NOT_OK
+
+                    report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] ne correspond pas à un numéro SIREN ({self.size_siren} chiffres)"
+
+            except Exception:
+                state = CellsConditionState.NOT_OK
+
+                report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] ne correspond pas à un numéro SIREN ({self.size_siren} chiffres)"
+
+        if self.size_nda and cell_value:
+
+            try:
+                int(cell_value)
+
+                if len(str(int(cell_value))) != self.size_nda:
+                    state = CellsConditionState.NOT_OK
+
+                    report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] ne correspond pas à un numéro NDA ({self.size_nda} chiffres)"
+
+            except Exception:
+                state = CellsConditionState.NOT_OK
+
+                report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] ne correspond pas à un numéro NDA ({self.size_nda} chiffres)"
+
+        if self.size_phone and cell_value:
+
+            try:
+                int(cell_value)
+
+                if len(str(int(cell_value))) != self.size_phone - 1:
+                    state = CellsConditionState.NOT_OK
+
+                    report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] ne correspond pas à un numéro de téléphone ({self.size_phone} chiffres)"
+
+            except Exception:
+                state = CellsConditionState.NOT_OK
+
+                report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] ne correspond pas à un numéro de téléphone ({self.size_phone} chiffres 0XXXXXXXXX)"
 
         cells_report = CellsConditionReport(condition=self,
                                             state=state,
@@ -481,7 +549,7 @@ class ConditionHasToBeChecked(Condition):
         return cells_report
 
 
-class ConditionHasToBeValue(Condition):
+class ConditionHasToBeSigned(Condition):
     """_summary_
 
     Args:
@@ -490,9 +558,52 @@ class ConditionHasToBeValue(Condition):
 
     cell: BoxToCheck
 
-    value: str
+    def __init__(self, cell: BoxToCheck, is_parent_condition: bool) -> None:
+        """Initialize the ConditionDateSup with start and stop dates."""
 
-    def __init__(self, cell: BoxToCheck, value: str,
+        super().__init__(condition_type=ConditionType.CELL_HAS_TO_BE_FILLED,
+                         is_parent_condition=is_parent_condition,
+                         cells_list=[cell])
+
+        self.cell: BoxToCheck = cell
+
+    def check(self) -> CellsConditionReport:
+
+        if not excel_handler.cell_contains_signature(
+                sheet_name=self.cell.sheet_name,
+                cell_address=self.cell.cell_address):
+            results: bool = False
+
+        else:
+            results = True
+
+        state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
+
+        if state == CellsConditionState.NOT_OK:
+            report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] doit contenir une signature"
+
+        else:
+            report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] contient une signature"
+
+        cells_report = CellsConditionReport(condition=self,
+                                            state=state,
+                                            report_str=report_str)
+
+        return cells_report
+
+
+class ConditionHasToBeValues(Condition):
+    """_summary_
+
+    Args:
+        Condition (_type_): _description_
+    """
+
+    cell: BoxToCheck
+
+    value: List[str]
+
+    def __init__(self, cell: BoxToCheck, value: List[str],
                  is_parent_condition: bool) -> None:
         """Initialize the ConditionDateSup with start and stop dates."""
 
@@ -502,12 +613,12 @@ class ConditionHasToBeValue(Condition):
 
         self.cell: BoxToCheck = cell
 
-        self.value: str = value
+        self.value: List[str] = value
 
     def check(self) -> CellsConditionReport:
         cell_value: Optional[str] = self.cell.get_value()
 
-        if not cell_value or cell_value != self.value:
+        if not cell_value or cell_value not in self.value:
             results: bool = False
 
         else:
@@ -809,7 +920,10 @@ class ConditionCheckAllSheetDropDown(Condition):
 
     sheet_name: str
 
-    def __init__(self, sheet_name: str, is_parent_condition: bool) -> None:
+    no_na_cells: Dict[str, List[str]]
+
+    def __init__(self, sheet_name: str, is_parent_condition: bool,
+                 no_na_cells: Dict[str, List[str]]) -> None:
         """Initialize the ConditionDateSup with start and stop dates."""
 
         super().__init__(
@@ -823,6 +937,8 @@ class ConditionCheckAllSheetDropDown(Condition):
             ])
 
         self.sheet_name = sheet_name
+
+        self.no_na_cells: Dict[str, List[str]] = no_na_cells
 
     def check(self) -> List[CellsConditionReport]:
 
@@ -844,37 +960,80 @@ class ConditionCheckAllSheetDropDown(Condition):
 
                 cell_adress = f"{column}{row}"
 
-                if excel_handler.is_drop_down(
+                if not excel_handler.is_line_hidden(
                         sheet_name=self.sheet_name, cell_adress=cell_adress
-                ) and not excel_handler.is_hidden(sheet_name=self.sheet_name,
+                ) and not excel_handler.is_column_hidden(
+                        sheet_name=self.sheet_name, cell_adress=cell_adress):
+
+                    if excel_handler.is_drop_down(sheet_name=self.sheet_name,
                                                   cell_adress=cell_adress):
-                    cell = BoxToCheck(
-                        sheet_name=SheetName.SHEET_5.value,
-                        cell_address=cell_adress,
-                    )
-
-                    if not cell.get_value():
-                        report_str = f"Une valeur doit être choisie pour la cellule {cell_adress} [{self.sheet_name}]"
-
-                        self.cells_list = [cell]
-
-                        cells_reports.append(
-                            CellsConditionReport(
-                                condition=self,
-                                state=CellsConditionState.NOT_OK,
-                                report_str=report_str))
-
-                    if excel_handler.read_cell_value(
+                        cell = BoxToCheck(
                             sheet_name=SheetName.SHEET_5.value,
-                            cell_address=cell.cell_address
-                    ) == "Non" and current_j_value == "Conformité":
-                        cells_reports.append(
-                            CellsConditionReport(
-                                condition=self,
-                                state=CellsConditionState.NOT_OK,
-                                report_str=
-                                f"La cellule J{row} ne peut pas être conforme car la cellule {cell_adress} [{self.sheet_name}] est Non"
-                            ))
+                            cell_address=cell_adress,
+                        )
+
+                        if not cell.get_value():
+
+                            if cell_adress in self.no_na_cells.keys():
+
+                                for adress_to_check in self.no_na_cells[
+                                        cell_adress]:
+                                    box_to_check = CheckBoxToCheck(
+                                        sheet_name=SheetName.SHEET_2.value,
+                                        checkbox_name=adress_to_check,
+                                        cell_address=adress_to_check,
+                                        checkbox_params=checkbox_params)
+
+                                    if box_to_check.get_value():
+                                        report_str = f"La valeur choisie pour la cellule {cell_adress} [{self.sheet_name}] doit être 'Oui' ou 'Non'"
+                                        break
+
+                                    report_str = f"Une valeur doit être choisie pour la cellule {cell_adress} [{self.sheet_name}]"
+
+                            else:
+                                report_str = f"Une valeur doit être choisie pour la cellule {cell_adress} [{self.sheet_name}]"
+
+                            self.cells_list = [cell]
+
+                            cells_reports.append(
+                                CellsConditionReport(
+                                    condition=self,
+                                    state=CellsConditionState.NOT_OK,
+                                    report_str=report_str))
+
+                        elif cell_adress in self.no_na_cells.keys():
+                            for adress_to_check in self.no_na_cells[
+                                    cell_adress]:
+                                box_to_check = CheckBoxToCheck(
+                                    sheet_name=SheetName.SHEET_2.value,
+                                    checkbox_name=adress_to_check,
+                                    cell_address=adress_to_check,
+                                    checkbox_params=checkbox_params)
+
+                                if cell.get_value() not in ["Oui", "Non"]:
+                                    report_str = f"La valeur choisie pour la cellule {cell_adress} [{self.sheet_name}] doit être 'Oui' ou 'Non'"
+
+                                    self.cells_list = [cell]
+
+                                    cells_reports.append(
+                                        CellsConditionReport(
+                                            condition=self,
+                                            state=CellsConditionState.NOT_OK,
+                                            report_str=report_str))
+
+                                    break
+
+                        if excel_handler.read_cell_value(
+                                sheet_name=SheetName.SHEET_5.value,
+                                cell_address=cell.cell_address
+                        ) == "Non" and current_j_value == "Conformité":
+                            cells_reports.append(
+                                CellsConditionReport(
+                                    condition=self,
+                                    state=CellsConditionState.NOT_OK,
+                                    report_str=
+                                    f"La cellule J{row} ne peut pas être conforme car la cellule {cell_adress} [{self.sheet_name}] est Non"
+                                ))
 
         return cells_reports
 
@@ -966,7 +1125,7 @@ class ConditionCheckAllSheetReference(Condition):
         for cell in references_cells:
             if not excel_handler.read_cell_value(
                     sheet_name=SheetName.SHEET_5.value, cell_address=cell):
-                report_str = f"La cellule références {cell} [{SheetName.SHEET_5.value}] ne peut pas être vide"
+                report_str = f"La cellule {cell} [{SheetName.SHEET_5.value}] ne peut pas être vide"
 
                 self.cells_list = [
                     BoxToCheck(
@@ -987,24 +1146,6 @@ START_LINE_REPORT_AUDIT = 5
 
 NB_LINE_REPORT_AUDIT = 188
 
-# def get_nb_audit_type() -> int:
-#     """_summary_
-
-#     Returns:
-#         int: _description_
-#     """
-
-#     cells_to_check: List[str] = ["B4", "C4", "D4", "E4", "F4"]
-
-#     nb_audit_type: int = 0
-
-#     for cell in cells_to_check:
-#         if excel_handler.is_hidden(sheet_name=SheetName.SHEET_5.value,
-#                                    cell_adress=cell):
-#             nb_audit_type += 1
-
-#     return nb_audit_type
-
 
 def get_description_cells() -> List[str]:
     """_summary_
@@ -1015,19 +1156,27 @@ def get_description_cells() -> List[str]:
 
     description_cells: List[str] = []
 
-    is_l_column_hidden: bool = excel_handler.is_hidden(
+    is_l_column_hidden: bool = excel_handler.is_column_hidden(
         sheet_name=SheetName.SHEET_5.value, cell_adress="L4")
 
-    is_n_column_hidden: bool = excel_handler.is_hidden(
+    is_n_column_hidden: bool = excel_handler.is_column_hidden(
         sheet_name=SheetName.SHEET_5.value, cell_adress="N4")
 
-    is_p_column_hidden: bool = excel_handler.is_hidden(
+    is_p_column_hidden: bool = excel_handler.is_column_hidden(
         sheet_name=SheetName.SHEET_5.value, cell_adress="P4")
 
-    is_r_column_hidden: bool = excel_handler.is_hidden(
+    is_r_column_hidden: bool = excel_handler.is_column_hidden(
         sheet_name=SheetName.SHEET_5.value, cell_adress="R4")
 
     current_j_value: Optional[str] = None
+
+    current_b_value: Optional[str] = None
+
+    current_c_value: Optional[str] = None
+
+    current_d_value: Optional[str] = None
+
+    current_e_value: Optional[str] = None
 
     for row in range(START_LINE_REPORT_AUDIT, NB_LINE_REPORT_AUDIT):
 
@@ -1036,6 +1185,18 @@ def get_description_cells() -> List[str]:
 
             current_j_value = excel_handler.read_cell_value(
                 sheet_name=SheetName.SHEET_5.value, cell_address=f"J{row}")
+
+            current_b_value = excel_handler.read_cell_value(
+                sheet_name=SheetName.SHEET_5.value, cell_address=f"B{row}")
+
+            current_c_value = excel_handler.read_cell_value(
+                sheet_name=SheetName.SHEET_5.value, cell_address=f"C{row}")
+
+            current_d_value = excel_handler.read_cell_value(
+                sheet_name=SheetName.SHEET_5.value, cell_address=f"D{row}")
+
+            current_e_value = excel_handler.read_cell_value(
+                sheet_name=SheetName.SHEET_5.value, cell_address=f"E{row}")
 
         if current_j_value in [
                 "Non-conformité mineure", "Non-conformité majeure",
@@ -1046,17 +1207,22 @@ def get_description_cells() -> List[str]:
             cell_value: Optional[str] = excel_handler.read_cell_value(
                 sheet_name=SheetName.SHEET_5.value, cell_address=cell)
 
-            if cell_value and "Description" in cell_value:
-                if not is_l_column_hidden:
+            if cell_value and "Description" in cell_value and not excel_handler.is_line_hidden(
+                    sheet_name=SheetName.SHEET_5.value, cell_adress=cell):
+                if not is_l_column_hidden and current_b_value and current_b_value.lower(
+                ) == "x":
                     description_cells.append(f"L{row}")
 
-                if not is_n_column_hidden:
+                if not is_n_column_hidden and current_c_value and current_c_value.lower(
+                ) == "x":
                     description_cells.append(f"N{row}")
 
-                if not is_p_column_hidden:
+                if not is_p_column_hidden and current_d_value and current_d_value.lower(
+                ) == "x":
                     description_cells.append(f"P{row}")
 
-                if not is_r_column_hidden:
+                if not is_r_column_hidden and current_e_value and current_e_value.lower(
+                ) == "x":
                     description_cells.append(f"R{row}")
 
     return description_cells
@@ -1071,19 +1237,27 @@ def get_references_cells() -> List[str]:
 
     references_cells: List[str] = []
 
-    is_l_column_hidden: bool = excel_handler.is_hidden(
+    is_l_column_hidden: bool = excel_handler.is_column_hidden(
         sheet_name=SheetName.SHEET_5.value, cell_adress="L4")
 
-    is_n_column_hidden: bool = excel_handler.is_hidden(
+    is_n_column_hidden: bool = excel_handler.is_column_hidden(
         sheet_name=SheetName.SHEET_5.value, cell_adress="N4")
 
-    is_p_column_hidden: bool = excel_handler.is_hidden(
+    is_p_column_hidden: bool = excel_handler.is_column_hidden(
         sheet_name=SheetName.SHEET_5.value, cell_adress="P4")
 
-    is_r_column_hidden: bool = excel_handler.is_hidden(
+    is_r_column_hidden: bool = excel_handler.is_column_hidden(
         sheet_name=SheetName.SHEET_5.value, cell_adress="R4")
 
     current_j_value: Optional[str] = None
+
+    current_b_value: Optional[str] = None
+
+    current_c_value: Optional[str] = None
+
+    current_d_value: Optional[str] = None
+
+    current_e_value: Optional[str] = None
 
     for row in range(START_LINE_REPORT_AUDIT, NB_LINE_REPORT_AUDIT):
 
@@ -1093,27 +1267,61 @@ def get_references_cells() -> List[str]:
             current_j_value = excel_handler.read_cell_value(
                 sheet_name=SheetName.SHEET_5.value, cell_address=f"J{row}")
 
+            current_b_value = excel_handler.read_cell_value(
+                sheet_name=SheetName.SHEET_5.value, cell_address=f"B{row}")
+
+            current_c_value = excel_handler.read_cell_value(
+                sheet_name=SheetName.SHEET_5.value, cell_address=f"C{row}")
+
+            current_d_value = excel_handler.read_cell_value(
+                sheet_name=SheetName.SHEET_5.value, cell_address=f"D{row}")
+
+            current_e_value = excel_handler.read_cell_value(
+                sheet_name=SheetName.SHEET_5.value, cell_address=f"E{row}")
+
         if current_j_value in [
                 "Non-conformité mineure", "Non-conformité majeure",
                 "Conformité", "None"
         ] or current_j_value is None:
-
             cell = f"K{row}"
 
             cell_value: Optional[str] = excel_handler.read_cell_value(
                 sheet_name=SheetName.SHEET_5.value, cell_address=cell)
 
-            if cell_value and "Références" in cell_value:
-                if not is_l_column_hidden:
+            if cell_value and "Références" in cell_value and not excel_handler.is_line_hidden(
+                    sheet_name=SheetName.SHEET_5.value, cell_adress=cell):
+                if not is_l_column_hidden and current_b_value and current_b_value.lower(
+                ) == "x":
                     references_cells.append(f"L{row}")
 
-                if not is_n_column_hidden:
+                if not is_n_column_hidden and current_c_value and current_c_value.lower(
+                ) == "x":
                     references_cells.append(f"N{row}")
 
-                if not is_p_column_hidden:
+                if not is_p_column_hidden and current_d_value and current_d_value.lower(
+                ) == "x":
                     references_cells.append(f"P{row}")
 
-                if not is_r_column_hidden:
+                if not is_r_column_hidden and current_e_value and current_e_value.lower(
+                ) == "x":
+                    references_cells.append(f"R{row}")
+
+            if cell_value and "Description" in cell_value and not excel_handler.is_line_hidden(
+                    sheet_name=SheetName.SHEET_5.value, cell_adress=cell):
+                if not is_l_column_hidden and current_b_value and current_b_value.lower(
+                ) == "x":
+                    references_cells.append(f"L{row}")
+
+                if not is_n_column_hidden and current_c_value and current_c_value.lower(
+                ) == "x":
+                    references_cells.append(f"N{row}")
+
+                if not is_p_column_hidden and current_d_value and current_d_value.lower(
+                ) == "x":
+                    references_cells.append(f"P{row}")
+
+                if not is_r_column_hidden and current_e_value and current_e_value.lower(
+                ) == "x":
                     references_cells.append(f"R{row}")
 
     return references_cells

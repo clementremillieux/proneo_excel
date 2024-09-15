@@ -77,6 +77,14 @@ class ExcelHandler:
 
             return ""
 
+    def read_value_2(self, sheet_name: str, cell_address: str) -> str:
+
+        ws = self.wb_openpyxl[sheet_name]
+
+        cell = ws[cell_address]
+
+        return cell.value
+
     def read_cell_date_value(self, sheet_name: str,
                              cell_address: str) -> datetime:
         """_summary_
@@ -296,7 +304,7 @@ class ExcelHandler:
 
             return True
 
-    def is_hidden(self, sheet_name: str, cell_adress: str) -> bool:
+    def is_column_hidden(self, sheet_name: str, cell_adress: str) -> bool:
         """_summary_
 
         Returns:
@@ -318,4 +326,72 @@ class ExcelHandler:
 
         except Exception:
 
+            return False
+
+    def is_line_hidden(self, sheet_name: str, cell_adress: str) -> bool:
+        """_summary_
+
+        Returns:
+            bool: _description_
+        """
+
+        try:
+            ws = self.wb_openpyxl[sheet_name]
+
+            cell = ws[cell_adress]
+
+            row_number = cell.row
+
+            if ws.row_dimensions[row_number].hidden:
+
+                return True
+
+            return False
+
+        except Exception:
+
+            return False
+
+    def cell_contains_signature(self, sheet_name: str,
+                                cell_address: str) -> bool:
+        """
+        Vérifie si la cellule spécifiée contient une signature (image ou objet).
+
+        Args:
+            sheet_name (str): Le nom de la feuille Excel.
+            cell_address (str): L'adresse de la cellule (par exemple, 'A20').
+
+        Returns:
+            bool: True si la cellule contient une signature, False sinon.
+        """
+        try:
+            sheet = self.wb.sheets[sheet_name]
+            cell = sheet.range(cell_address)
+
+            cell_left = cell.left
+            cell_top = cell.top
+            cell_right = cell_left + cell.width
+            cell_bottom = cell_top + cell.height
+
+            for shape in sheet.shapes:
+
+                if shape.type == 'Picture':
+
+                    shape_left = shape.left
+                    shape_top = shape.top
+                    shape_right = shape_left + shape.width
+                    shape_bottom = shape_top + shape.height
+
+                    if not (shape_right < cell_left or shape_left > cell_right
+                            or shape_bottom < cell_top
+                            or shape_top > cell_bottom):
+
+                        return True
+
+            return False
+
+        except Exception as e:
+            logger.error(
+                "Erreur lors de la vérification de la signature dans la cellule : %s",
+                e)
             return False

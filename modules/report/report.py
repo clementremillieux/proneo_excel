@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, List
 
-from modules.condition.schemas import ConditionType, CellsConditionReport
+from modules.condition.schemas import CellsConditionState, ConditionType, CellsConditionReport
 
 from modules.cells.schemas import BoxToCheck, CheckBoxToCheck, DateToCheck
 
@@ -42,41 +42,38 @@ class Report:
         report: Dict[str, List[UIReportCell]] = {}
 
         for cell_condition_report in self.cells_condition_report:
-            # self.log_condition_result(
-            #     result=cell_condition_report.state.value,
-            #     cells=cell_condition_report.condition.cells_list,
-            #     condition_type=cell_condition_report.condition.condition_type,
-            #     report_str=cell_condition_report.report_str)
 
-            report_key: str = cell_condition_report.condition.cells_list[
-                0].sheet_name
+            if cell_condition_report.state == CellsConditionState.NOT_OK:
 
-            if not report.get(report_key, None):
-                report[report_key] = [
-                    UIReportCell(
-                        state=cell_condition_report.state,
-                        instruction=cell_condition_report.report_str,
-                        sheet_names=[
-                            cell.sheet_name for cell in
-                            cell_condition_report.condition.cells_list
-                        ],
-                        cell_adress=cell_condition_report.condition.
-                        cells_list[0].cell_address if not isinstance(
-                            cell_condition_report.condition.cells_list[0],
-                            CheckBoxToCheck) else None)
-                ]
-            else:
-                report[report_key].append(
-                    UIReportCell(
-                        state=cell_condition_report.state,
-                        instruction=cell_condition_report.report_str,
-                        sheet_names=[
-                            cell.sheet_name for cell in
-                            cell_condition_report.condition.cells_list
-                        ],
-                        cell_adress=cell_condition_report.condition.
-                        cells_list[0].cell_address if not isinstance(
-                            cell_condition_report.condition.cells_list[0],
-                            CheckBoxToCheck) else None))
+                report_key: str = cell_condition_report.condition.cells_list[
+                    0].sheet_name
+
+                if not report.get(report_key, None):
+                    report[report_key] = [
+                        UIReportCell(
+                            state=cell_condition_report.state,
+                            instruction=cell_condition_report.report_str,
+                            sheet_names=[
+                                cell.sheet_name for cell in
+                                cell_condition_report.condition.cells_list
+                            ],
+                            cell_adress=cell_condition_report.condition.
+                            cells_list[0].cell_address if not isinstance(
+                                cell_condition_report.condition.cells_list[0],
+                                CheckBoxToCheck) else None)
+                    ]
+                else:
+                    report[report_key].append(
+                        UIReportCell(
+                            state=cell_condition_report.state,
+                            instruction=cell_condition_report.report_str,
+                            sheet_names=[
+                                cell.sheet_name for cell in
+                                cell_condition_report.condition.cells_list
+                            ],
+                            cell_adress=cell_condition_report.condition.
+                            cells_list[0].cell_address if not isinstance(
+                                cell_condition_report.condition.cells_list[0],
+                                CheckBoxToCheck) else None))
 
         return report
