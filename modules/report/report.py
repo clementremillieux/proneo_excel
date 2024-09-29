@@ -58,9 +58,7 @@ class Report:
                                 cell_condition_report.condition.cells_list
                             ],
                             cell_adress=cell_condition_report.condition.
-                            cells_list[0].cell_address if not isinstance(
-                                cell_condition_report.condition.cells_list[0],
-                                CheckBoxToCheck) else None)
+                            cells_list[0].cell_address)
                     ]
                 else:
                     report[report_key].append(
@@ -72,8 +70,6 @@ class Report:
                                 cell_condition_report.condition.cells_list
                             ],
                             cell_adress=cell_condition_report.condition.
-                            cells_list[0].cell_address if not isinstance(
-                                cell_condition_report.condition.cells_list[0],
-                                CheckBoxToCheck) else None))
+                            cells_list[0].cell_address))
 
         return report

@@ -81,6 +81,17 @@ class Condition():
             bool: True if the condition is met, False otherwise.
         """
 
+    @abstractmethod
+    def get_parent_condition_str(self) -> str:
+        """Check the condition based on string inputs.
+
+        Args:
+            *args (str): One or more string arguments.
+
+        Returns:
+            bool: True if the condition is met, False otherwise.
+        """
+
 
 class CellsConditionState(Enum):
     """_summary_

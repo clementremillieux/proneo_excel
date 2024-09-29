@@ -1,7 +1,8 @@
 """_summary_"""
 
-from math import log
 import re
+
+import copy
 
 from datetime import datetime as dt
 
@@ -14,6 +15,8 @@ from modules.condition.schemas import Condition, ConditionType, CellsConditionRe
 from modules.excel import excel_handler
 
 from modules.excel.schemas import CheckboxParams
+
+from modules.performances.time_counter import time_execution
 
 from modules.sheet.schemas import SheetName
 
@@ -66,6 +69,8 @@ class CellsConditions:
     def __init__(self, conditions: List[Condition]) -> None:
         self.conditions: List[Condition] = conditions
 
+        self.parent_condition_ok: str = ""
+
     def check(
             self
     ) -> Optional[CellsConditionReport | List[CellsConditionReport]]:
@@ -98,6 +103,14 @@ class CellsConditions:
 
                     return None
 
+                if condition.is_parent_condition:
+                    parent_condition_str: Optional[
+                        str] = condition.get_parent_condition_str()
+
+                    if parent_condition_str:
+
+                        self.parent_condition_ok += parent_condition_str
+
         except Exception as e:
             logger.warning("Error checking condition %s : %s",
                            condition.condition_type.value, e)
@@ -106,6 +119,18 @@ class CellsConditions:
                 condition=condition,
                 state=CellsConditionState.NOT_OK,
                 report_str="Error interne")
+
+        if len(self.parent_condition_ok) > 0:
+
+            if isinstance(cells_condition_report, CellsConditionReport):
+                cells_condition_report.report_str += self.parent_condition_ok
+
+            if isinstance(cells_condition_report, List):
+
+                for index, cell_report in enumerate(cells_condition_report):
+
+                    cells_condition_report[
+                        index].report_str = cell_report.report_str + self.parent_condition_ok
 
         return cells_condition_report
 
@@ -139,6 +164,9 @@ class ConditionDateSup(Condition):
 
         date_stop_cell_value: Optional[dt] = self.cell_date_stop.get_value()
 
+        # logger.info("CONDITION DATE SUP => %s | %s", date_start_cell_value,
+        #             date_stop_cell_value)
+
         if not date_start_cell_value or not date_stop_cell_value:
 
             results: bool = True
@@ -161,7 +189,9 @@ et de la cellule {self.cell_date_start.cell_address} [{self.cell_date_start.shee
             report_str = f"La date de la cellule {self.cell_date_start.cell_address} [{self.cell_date_start.sheet_name}] \
 doit être antérieur à celle de la cellule {self.cell_date_stop.cell_address} [{self.cell_date_stop.sheet_name}]"
 
-        cells_report = CellsConditionReport(condition=self,
+        # logger.info("CONDITION DATE SUP => %s", report_str)
+
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
@@ -208,9 +238,9 @@ class ConditionDateDurationBetween(Condition):
 
             results: bool = False
 
-            report_str = f"Une des cellule {self.cell_date_stop.cell_address} [{self.cell_date_stop.sheet_name}], \
-{self.cell_date_start.cell_address} [{self.cell_date_start.sheet_name}] ou  {self.cell_duration.cell_address} [{self.cell_duration.sheet_name}] \
-ne sont pas remplies"
+            report_str = f"Une des cellule {self.cell_date_stop.cell_address} [{self.cell_date_stop.sheet_name}] et/ou \
+{self.cell_date_start.cell_address} [{self.cell_date_start.sheet_name}] et/ou  {self.cell_duration.cell_address} [{self.cell_duration.sheet_name}] \
+n'est pas remplies"
 
         else:
 
@@ -225,12 +255,12 @@ ne sont pas remplies"
                            date_start).days >= duration_cell_value_int
 
                 if results:
-                    report_str = f"La durée indiqué à la cellule {self.cell_duration.cell_address} [{self.cell_duration.sheet_name}]\
+                    report_str = f"La durée de l'audit indiqué à la cellule {self.cell_duration.cell_address} [{self.cell_duration.sheet_name}]\
      correspond aux dates de la cellule {self.cell_date_stop.cell_address} [{self.cell_date_stop.sheet_name}]\
      et de la cellule {self.cell_date_start.cell_address} [{self.cell_date_start.sheet_name}]"
 
                 else:
-                    report_str = f"La durée indiqué à la cellule {self.cell_duration.cell_address} [{self.cell_duration.sheet_name}]\
+                    report_str = f"La durée l'audit indiqué à la cellule {self.cell_duration.cell_address} [{self.cell_duration.sheet_name}]\
      ne correspond pas aux dates {self.cell_date_stop.cell_address} [{self.cell_date_stop.sheet_name}]\
      et de la cellule {self.cell_date_start.cell_address} [{self.cell_date_start.sheet_name}]"
 
@@ -244,7 +274,7 @@ ne sont pas remplies"
 
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
@@ -260,8 +290,12 @@ class ConditionOneCheckBoxAmongList(Condition):
 
     cells: List[CheckBoxToCheck]
 
-    def __init__(self, cells: List[CheckBoxToCheck],
-                 is_parent_condition: bool) -> None:
+    only_check: bool
+
+    def __init__(self,
+                 cells: List[CheckBoxToCheck],
+                 is_parent_condition: bool,
+                 only_check: bool = False) -> None:
         """Initialize the ConditionDateSup with start and stop dates."""
 
         super().__init__(
@@ -270,6 +304,8 @@ class ConditionOneCheckBoxAmongList(Condition):
             cells_list=cells)
 
         self.cells: List[CheckBoxToCheck] = cells
+
+        self.only_check: bool = only_check
 
     def check(self) -> CellsConditionReport:
         cells_value: List[Optional[bool]] = [
@@ -280,7 +316,7 @@ class ConditionOneCheckBoxAmongList(Condition):
             f'{cell.alias_name if cell.alias_name else cell.cell_address} [{cell.sheet_name}]'
             for cell in self.cells)
 
-        if not any(cells_value):
+        if not any(cells_value) and not self.only_check:
             results: bool = False
 
             report_str = f"Une des check box {checkbox_name} doit être cochée"
@@ -297,11 +333,24 @@ class ConditionOneCheckBoxAmongList(Condition):
 
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
         return cells_report
+
+    def get_parent_condition_str(self) -> str:
+        """_summary_
+
+        Returns:
+            str: _description_
+        """
+
+        checkbox_name: str = " ou ".join(
+            f'{cell.alias_name if cell.alias_name else cell.cell_address} [{cell.sheet_name}]'
+            for cell in self.cells)
+
+        return f". Car la checkbox {checkbox_name} est cochée."
 
 
 class ConditionAtLeastOneCheckBoxAmongList(Condition):
@@ -348,11 +397,24 @@ class ConditionAtLeastOneCheckBoxAmongList(Condition):
 
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
         return cells_report
+
+    def get_parent_condition_str(self) -> str:
+        """_summary_
+
+        Returns:
+            str: _description_
+        """
+
+        checkbox_name: str = " ou ".join(
+            f'{cell.alias_name if cell.alias_name else cell.cell_address} [{cell.sheet_name}]'
+            for cell in self.cells)
+
+        return f". Car la checkbox {checkbox_name} est cochée."
 
 
 class ConditionAtLeastOneCellAmongList(Condition):
@@ -395,7 +457,7 @@ class ConditionAtLeastOneCellAmongList(Condition):
 
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
@@ -417,12 +479,15 @@ class ConditionHasToBeFilled(Condition):
 
     size_phone: Optional[int] = 0
 
+    sentence_to_remove: Optional[str] = ""
+
     def __init__(self,
                  cell: BoxToCheck,
                  is_parent_condition: bool,
                  size_siren: Optional[int] = 0,
                  size_nda: Optional[int] = 0,
-                 size_phone: Optional[int] = 0) -> None:
+                 size_phone: Optional[int] = 0,
+                 sentence_to_remove: Optional[str] = "") -> None:
         """Initialize the ConditionDateSup with start and stop dates."""
 
         super().__init__(condition_type=ConditionType.CELL_HAS_TO_BE_FILLED,
@@ -437,6 +502,8 @@ class ConditionHasToBeFilled(Condition):
 
         self.size_phone: Optional[int] = size_phone
 
+        self.sentence_to_remove: Optional[str] = sentence_to_remove
+
     def check(self) -> CellsConditionReport:
         cell_value: Optional[str] = self.cell.get_value()
 
@@ -445,6 +512,13 @@ class ConditionHasToBeFilled(Condition):
 
         else:
             results = True
+
+            if self.sentence_to_remove:
+
+                if len(cell_value.strip().lower().replace(
+                        self.sentence_to_remove.lower(),
+                        "").replace(" ", "").replace("\n", "")) == 0:
+                    results = False
 
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
@@ -486,10 +560,15 @@ class ConditionHasToBeFilled(Condition):
 
         if self.size_phone and cell_value:
 
+            cell_value = cell_value.replace(" ", "").replace("_", "").replace(
+                "-", "").replace(",", "").replace(";", "")
+
             try:
                 int(cell_value)
 
-                if len(str(int(cell_value))) != self.size_phone - 1:
+                clean_phone = str(int(cell_value))
+
+                if len(clean_phone) != self.size_phone - 1:
                     state = CellsConditionState.NOT_OK
 
                     report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] ne correspond pas à un numéro de téléphone ({self.size_phone} chiffres)"
@@ -499,11 +578,20 @@ class ConditionHasToBeFilled(Condition):
 
                 report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] ne correspond pas à un numéro de téléphone ({self.size_phone} chiffres 0XXXXXXXXX)"
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
         return cells_report
+
+    def get_parent_condition_str(self) -> str:
+        """_summary_
+
+        Returns:
+            str: _description_
+        """
+
+        return f". Car la cellule {self.cell.cell_address} est remplie."
 
 
 class ConditionHasToBeChecked(Condition):
@@ -537,16 +625,107 @@ class ConditionHasToBeChecked(Condition):
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
         if state == CellsConditionState.NOT_OK:
-            report_str = f"La checkbox {self.cell.alias_name if  self.cell.alias_name else self.cell.cell_address} [{self.cell.sheet_name}] doit être remplie"
+            report_str = f"La checkbox {self.cell.alias_name if  self.cell.alias_name else self.cell.cell_address} [{self.cell.sheet_name}] doit être cochée"
 
         else:
-            report_str = f"La checkbox {self.cell.alias_name if  self.cell.alias_name else self.cell.cell_address} [{self.cell.sheet_name}] est remplie"
+            report_str = f"La checkbox {self.cell.alias_name if  self.cell.alias_name else self.cell.cell_address} [{self.cell.sheet_name}] est cochée"
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
         return cells_report
+
+    def get_parent_condition_str(self) -> str:
+        """_summary_
+
+        Returns:
+            str: _description_
+        """
+
+        return f". Car la checkbox {self.cell.cell_address} [{self.cell.sheet_name}] est cochée."
+
+
+class ConditionOneByChecked(Condition):
+    """_summary_
+
+    Args:
+        Condition (_type_): _description_
+    """
+
+    possible_cells: List[CheckBoxToCheck]
+
+    cells_to_check: List[CheckBoxToCheck]
+
+    def __init__(self, cells_to_check: List[CheckBoxToCheck],
+                 possible_cells: List[CheckBoxToCheck],
+                 is_parent_condition: bool) -> None:
+        """Initialize the ConditionDateSup with start and stop dates."""
+
+        super().__init__(condition_type=ConditionType.CELL_HAS_TO_BE_FILLED,
+                         is_parent_condition=is_parent_condition,
+                         cells_list=cells_to_check)
+
+        self.cells_to_check: List[CheckBoxToCheck] = cells_to_check
+
+        self.possible_cells: List[CheckBoxToCheck] = possible_cells
+
+    def check(self) -> CellsConditionReport:
+
+        # logger.info("Check:")
+
+        # for cell in self.cells_to_check:
+
+        #     logger.warning(cell.get_value())
+
+        # logger.info("Possible:")
+
+        # for cell in self.possible_cells:
+
+        #     logger.warning(cell.get_value())
+
+        if all(not cell.get_value() for cell in self.possible_cells):
+
+            return CellsConditionReport(condition=copy.deepcopy(self),
+                                        state=CellsConditionState.OK,
+                                        report_str="")
+
+        if all(not cell.get_value() for cell in self.cells_to_check):
+
+            checkbox_name: str = " ou ".join(
+                f'{cell.alias_name} [{cell.sheet_name}]'
+                for cell in self.cells_to_check if cell.alias_name in [
+                    cell.alias_name for cell in self.possible_cells
+                    if cell.get_value()
+                ])
+
+            return CellsConditionReport(
+                condition=copy.deepcopy(self),
+                state=CellsConditionState.NOT_OK,
+                report_str=f"Une des checkbox {checkbox_name} doit être cochés"
+            )
+
+        if not all(cell.alias_name in [
+                cell.alias_name
+                for cell in self.possible_cells if cell.get_value()
+        ] for cell in self.cells_to_check if cell.get_value()):
+
+            checkbox_name: str = " ou ".join(
+                f'{cell.alias_name} [{cell.sheet_name}]'
+                for cell in self.cells_to_check if cell.alias_name in [
+                    cell.alias_name for cell in self.possible_cells
+                    if cell.get_value()
+                ])
+
+            return CellsConditionReport(
+                condition=copy.deepcopy(self),
+                state=CellsConditionState.NOT_OK,
+                report_str=
+                f"Seules les checkbox {checkbox_name} doit être cochés")
+
+        return CellsConditionReport(condition=copy.deepcopy(self),
+                                    state=CellsConditionState.OK,
+                                    report_str="")
 
 
 class ConditionHasToBeSigned(Condition):
@@ -585,7 +764,7 @@ class ConditionHasToBeSigned(Condition):
         else:
             report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] contient une signature"
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
@@ -632,11 +811,20 @@ class ConditionHasToBeValues(Condition):
         else:
             report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] est égale à {self.value}"
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
         return cells_report
+
+    def get_parent_condition_str(self) -> str:
+        """_summary_
+
+        Returns:
+            str: _description_
+        """
+
+        return f". Car la cellule {self.cell.cell_address}  [{self.cell.sheet_name}] vaut {self.value}."
 
 
 class ConditionIsNCFromCellText(Condition):
@@ -701,7 +889,7 @@ class ConditionIsNCFromCellText(Condition):
         if state == CellsConditionState.OK:
             report_str = f"Toutes les fiches NC {ids_nc} indiquée à la cellule {self.cell.cell_address} ont été créée"
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
@@ -766,7 +954,7 @@ class ConditionIsNCFromCellNumber(Condition):
 
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
@@ -824,7 +1012,7 @@ class ConditionIsNcMajFromCellNumber(Condition):
 
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
@@ -859,11 +1047,20 @@ class ConditionHasNc(Condition):
 
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str="")
 
         return cells_report
+
+    def get_parent_condition_str(self) -> str:
+        """_summary_
+
+        Returns:
+            str: _description_
+        """
+
+        return f". Car il y a des non conformités."
 
 
 class ConditionNcAllJChoosed(Condition):
@@ -884,6 +1081,7 @@ class ConditionNcAllJChoosed(Condition):
 
         self.cell = cell
 
+    @time_execution
     def check(self) -> CellsConditionReport:
 
         ref: str = get_ref()
@@ -904,7 +1102,7 @@ class ConditionNcAllJChoosed(Condition):
 
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
-        cells_report = CellsConditionReport(condition=self,
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
                                             state=state,
                                             report_str=report_str)
 
@@ -940,6 +1138,7 @@ class ConditionCheckAllSheetDropDown(Condition):
 
         self.no_na_cells: Dict[str, List[str]] = no_na_cells
 
+    @time_execution
     def check(self) -> List[CellsConditionReport]:
 
         report_str: str = ""
@@ -960,22 +1159,56 @@ class ConditionCheckAllSheetDropDown(Condition):
 
                 cell_adress = f"{column}{row}"
 
-                if not excel_handler.is_line_hidden(
-                        sheet_name=self.sheet_name, cell_adress=cell_adress
-                ) and not excel_handler.is_column_hidden(
-                        sheet_name=self.sheet_name, cell_adress=cell_adress):
+                if current_j_value in [
+                        "Non-conformité mineure", "Non-conformité majeure",
+                        "Conformité", "None"
+                ] or current_j_value is None:
 
-                    if excel_handler.is_drop_down(sheet_name=self.sheet_name,
-                                                  cell_adress=cell_adress):
-                        cell = BoxToCheck(
-                            sheet_name=SheetName.SHEET_5.value,
-                            cell_address=cell_adress,
-                        )
+                    if not excel_handler.is_line_hidden(
+                            sheet_name=self.sheet_name, cell_adress=cell_adress
+                    ) and not excel_handler.is_column_hidden(
+                            sheet_name=self.sheet_name,
+                            cell_adress=cell_adress):
 
-                        if not cell.get_value():
+                        if excel_handler.is_drop_down(
+                                sheet_name=self.sheet_name,
+                                cell_adress=cell_adress):
+                            cell = BoxToCheck(
+                                sheet_name=SheetName.SHEET_5.value,
+                                cell_address=cell_adress,
+                            )
 
-                            if cell_adress in self.no_na_cells.keys():
+                            if not cell.get_value():
 
+                                if cell_adress in self.no_na_cells.keys():
+
+                                    for adress_to_check in self.no_na_cells[
+                                            cell_adress]:
+                                        box_to_check = CheckBoxToCheck(
+                                            sheet_name=SheetName.SHEET_2.value,
+                                            checkbox_name=adress_to_check,
+                                            cell_address=adress_to_check,
+                                            checkbox_params=checkbox_params)
+
+                                        if box_to_check.get_value():
+                                            report_str = f"La valeur choisie pour la cellule {cell_adress} [{self.sheet_name}] doit être 'Oui' ou 'Non' car la checkbox {adress_to_check} [{SheetName.SHEET_2.value}] est cochée"
+
+                                            break
+
+                                        report_str = f"Une valeur doit être choisie pour la cellule {cell_adress} [{self.sheet_name}]"
+
+                                else:
+                                    report_str = f"Une valeur doit être choisie pour la cellule {cell_adress} [{self.sheet_name}]"
+
+                                self.cells_list = [cell]
+
+                                cells_reports.append(
+                                    CellsConditionReport(
+                                        condition=copy.deepcopy(self),
+                                        state=CellsConditionState.NOT_OK,
+                                        report_str=report_str))
+
+                            elif cell_adress in self.no_na_cells.keys():
                                 for adress_to_check in self.no_na_cells[
                                         cell_adress]:
                                     box_to_check = CheckBoxToCheck(
@@ -984,108 +1217,34 @@ class ConditionCheckAllSheetDropDown(Condition):
                                         cell_address=adress_to_check,
                                         checkbox_params=checkbox_params)
 
-                                    if box_to_check.get_value():
+                                    if cell.get_value() not in ["Oui", "Non"]:
                                         report_str = f"La valeur choisie pour la cellule {cell_adress} [{self.sheet_name}] doit être 'Oui' ou 'Non'"
+
+                                        self.cells_list = [cell]
+
+                                        cells_reports.append(
+                                            CellsConditionReport(
+                                                condition=copy.deepcopy(self),
+                                                state=CellsConditionState.
+                                                NOT_OK,
+                                                report_str=report_str))
+
                                         break
 
-                                    report_str = f"Une valeur doit être choisie pour la cellule {cell_adress} [{self.sheet_name}]"
+                            if excel_handler.read_cell_value(
+                                    sheet_name=SheetName.SHEET_5.value,
+                                    cell_address=cell.cell_address
+                            ) == "Non" and current_j_value == "Conformité":
 
-                            else:
-                                report_str = f"Une valeur doit être choisie pour la cellule {cell_adress} [{self.sheet_name}]"
+                                self.cells_list = [cell]
 
-                            self.cells_list = [cell]
-
-                            cells_reports.append(
-                                CellsConditionReport(
-                                    condition=self,
-                                    state=CellsConditionState.NOT_OK,
-                                    report_str=report_str))
-
-                        elif cell_adress in self.no_na_cells.keys():
-                            for adress_to_check in self.no_na_cells[
-                                    cell_adress]:
-                                box_to_check = CheckBoxToCheck(
-                                    sheet_name=SheetName.SHEET_2.value,
-                                    checkbox_name=adress_to_check,
-                                    cell_address=adress_to_check,
-                                    checkbox_params=checkbox_params)
-
-                                if cell.get_value() not in ["Oui", "Non"]:
-                                    report_str = f"La valeur choisie pour la cellule {cell_adress} [{self.sheet_name}] doit être 'Oui' ou 'Non'"
-
-                                    self.cells_list = [cell]
-
-                                    cells_reports.append(
-                                        CellsConditionReport(
-                                            condition=self,
-                                            state=CellsConditionState.NOT_OK,
-                                            report_str=report_str))
-
-                                    break
-
-                        if excel_handler.read_cell_value(
-                                sheet_name=SheetName.SHEET_5.value,
-                                cell_address=cell.cell_address
-                        ) == "Non" and current_j_value == "Conformité":
-                            cells_reports.append(
-                                CellsConditionReport(
-                                    condition=self,
-                                    state=CellsConditionState.NOT_OK,
-                                    report_str=
-                                    f"La cellule J{row} ne peut pas être conforme car la cellule {cell_adress} [{self.sheet_name}] est Non"
-                                ))
-
-        return cells_reports
-
-
-class ConditionCheckAllSheetDescription(Condition):
-    """_summary_
-
-    Args:
-        Condition (_type_): _description_
-    """
-
-    sheet_name: str
-
-    def __init__(self, sheet_name: str, is_parent_condition: bool) -> None:
-        """Initialize the ConditionDateSup with start and stop dates."""
-
-        super().__init__(
-            condition_type=ConditionType.CHECK_ALL_SHEET_DESCRIPTION,
-            is_parent_condition=is_parent_condition,
-            cells_list=[
-                BoxToCheck(
-                    sheet_name=SheetName.SHEET_5.value,
-                    cell_address="L5",
-                )
-            ])
-
-        self.sheet_name = sheet_name
-
-    def check(self) -> List[CellsConditionReport]:
-
-        cells_reports: List[CellsConditionReport] = []
-
-        report_str: str = ""
-
-        description_cells: List[str] = get_description_cells()
-
-        for cell in description_cells:
-            if not excel_handler.read_cell_value(
-                    sheet_name=SheetName.SHEET_5.value, cell_address=cell):
-                report_str = f"La cellule description {cell} [{SheetName.SHEET_5.value}] ne peut pas être vide"
-
-                self.cells_list = [
-                    BoxToCheck(
-                        sheet_name=SheetName.SHEET_5.value,
-                        cell_address=cell,
-                    )
-                ]
-
-                cells_reports.append(
-                    CellsConditionReport(condition=self,
-                                         state=CellsConditionState.NOT_OK,
-                                         report_str=report_str))
+                                cells_reports.append(
+                                    CellsConditionReport(
+                                        condition=copy.deepcopy(self),
+                                        state=CellsConditionState.NOT_OK,
+                                        report_str=
+                                        f"La cellule J{row} ne peut pas être conforme car la cellule {cell_adress} [{self.sheet_name}] est Non"
+                                    ))
 
         return cells_reports
 
@@ -1114,6 +1273,7 @@ class ConditionCheckAllSheetReference(Condition):
 
         self.sheet_name = sheet_name
 
+    @time_execution
     def check(self) -> List[CellsConditionReport]:
 
         cells_reports: List[CellsConditionReport] = []
@@ -1135,7 +1295,7 @@ class ConditionCheckAllSheetReference(Condition):
                 ]
 
                 cells_reports.append(
-                    CellsConditionReport(condition=self,
+                    CellsConditionReport(condition=copy.deepcopy(self),
                                          state=CellsConditionState.NOT_OK,
                                          report_str=report_str))
 
@@ -1145,87 +1305,6 @@ class ConditionCheckAllSheetReference(Condition):
 START_LINE_REPORT_AUDIT = 5
 
 NB_LINE_REPORT_AUDIT = 188
-
-
-def get_description_cells() -> List[str]:
-    """_summary_
-
-    Returns:
-        List[str]: _description_
-    """
-
-    description_cells: List[str] = []
-
-    is_l_column_hidden: bool = excel_handler.is_column_hidden(
-        sheet_name=SheetName.SHEET_5.value, cell_adress="L4")
-
-    is_n_column_hidden: bool = excel_handler.is_column_hidden(
-        sheet_name=SheetName.SHEET_5.value, cell_adress="N4")
-
-    is_p_column_hidden: bool = excel_handler.is_column_hidden(
-        sheet_name=SheetName.SHEET_5.value, cell_adress="P4")
-
-    is_r_column_hidden: bool = excel_handler.is_column_hidden(
-        sheet_name=SheetName.SHEET_5.value, cell_adress="R4")
-
-    current_j_value: Optional[str] = None
-
-    current_b_value: Optional[str] = None
-
-    current_c_value: Optional[str] = None
-
-    current_d_value: Optional[str] = None
-
-    current_e_value: Optional[str] = None
-
-    for row in range(START_LINE_REPORT_AUDIT, NB_LINE_REPORT_AUDIT):
-
-        if not excel_handler.is_merged(sheet_name=SheetName.SHEET_5.value,
-                                       cell_adress=f"J{row}"):
-
-            current_j_value = excel_handler.read_cell_value(
-                sheet_name=SheetName.SHEET_5.value, cell_address=f"J{row}")
-
-            current_b_value = excel_handler.read_cell_value(
-                sheet_name=SheetName.SHEET_5.value, cell_address=f"B{row}")
-
-            current_c_value = excel_handler.read_cell_value(
-                sheet_name=SheetName.SHEET_5.value, cell_address=f"C{row}")
-
-            current_d_value = excel_handler.read_cell_value(
-                sheet_name=SheetName.SHEET_5.value, cell_address=f"D{row}")
-
-            current_e_value = excel_handler.read_cell_value(
-                sheet_name=SheetName.SHEET_5.value, cell_address=f"E{row}")
-
-        if current_j_value in [
-                "Non-conformité mineure", "Non-conformité majeure",
-                "Conformité", "None"
-        ] or current_j_value is None:
-            cell = f"K{row}"
-
-            cell_value: Optional[str] = excel_handler.read_cell_value(
-                sheet_name=SheetName.SHEET_5.value, cell_address=cell)
-
-            if cell_value and "Description" in cell_value and not excel_handler.is_line_hidden(
-                    sheet_name=SheetName.SHEET_5.value, cell_adress=cell):
-                if not is_l_column_hidden and current_b_value and current_b_value.lower(
-                ) == "x":
-                    description_cells.append(f"L{row}")
-
-                if not is_n_column_hidden and current_c_value and current_c_value.lower(
-                ) == "x":
-                    description_cells.append(f"N{row}")
-
-                if not is_p_column_hidden and current_d_value and current_d_value.lower(
-                ) == "x":
-                    description_cells.append(f"P{row}")
-
-                if not is_r_column_hidden and current_e_value and current_e_value.lower(
-                ) == "x":
-                    description_cells.append(f"R{row}")
-
-    return description_cells
 
 
 def get_references_cells() -> List[str]:
@@ -1453,7 +1532,7 @@ def count_not_none_in_nc_j() -> int:
             if cell_value:
                 counter_nc_not_none += 1
 
-        except Exception:
+        except Exception as _:
             pass
 
     return counter_nc_not_none

@@ -85,7 +85,3 @@ class CheckBoxToCheck(CellToCheck):
 
         return excel_handler.get_checkbox_state(cell_address=self.cell_address,
                                                 sheet_name=self.sheet_name)
-
-        # return excel_handler.get_checkbox_state(
-        #     checkbox_params=self.checkbox_params,
-        #     checkbox_name=self.checkbox_name)

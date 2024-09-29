@@ -49,6 +49,6 @@ def get_current_date_hour() -> str:
     mois_fr = mois_annee.get(mois.lower(), mois)
 
     date_formatee = date_actuelle.strftime(
-        f'{jour_semaine_fr} %d {mois_fr} à %H:%Mm:%Ss')
+        f'{jour_semaine_fr} %d {mois_fr} à %Hh%Mm%Ss')
 
     return date_formatee

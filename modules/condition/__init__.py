@@ -4,10 +4,10 @@ from modules.cells.schemas import BoxToCheck, CheckBoxToCheck, DateToCheck
 
 from modules.condition.condition import (
     CellsConditions, ConditionAtLeastOneCellAmongList,
-    ConditionAtLeastOneCheckBoxAmongList, ConditionCheckAllSheetDescription,
-    ConditionCheckAllSheetDropDown, ConditionCheckAllSheetReference,
-    ConditionDateSup, ConditionDateDurationBetween, ConditionHasNc,
-    ConditionHasToBeChecked, ConditionHasToBeSigned, ConditionHasToBeValues,
+    ConditionAtLeastOneCheckBoxAmongList, ConditionCheckAllSheetDropDown,
+    ConditionCheckAllSheetReference, ConditionDateSup,
+    ConditionDateDurationBetween, ConditionHasNc, ConditionHasToBeChecked,
+    ConditionHasToBeSigned, ConditionHasToBeValues,
     ConditionIsNCFromCellNumber, ConditionIsNCFromCellText,
     ConditionIsNcMajFromCellNumber, ConditionNcAllJChoosed,
     ConditionOneCheckBoxAmongList, ConditionHasToBeFilled)
@@ -399,6 +399,62 @@ CELLS_CONDITION_CONTRACTOR_100 = CellsConditions(conditions=[
 
 ######################################
 
+# OPAC MORE 2 DAY################
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 121",
+                         cell_address="F23",
+                         checkbox_params=checkbox_params,
+                         alias_name="F23 (BC)")
+
+cell_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 121",
+                         cell_address="G23",
+                         checkbox_params=checkbox_params,
+                         alias_name="G23 (BC)")
+
+cell_3 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 121",
+                         cell_address="F24",
+                         checkbox_params=checkbox_params,
+                         alias_name="F24 (VAE)")
+
+cell_4 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 121",
+                         cell_address="G24",
+                         checkbox_params=checkbox_params,
+                         alias_name="G24 (VAE)")
+
+cell_5 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 121",
+                         cell_address="F25",
+                         checkbox_params=checkbox_params,
+                         alias_name="F25 (FA)")
+
+cell_6 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 121",
+                         cell_address="G25",
+                         checkbox_params=checkbox_params,
+                         alias_name="G25 (FA)")
+
+cell_B36 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                           checkbox_name="Check Box 121",
+                           cell_address="B36",
+                           checkbox_params=checkbox_params,
+                           alias_name="B36")
+
+CELLS_CONDITION_MORE_2_DAY_VAE_FA_BC = CellsConditions(conditions=[
+    ConditionAtLeastOneCheckBoxAmongList(
+        cells=[cell_1, cell_2, cell_3, cell_4, cell_5, cell_6],
+        is_parent_condition=True,
+        alias_name="B36"),
+    ConditionHasToBeChecked(cell=cell_B36, is_parent_condition=False)
+])
+
+######################################
+
+######################################
+
 # OPAC DESCRIPTION ################
 
 cell = BoxToCheck(sheet_name=SheetName.SHEET_2.value, cell_address="A47")
@@ -724,6 +780,90 @@ CELLS_CONDITION_OPAC_ACTION = CellsConditions(conditions=[
 
 ######################################
 
+######################################
+
+# OPAC AF CONDITION ################
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 57",
+                         cell_address="F22",
+                         checkbox_params=checkbox_params)
+
+cell_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 59",
+                         cell_address="G22",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_OPAC_AF_CONDITION = CellsConditions(conditions=[
+    ConditionOneCheckBoxAmongList(
+        cells=[cell_1, cell_2], is_parent_condition=False, only_check=True)
+])
+
+######################################
+
+######################################
+
+# OPAC BC CONDITION ################
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 57",
+                         cell_address="F23",
+                         checkbox_params=checkbox_params)
+
+cell_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 59",
+                         cell_address="G23",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_OPAC_BC_CONDITION = CellsConditions(conditions=[
+    ConditionOneCheckBoxAmongList(
+        cells=[cell_1, cell_2], is_parent_condition=False, only_check=True)
+])
+
+######################################
+
+######################################
+
+# OPAC VAE CONDITION ################
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 57",
+                         cell_address="F24",
+                         checkbox_params=checkbox_params)
+
+cell_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 59",
+                         cell_address="G24",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_OPAC_VAE_CONDITION = CellsConditions(conditions=[
+    ConditionOneCheckBoxAmongList(
+        cells=[cell_1, cell_2], is_parent_condition=False, only_check=True)
+])
+
+######################################
+
+######################################
+
+# OPAC FA CONDITION ################
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 57",
+                         cell_address="F25",
+                         checkbox_params=checkbox_params)
+
+cell_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 59",
+                         cell_address="G25",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_OPAC_FA_CONDITION = CellsConditions(conditions=[
+    ConditionOneCheckBoxAmongList(
+        cells=[cell_1, cell_2], is_parent_condition=False, only_check=True)
+])
+
+######################################
+
 # OPAC AUDIT TYPE BOX ################
 
 cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
@@ -1022,7 +1162,7 @@ CELLS_CONDITION_PLAN_DATE_1 = CellsConditions(
 
 # PLAN DATE 1 ################
 
-cell = BoxToCheck(sheet_name=SheetName.SHEET_4.value, cell_address="A17")
+cell = BoxToCheck(sheet_name=SheetName.SHEET_4.value, cell_address="A18")
 
 CELLS_CONDITION_PLAN_DATE_1 = CellsConditions(
     conditions=[ConditionHasToBeFilled(cell=cell, is_parent_condition=False)])
@@ -1119,12 +1259,12 @@ CELLS_CONDITION_PLAN_DATE_11 = CellsConditions(
 
 ######################################
 
-# # PLAN DATE 12 ################
+# PLAN DATE 12 ################
 
-# cell = BoxToCheck(sheet_name=SheetName.SHEET_4.value, cell_address="A28")
+cell = BoxToCheck(sheet_name=SheetName.SHEET_4.value, cell_address="A28")
 
-# CELLS_CONDITION_PLAN_DATE_12 = CellsConditions(
-#     conditions=[ConditionHasToBeFilled(cell=cell, is_parent_condition=False)])
+CELLS_CONDITION_PLAN_DATE_12 = CellsConditions(
+    conditions=[ConditionHasToBeFilled(cell=cell, is_parent_condition=False)])
 
 # ######################################
 
@@ -1255,92 +1395,94 @@ CELLS_CONDITION_RAPPORT_J = CellsConditions(conditions=[
 # RAPPORT DESCRIPTION REPORT ################
 
 CELLS_CONDITION_DROPDOWN_REPORT = CellsConditions(conditions=[
-    ConditionCheckAllSheetDropDown(sheet_name=SheetName.SHEET_5.value,
-                                   is_parent_condition=False,
-                                   no_na_cells={
-                                       "M50": ["B33"],
-                                       "M102": ["B33"],
-                                       "S50": ["B33"],
-                                       "S102": ["B33"],
-                                       "M147": ["B34"],
-                                       "M148": ["B34"],
-                                       "O147": ["B34"],
-                                       "O148": ["B34"],
-                                       "Q147": ["B34"],
-                                       "Q148": ["B34"],
-                                       "S147": ["B34"],
-                                       "S148": ["B34"],
-                                       "M64": ["B36", "F23", "F24", "F25"],
-                                       "M65": ["B36", "F23", "F24", "F25"],
-                                       "O64": ["B36", "F23", "F24", "F25"],
-                                       "O65": ["B36", "F23", "F24", "F25"],
-                                       "Q64": ["B36", "F23", "F24", "F25"],
-                                       "Q65": ["B36", "F23", "F24", "F25"],
-                                       "S64": ["B36", "F23", "F24", "F25"],
-                                       "S65": ["B36", "F23", "F24", "F25"],
-                                       "M17": ["B37"],
-                                       "M18": ["B37"],
-                                       "M19": ["B37"],
-                                       "O17": ["B37"],
-                                       "O18": ["B37"],
-                                       "O19": ["B37"],
-                                       "Q17": ["B37"],
-                                       "Q18": ["B37"],
-                                       "Q19": ["B37"],
-                                       "S17": ["B37"],
-                                       "S18": ["B37"],
-                                       "S19": ["B37"],
-                                       "M39": ["B37", "B38"],
-                                       "M40": ["B37", "B38"],
-                                       "O39": ["B37"],
-                                       "O40": ["B37"],
-                                       "Q39": ["B37"],
-                                       "Q40": ["B37"],
-                                       "S39": ["B37", "B38"],
-                                       "S40": ["B37", "B38"],
-                                       "M82": ["B37", "B38"],
-                                       "M83": ["B37"],
-                                       "O82": ["B37"],
-                                       "O83": ["B37"],
-                                       "Q82": ["B37", "B38"],
-                                       "Q83": ["B37", "B38"],
-                                       "S82": ["B37", "B38"],
-                                       "S83": ["B37"],
-                                       "M9": ["B37", "B38"],
-                                       "M31": ["B37", "B38"],
-                                       "M35": ["B37", "B38"],
-                                       "M45": ["B37", "B38"],
-                                       "Q9": ["B37", "B38"],
-                                       "Q30": ["B37", "B38"],
-                                       "Q35": ["B37", "B38"],
-                                       "S9": ["B37", "B38"],
-                                       "S31": ["B37", "B38"],
-                                       "S35": ["B37", "B38"],
-                                       "M143": ["B39"],
-                                       "M144": ["B39"],
-                                       "O143": ["B39"],
-                                       "O144": ["B39"],
-                                       "Q143": ["B39"],
-                                       "Q144": ["B39"],
-                                       "S143": ["B39"],
-                                       "S144": ["B39"],
-                                       "M24": ["B41"],
-                                       "M36": ["B41"],
-                                       "M139": ["B41"],
-                                       "M140": ["B41"],
-                                       "O24": ["B41"],
-                                       "O35": ["B41"],
-                                       "O139": ["B41"],
-                                       "O140": ["B41"],
-                                       "Q24": ["B41"],
-                                       "Q36": ["B41"],
-                                       "Q139": ["B41"],
-                                       "Q140": ["B41"],
-                                       "S24": ["B41"],
-                                       "S36": ["B41"],
-                                       "S139": ["B41"],
-                                       "S140": ["B41"],
-                                   })
+    ConditionCheckAllSheetDropDown(
+        sheet_name=SheetName.SHEET_5.value,
+        is_parent_condition=False,
+        no_na_cells={
+            "M50": ["B33"],
+            "M102": ["B33"],
+            "S50": ["B33"],
+            "S102": ["B33"],
+            "M147": ["B34"],
+            "M148": ["B34"],
+            "O147": ["B34"],
+            "O148": ["B34"],
+            "Q147": ["B34"],
+            "Q148": ["B34"],
+            "S147": ["B34"],
+            "S148": ["B34"],
+            "M64": ["B36", "F23", "F24", "F25", "G23", "G24", "G25"],
+            "M65": ["B36", "F23", "F24", "F25", "G23", "G24", "G25"],
+            "O64": ["B36", "F23", "F24", "F25", "G23", "G24", "G25"],
+            "O65": ["B36", "F23", "F24", "F25", "G23", "G24", "G25"],
+            "Q64": ["B36", "F23", "F24", "F25", "G23", "G24", "G25"],
+            "Q65": ["B36", "F23", "F24", "F25", "G23", "G24", "G25"],
+            "S64": ["B36", "F23", "F24", "F25", "G23", "G24", "G25"],
+            "S65": ["B36", "F23", "F24", "F25", "G23", "G24", "G25"],
+            "S66": ["B36"],
+            "M17": ["B37"],
+            "M18": ["B37"],
+            "M19": ["B37"],
+            "O17": ["B37"],
+            "O18": ["B37"],
+            "O19": ["B37"],
+            "Q17": ["B37"],
+            "Q18": ["B37"],
+            "Q19": ["B37"],
+            "S17": ["B37"],
+            "S18": ["B37"],
+            "S19": ["B37"],
+            "M39": ["B37", "B38"],
+            "M40": ["B37", "B38"],
+            "O39": ["B37"],
+            "O40": ["B37"],
+            "Q39": ["B37"],
+            "Q40": ["B37"],
+            "S39": ["B37", "B38"],
+            "S40": ["B37", "B38"],
+            "M82": ["B37", "B38"],
+            "M83": ["B37"],
+            "O82": ["B37"],
+            "O83": ["B37"],
+            "Q82": ["B37", "B38"],
+            "Q83": ["B37", "B38"],
+            "S82": ["B37", "B38"],
+            "S83": ["B37"],
+            "M9": ["B37", "B38"],
+            "M31": ["B37", "B38"],
+            "M35": ["B37", "B38"],
+            "M45": ["B37", "B38"],
+            "Q9": ["B37", "B38"],
+            "Q30": ["B37", "B38"],
+            "Q35": ["B37", "B38"],
+            "S9": ["B37", "B38"],
+            "S31": ["B37", "B38"],
+            "S35": ["B37", "B38"],
+            "M143": ["B39"],
+            "M144": ["B39"],
+            "O143": ["B39"],
+            "O144": ["B39"],
+            "Q143": ["B39"],
+            "Q144": ["B39"],
+            "S143": ["B39"],
+            "S144": ["B39"],
+            "M24": ["B41"],
+            "M36": ["B41"],
+            "M139": ["B41"],
+            "M140": ["B41"],
+            "O24": ["B41"],
+            "O35": ["B41"],
+            "O139": ["B41"],
+            "O140": ["B41"],
+            "Q24": ["B41"],
+            "Q36": ["B41"],
+            "Q139": ["B41"],
+            "Q140": ["B41"],
+            "S24": ["B41"],
+            "S36": ["B41"],
+            "S139": ["B41"],
+            "S140": ["B41"],
+        })
 ])
 
 ######################################
@@ -1360,6 +1502,113 @@ CELLS_CONDITION_REF_REPORT = CellsConditions(conditions=[
     ConditionCheckAllSheetReference(sheet_name=SheetName.SHEET_5.value,
                                     is_parent_condition=False)
 ])
+
+######################################
+
+# RAPPORT J15 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value, cell_address="J15")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 103",
+                         cell_address="B37",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_RAPPORT_J15 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=[
+                               "Conformité", "Non-conformité mineure",
+                               "Non-conformité majeure"
+                           ])
+])
+
+######################################
+
+######################################
+
+# RAPPORT J37 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value, cell_address="J37")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 103",
+                         cell_address="B37",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_RAPPORT_J37 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=["Conformité", "Non-conformité majeure"])
+])
+
+######################################
+
+######################################
+
+# RAPPORT J80 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value, cell_address="J80")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 103",
+                         cell_address="B37",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_RAPPORT_J80 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=["Conformité", "Non-conformité majeure"])
+])
+
+######################################
+
+######################################
+
+# RAPPORT J62 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value, cell_address="J62")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 103",
+                         cell_address="B36",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_RAPPORT_J62 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=[
+                               "Conformité", "Non-conformité mineure",
+                               "Non-conformité majeure"
+                           ])
+])
+
+######################################
+
+######################################
+
+# RAPPORT PERIOD COMPANY J141 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value,
+                        cell_address="J141")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box 103",
+                         cell_address="B39",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J141 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=["Conformité", "Non-conformité majeure"])
+])
+
+######################################
 
 ######################################
 
@@ -1384,10 +1633,11 @@ CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J145 = CellsConditions(conditions=[
 ])
 
 ######################################
+
 cell = BoxToCheck(sheet_name=SheetName.SHEET_2.value, cell_address="E71")
 
 CELLS_CONDITION_SIGNATURE = CellsConditions(
-    conditions=[ConditionHasToBeSigned(cell=cell, is_parent_condition=False)])
+    conditions=[ConditionHasToBeFilled(cell=cell, is_parent_condition=False)])
 
 CELLS_CONDITIONS = [
     CELLS_CONDITION_OPAC_DATE_AUDIT, CELLS_CONDITION_OPAC_DURATION,
@@ -1397,19 +1647,21 @@ CELLS_CONDITIONS = [
     CELLS_CONDITION_OPAC_COMPANY_NDA, CELLS_CONDITION_OPAC_RP_NAME,
     CELLS_CONDITION_OPAC_RP_ROLE, CELLS_CONDITION_OPAC_RP_PHONE,
     CELLS_CONDITION_OPAC_RP_MAIL, CELLS_CONDITION_OPAC_DISTANCE,
-    CELLS_CONDITION_OPAC_DISTANCE, CELLS_CONDITION_OPAC_PERIOD,
-    CELLS_CONDITION_OPAC_MORE_TWO_DAY, CELLS_CONDITION_OPAC_RNCP,
-    CELLS_CONDITION_OPAC_RS, CELLS_CONDITION_SUB_CONTRACTOR,
-    CELLS_CONDITION_SUB_CONTRACTOR_2, CELLS_CONDITION_PSH,
-    CELLS_CONDITION_CONTRACTOR_100, CELLS_CONDITION_OPAC_DESCRIPTION,
-    CELLS_CONDITION_OPAC_AF_FOLDER, CELLS_CONDITION_OPAC_AF_JUSTIFY,
-    CELLS_CONDITION_OPAC_VAE_FOLDER, CELLS_CONDITION_OPAC_VAE_JUSTIFY,
-    CELLS_CONDITION_OPAC_BC_FOLDER, CELLS_CONDITION_OPAC_BC_JUSTIFY,
-    CELLS_CONDITION_OPAC_FA_FOLDER, CELLS_CONDITION_OPAC_FA_JUSTIFY,
+    CELLS_CONDITION_OPAC_PERIOD, CELLS_CONDITION_OPAC_MORE_TWO_DAY,
+    CELLS_CONDITION_OPAC_RNCP, CELLS_CONDITION_OPAC_RS,
+    CELLS_CONDITION_SUB_CONTRACTOR, CELLS_CONDITION_SUB_CONTRACTOR_2,
+    CELLS_CONDITION_PSH, CELLS_CONDITION_CONTRACTOR_100,
+    CELLS_CONDITION_OPAC_DESCRIPTION, CELLS_CONDITION_OPAC_AF_FOLDER,
+    CELLS_CONDITION_OPAC_AF_JUSTIFY, CELLS_CONDITION_OPAC_VAE_FOLDER,
+    CELLS_CONDITION_OPAC_VAE_JUSTIFY, CELLS_CONDITION_OPAC_BC_FOLDER,
+    CELLS_CONDITION_OPAC_BC_JUSTIFY, CELLS_CONDITION_OPAC_FA_FOLDER,
+    CELLS_CONDITION_OPAC_FA_JUSTIFY, CELLS_CONDITION_MORE_2_DAY_VAE_FA_BC,
     CELLS_CONDITION_OPAC_AUDITOR_NAME, CELLS_CONDITION_OPAC_AUDITOR_PHONE,
     CELLS_CONDITION_OPAC_AUDITOR_MAIL, CELLS_CONDITION_OPAC_REMOTE_CONDITION,
     CELLS_CONDITION_OPAC_REMOTE_GOAL, CELLS_CONDITION_OPAC_REMOTE_TOOLS,
-    CELLS_CONDITION_OPAC_ACTION, CELLS_CONDITION_OPAC_AUDIT_TYPE_2,
+    CELLS_CONDITION_OPAC_ACTION, CELLS_CONDITION_OPAC_AF_CONDITION,
+    CELLS_CONDITION_OPAC_BC_CONDITION, CELLS_CONDITION_OPAC_VAE_CONDITION,
+    CELLS_CONDITION_OPAC_FA_CONDITION, CELLS_CONDITION_OPAC_AUDIT_TYPE_2,
     CELLS_CONDITION_CNEFOP, CELLS_CONDITION_WATCHING, CELLS_CONDITION_NC,
     CELLS_CONDITION_OPAC_NC_ID, CELLS_CONDITION_OPAC_NC_PREVIOUS,
     CELLS_CONDITION_OPAC_NC_CORRECTION, CELLS_CONDITION_OPAC_NC_SHEET,
@@ -1421,11 +1673,15 @@ CELLS_CONDITIONS = [
     CELLS_CONDITION_PLAN_DATE_6, CELLS_CONDITION_PLAN_DATE_7,
     CELLS_CONDITION_PLAN_DATE_8, CELLS_CONDITION_PLAN_DATE_9,
     CELLS_CONDITION_PLAN_DATE_10, CELLS_CONDITION_PLAN_DATE_11,
-    CELLS_CONDITION_PLAN_DATE_13, CELLS_CONDITION_PLAN_DATE_14,
-    CELLS_CONDITION_SIGN_IN_OPEN_NAME, CELLS_CONDITION_SIGN_IN_OPEN_LASTNAME,
+    CELLS_CONDITION_PLAN_DATE_12, CELLS_CONDITION_PLAN_DATE_13,
+    CELLS_CONDITION_PLAN_DATE_14, CELLS_CONDITION_SIGN_IN_OPEN_NAME,
+    CELLS_CONDITION_SIGN_IN_OPEN_LASTNAME,
     CELLS_CONDITION_SIGN_IN_OPEN_FUNCTION, CELLS_CONDITION_SIGN_IN_CLOSE_NAME,
     CELLS_CONDITION_SIGN_IN_CLOSE_LASTNAME,
     CELLS_CONDITION_SIGN_IN_CLOSE_FUNCTION, CELLS_CONDITION_RAPPORT_J,
     CELLS_CONDITION_DROPDOWN_REPORT, CELLS_CONDITION_REF_REPORT,
+    CELLS_CONDITION_RAPPORT_J15, CELLS_CONDITION_RAPPORT_J37,
+    CELLS_CONDITION_RAPPORT_J62, CELLS_CONDITION_RAPPORT_J80,
+    CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J141,
     CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J145, CELLS_CONDITION_SIGNATURE
 ]
