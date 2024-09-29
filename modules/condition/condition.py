@@ -80,6 +80,8 @@ class CellsConditions:
             _type_: _description_
         """
 
+        self.parent_condition_ok = ""
+
         try:
 
             for condition in self.conditions:
