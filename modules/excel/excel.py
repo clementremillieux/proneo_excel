@@ -212,6 +212,20 @@ class ExcelHandler:
         #     self.load_excel_xlwings(excel_abs_path=self.excel_abs_path)
 
         try:
+            self.app = xw.apps.active
+
+            if self.app is None:
+                self.app = xw.App(visible=True)
+
+            for book in self.app.books:
+                if book.fullname == self.excel_abs_path:
+                    self.wb = book
+
+                    break
+            else:
+
+                self.wb = self.app.books.open(self.excel_abs_path)
+
             sheet = self.wb.sheets[sheet_name]
 
             sheet.activate()
