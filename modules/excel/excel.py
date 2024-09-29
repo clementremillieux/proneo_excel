@@ -43,16 +43,14 @@ class ExcelHandler:
 
             self.wb.save()
 
-
             self.wb_openpyxl = openpyxl.load_workbook(excel_abs_path,
                                                       keep_vba=True)
 
             self.excel_abs_path = excel_abs_path
 
-
         except Exception as e:
             logger.error("Error openning excel file : %s", e)
-            
+
     @time_execution
     def load_excel_xlwings(self, excel_abs_path: str) -> None:
         """_summary_
@@ -87,18 +85,27 @@ class ExcelHandler:
         """
 
         try:
-            self.wb.save()
+            self.app = xw.apps.active
 
+            if self.app is None:
+                self.app = xw.App(visible=True)
+
+            for book in self.app.books:
+                if book.fullname == excel_abs_path:
+                    self.wb = book
+
+                    break
+            else:
+
+                self.wb = self.app.books.open(excel_abs_path)
 
             self.wb_openpyxl = openpyxl.load_workbook(excel_abs_path,
                                                       keep_vba=True)
 
             self.excel_abs_path = excel_abs_path
 
-
         except Exception as e:
             logger.error("Error openning openpy excel file : %s", e)
-
 
     def read_cell_value(self, sheet_name: str, cell_address: str) -> str:
         """_summary_
@@ -124,8 +131,6 @@ class ExcelHandler:
 
             return ""
 
-
-
     def read_cell_date_value(self, sheet_name: str,
                              cell_address: str) -> datetime:
         """_summary_
@@ -140,11 +145,9 @@ class ExcelHandler:
 
         try:
 
-
             ws = self.wb_openpyxl[sheet_name]
 
             cells_value: datetime = ws[cell_address].value
-
 
             return cells_value
 
@@ -152,7 +155,6 @@ class ExcelHandler:
             logger.error("Error reading cell date : %s", e)
 
             return datetime.min
-
 
     def get_checkbox_state(self, sheet_name: str, cell_address: str) -> bool:
         """
