@@ -14,28 +14,28 @@ def get_current_date_hour() -> str:
         str: _description_
     """
     jours_semaine = {
-        'Monday': 'lundi',
-        'Tuesday': 'mardi',
-        'Wednesday': 'mercredi',
-        'Thursday': 'jeudi',
-        'Friday': 'vendredi',
-        'Saturday': 'samedi',
-        'Sunday': 'dimanche'
+        'monday': 'lundi',
+        'tuesday': 'mardi',
+        'wednesday': 'mercredi',
+        'thursday': 'jeudi',
+        'friday': 'vendredi',
+        'saturday': 'samedi',
+        'sunday': 'dimanche'
     }
 
     mois_annee = {
-        'January': 'janvier',
-        'February': 'février',
-        'March': 'mars',
-        'April': 'avril',
-        'May': 'mai',
-        'June': 'juin',
-        'July': 'juillet',
-        'August': 'août',
-        'September': 'septembre',
-        'October': 'octobre',
-        'November': 'novembre',
-        'December': 'décembre'
+        'january': 'janvier',
+        'february': 'février',
+        'march': 'mars',
+        'april': 'avril',
+        'may': 'mai',
+        'june': 'juin',
+        'july': 'juillet',
+        'august': 'août',
+        'september': 'septembre',
+        'october': 'octobre',
+        'november': 'novembre',
+        'december': 'décembre'
     }
 
     date_actuelle = datetime.now()
