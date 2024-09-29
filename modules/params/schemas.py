@@ -63,7 +63,7 @@ class AppParams(BaseModel):
     base_dir: str = get_base_dir()
 
     excel_abs_path: str = os.path.join(
-        base_dir, 'data', "Plan et Rapport d'audit certification V32.xlsm")
+        base_dir, 'data', "Plan et Rapport d'audit certification V33.xlsm")
 
     vba_checkbox_module: str = "StoreSpecificCheckboxValue"
 
