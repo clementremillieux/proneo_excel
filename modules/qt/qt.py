@@ -9,7 +9,8 @@ from PyQt5.QtWidgets import (QMainWindow, QLabel, QVBoxLayout, QWidget,
                              QInputDialog, QApplication, QProgressBar,
                              QStackedWidget)
 
-from PyQt5.QtCore import (QThread, pyqtSignal, Qt, QFileSystemWatcher, QStandardPaths)
+from PyQt5.QtCore import (QThread, pyqtSignal, Qt, QFileSystemWatcher,
+                          QStandardPaths)
 
 from PyQt5.QtGui import QPainter, QColor, QBrush
 
@@ -49,7 +50,8 @@ class Worker(QThread):
             Dict[str, List[UIReportCell]]: The report data for the UI.
         """
 
-        excel_handler.load_openpyxl(excel_abs_path=excel_handler.excel_abs_path)
+        excel_handler.load_openpyxl(
+            excel_abs_path=excel_handler.excel_abs_path)
 
         cells_condition_report: List[
             CellsConditionReport] = checker.check_cells_conditions()
@@ -174,7 +176,7 @@ class MainWindow(QMainWindow):
 
     def setup_placeholder(self):
         """Set up the placeholder label displayed before loading a file."""
-        self.placeholder_label = QLabel("Please load or create a file.")
+        self.placeholder_label = QLabel("Charger ou créer un fichier.")
         self.placeholder_label.setAlignment(Qt.AlignCenter)
         self.placeholder_label.setStyleSheet(
             "font-size: 40px; color: #2b292a;")
@@ -186,7 +188,7 @@ class MainWindow(QMainWindow):
         self.status.setStyleSheet("color: black; font-size: 14px;")
 
         self.reminder_label = QLabel(
-            "⚠️ Remember to save the file so that all changes are taken into account. ⚠️"
+            "⚠️ Sauvegardez le fichier pour que toutes les modifications soient prises en compte. ⚠️"
         )
         self.reminder_label.setAlignment(Qt.AlignCenter)
         self.reminder_label.setStyleSheet(
@@ -208,17 +210,17 @@ class MainWindow(QMainWindow):
         button_layout.setSpacing(20)
 
         # Load Excel button
-        self.load_button = QPushButton("Load Excel")
+        self.load_button = QPushButton("Charger Excel")
         self.load_button.setFixedSize(140, 40)
         self.load_button.clicked.connect(self.load_excel_file)
 
         # New Excel button
-        self.new_file_button = QPushButton("New Excel")
+        self.new_file_button = QPushButton("Nouveau Excel")
         self.new_file_button.setFixedSize(140, 40)
         self.new_file_button.clicked.connect(self.create_new_excel)
 
         # Check button
-        self.check_button = QPushButton("Check")
+        self.check_button = QPushButton("Vérifier")
         self.check_button.setFixedSize(160, 50)
         self.check_button.setStyleSheet("font-size: 18px; font-weight: bold;")
         self.check_button.clicked.connect(self.manual_check)
@@ -257,7 +259,6 @@ class MainWindow(QMainWindow):
         """Connect signals and slots."""
         self.worker.update_completed.connect(self.on_update_completed)
         self.worker.error_occurred.connect(self.on_worker_error)
-
 
     def on_worker_started(self):
         """Handle the event when the worker starts."""
@@ -314,17 +315,19 @@ class MainWindow(QMainWindow):
         """Create a new Excel file by copying an existing one."""
         try:
             new_file_name, ok = QInputDialog.getText(
-            self, "New Excel (xlsm)",
-            "Enter the file name (without extension):")
+                self, "New Excel (xlsm)",
+                "Enter the file name (without extension):")
 
             if ok and new_file_name:
                 new_file_name = f"{new_file_name}.xlsm"
 
                 source_file_path = AppParams().excel_abs_path
 
-                desktop_path = QStandardPaths.writableLocation(QStandardPaths.DesktopLocation)
+                desktop_path = QStandardPaths.writableLocation(
+                    QStandardPaths.DesktopLocation)
 
-                destination_file_path = os.path.join(desktop_path, new_file_name)
+                destination_file_path = os.path.join(desktop_path,
+                                                     new_file_name)
 
                 shutil.copy(source_file_path, destination_file_path)
 
@@ -340,7 +343,8 @@ class MainWindow(QMainWindow):
                 self.start_worker()
 
         except Exception as e:
-            self.error_stack_status += "\n" +  "Error creating new file => " + str(e)
+            self.error_stack_status += "\n" + "Error creating new file => " + str(
+                e)
 
             self.status.setText(f"Status: {str(self.error_stack_status)}")
 
@@ -366,13 +370,13 @@ class MainWindow(QMainWindow):
 
                 self.file_path_label.setText(
                     f"Configuring file {file_name} ...")
-                
+
                 self.setup_file_watcher()
 
                 self.stack.setCurrentWidget(self.loading_widget)
 
                 self.start_worker()
-                
+
         except Exception as e:
 
             self.error_stack_status += "\n" + "Error loading file => " + str(e)
@@ -438,7 +442,6 @@ class MainWindow(QMainWindow):
 
     def refresh_tabs(self, report_ui: Dict[str, List[UIReportCell]]) -> None:
         """Update the tabs with the current reports while preserving the selected tab and scroll position."""
-  
 
         current_index = self.tab_widget.currentIndex()
         current_tab_name = self.tab_widget.tabText(
@@ -475,10 +478,8 @@ class MainWindow(QMainWindow):
 
         if excel_handler.excel_abs_path:
             self.file_path_label.setText(
-                f"{excel_handler.excel_abs_path} verified on {get_current_date_hour().lower()}"
+                f"{excel_handler.excel_abs_path} vérififé le {get_current_date_hour().lower()}"
             )
-
-
 
     def create_tab(self, sheet_name: str,
                    report_cells: List[UIReportCell]) -> QWidget:
