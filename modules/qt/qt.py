@@ -478,7 +478,7 @@ class MainWindow(QMainWindow):
 
         if excel_handler.excel_abs_path:
             self.file_path_label.setText(
-                f"{excel_handler.excel_abs_path} vérififé le {get_current_date_hour().lower()}"
+                f"{excel_handler.excel_abs_path} vérifié le {get_current_date_hour().lower()}"
             )
 
     def create_tab(self, sheet_name: str,
