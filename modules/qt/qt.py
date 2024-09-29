@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (QMainWindow, QLabel, QVBoxLayout, QWidget,
                              QStackedWidget)
 
 from PyQt5.QtCore import (QThread, pyqtSignal, Qt, QFileSystemWatcher,
-                          QStandardPaths)
+                          QStandardPaths, QTimer)
 
 from PyQt5.QtGui import QPainter, QColor, QBrush
 
@@ -407,9 +407,22 @@ class MainWindow(QMainWindow):
         """
         logger.info("Excel file %s has been modified.", path)
 
-        self.on_worker_started()
+        # Re-add the path to the watcher
+        if os.path.exists(path):
+            if path not in self.file_watcher.files():
+                self.file_watcher.addPath(path)
+        else:
+            # If the file doesn't exist, wait a bit and try re-adding
+            QTimer.singleShot(1000, lambda: self.check_and_readd_path(path))
 
+        self.on_worker_started()
         self.start_worker()
+
+    def check_and_readd_path(self, path):
+        """Check if the file exists and re-add it to the watcher."""
+        if os.path.exists(path):
+            if path not in self.file_watcher.files():
+                self.file_watcher.addPath(path)
 
     def manual_check(self):
         """Perform a manual check by running the worker function."""
