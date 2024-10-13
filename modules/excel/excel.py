@@ -51,6 +51,8 @@ def add_xlwings_conf_sheet(file_path: str):
             "xlwings.conf sheet has been added and configured successfully in '%s'.",
             file_path)
 
+        workbook.close()
+
     except Exception as e:
         logger.info("An error occurred while modifying the Excel file: %s", e)
 
