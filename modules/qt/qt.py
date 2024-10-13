@@ -1,16 +1,13 @@
 import sys
 import os
 import shutil
-import platform
-import subprocess
 
 from typing import Dict, List, Optional
 
 from PyQt5.QtWidgets import (QMainWindow, QLabel, QVBoxLayout, QWidget,
                              QHBoxLayout, QTabWidget, QFrame, QPushButton,
                              QScrollArea, QDesktopWidget, QFileDialog,
-                             QInputDialog, QApplication, QProgressBar,
-                             QStackedWidget)
+                             QApplication, QProgressBar, QStackedWidget)
 
 from PyQt5.QtCore import (QThread, pyqtSignal, Qt, QFileSystemWatcher,
                           QStandardPaths, QTimer)
@@ -224,17 +221,17 @@ class MainWindow(QMainWindow):
         self.new_file_button.setFixedSize(140, 40)
         self.new_file_button.clicked.connect(self.create_new_excel)
 
-        # Check button
-        self.check_button = QPushButton("Vérifier")
-        self.check_button.setFixedSize(160, 50)
-        self.check_button.setStyleSheet("font-size: 18px; font-weight: bold;")
-        self.check_button.clicked.connect(self.manual_check)
+        # # Check button
+        # self.check_button = QPushButton("Vérifier")
+        # self.check_button.setFixedSize(160, 50)
+        # self.check_button.setStyleSheet("font-size: 18px; font-weight: bold;")
+        # self.check_button.clicked.connect(self.manual_check)
 
         # Add widgets to the button layout
         button_layout.addStretch()
         button_layout.addWidget(self.load_button)
         button_layout.addWidget(self.new_file_button)
-        button_layout.addWidget(self.check_button)
+        # button_layout.addWidget(self.check_button)
         button_layout.addStretch()
 
         # Add the button layout to the main layout
