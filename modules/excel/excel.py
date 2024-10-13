@@ -71,13 +71,25 @@ class ExcelHandler:
 
         try:
 
+            self.wb_openpyxl = openpyxl.load_workbook(excel_abs_path,
+                                                      keep_vba=True)
+
+            self.excel_abs_path = excel_abs_path
+
+        except Exception as e:
+            logger.error("Error openning excel file with openpyxl : %s",
+                         e,
+                         exc_info=True)
+
+        try:
+
             self.app = xw.apps.active
 
             if self.app is None:
                 self.app = xw.App(visible=True)
 
             for book in self.app.books:
-
+                book
                 if book.fullname == excel_abs_path:
                     self.wb = book
 
