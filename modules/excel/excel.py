@@ -138,6 +138,11 @@ class ExcelHandler:
         """_summary_
         """
 
+        self.wb_openpyxl = openpyxl.load_workbook(excel_abs_path,
+                                                  keep_vba=True)
+
+        self.excel_abs_path = excel_abs_path
+
         try:
             self.app = xw.apps.active
 
@@ -152,11 +157,6 @@ class ExcelHandler:
             else:
 
                 self.wb = self.app.books.open(excel_abs_path)
-
-            self.wb_openpyxl = openpyxl.load_workbook(excel_abs_path,
-                                                      keep_vba=True)
-
-            self.excel_abs_path = excel_abs_path
 
         except Exception as e:
             logger.error("Error openning openpy excel file : %s", e)
