@@ -333,7 +333,7 @@ class MainWindow(QMainWindow):
 
                 shutil.copy(source_file_path, file_name)
 
-                # add_xlwings_conf_sheet(file_path=file_name)
+                add_xlwings_conf_sheet(file_path=file_name)
 
                 self.file_path_label.setText(
                     f"Configuring the file {file_name} ...")
