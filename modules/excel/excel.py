@@ -1,16 +1,58 @@
 """_summary_"""
+import os
 
 from datetime import datetime
 
 from typing import List, Optional
 
-import xlwings as xw
-
 import openpyxl
+
+from openpyxl.worksheet.worksheet import Worksheet
+
+import xlwings as xw
 
 from config.logger_config import logger
 
 from modules.performances.time_counter import time_execution
+
+
+def add_xlwings_conf_sheet(file_path: str):
+    """
+    Open an Excel file using openpyxl, create a hidden sheet named 'xlwings.conf',
+    and add the configuration settings.
+
+    Args:
+        file_path (str): Path to the Excel file where the hidden sheet should be added.
+    """
+    try:
+        workbook = openpyxl.load_workbook(file_path, keep_vba=True)
+
+        folder_path = os.path.dirname(file_path)
+
+        xlwings_conf_sheet: Worksheet = workbook.create_sheet(
+            title='xlwings.conf')
+
+        xlwings_conf_sheet.sheet_state = 'hidden'
+
+        config_data = [["ONEDRIVE_CONSUMER_MAC", folder_path],
+                       ["ONEDRIVE_COMMERCIAL_MAC", folder_path],
+                       ["SHAREPOINT_MAC", folder_path],
+                       ["ONEDRIVE_CONSUMER_WIN", folder_path],
+                       ["ONEDRIVE_COMMERCIAL_WIN", folder_path],
+                       ["SHAREPOINT_WIN", folder_path]]
+
+        for row_index, (key, value) in enumerate(config_data, start=1):
+            xlwings_conf_sheet.cell(row=row_index, column=1, value=key)
+            xlwings_conf_sheet.cell(row=row_index, column=2, value=value)
+
+        workbook.save(file_path)
+
+        logger.info(
+            "xlwings.conf sheet has been added and configured successfully in '%s'.",
+            file_path)
+
+    except Exception as e:
+        logger.info("An error occurred while modifying the Excel file: %s", e)
 
 
 class ExcelHandler:
@@ -33,6 +75,7 @@ class ExcelHandler:
                 self.app = xw.App(visible=True)
 
             for book in self.app.books:
+                book
                 if book.fullname == excel_abs_path:
                     self.wb = book
 
@@ -43,13 +86,22 @@ class ExcelHandler:
 
             self.wb.save()
 
+        except Exception as e:
+            logger.error("Error openning excel file with xlwings : %s",
+                         e,
+                         exc_info=True)
+
+        try:
+
             self.wb_openpyxl = openpyxl.load_workbook(excel_abs_path,
                                                       keep_vba=True)
 
             self.excel_abs_path = excel_abs_path
 
         except Exception as e:
-            logger.error("Error openning excel file : %s", e)
+            logger.error("Error openning excel file with openpyxl : %s",
+                         e,
+                         exc_info=True)
 
     @time_execution
     def load_excel_xlwings(self, excel_abs_path: str) -> None:
@@ -182,20 +234,18 @@ class ExcelHandler:
             return False
 
     def get_all_sheets(self) -> List[str]:
-        """_summary_
+        """Get all sheet names using openpyxl.
 
         Returns:
-            List[str]: _description_
+            List[str]: A list of sheet names.
         """
-
         try:
-            sheet_names = [sheet.name for sheet in self.wb.sheets]
+            sheet_names = self.wb_openpyxl.sheetnames
 
             return sheet_names
 
         except Exception as e:
-
-            logger.error("Erreur while getting sheet name's : %s", e)
+            logger.error("Error while getting sheet names: %s", e)
 
             return []
 
@@ -271,7 +321,7 @@ class ExcelHandler:
 
             return False
 
-        except Exception as e:
+        except Exception:
 
             return True
 
@@ -321,48 +371,4 @@ class ExcelHandler:
 
         except Exception:
 
-            return False
-
-    def cell_contains_signature(self, sheet_name: str,
-                                cell_address: str) -> bool:
-        """
-        Vérifie si la cellule spécifiée contient une signature (image ou objet).
-
-        Args:
-            sheet_name (str): Le nom de la feuille Excel.
-            cell_address (str): L'adresse de la cellule (par exemple, 'A20').
-
-        Returns:
-            bool: True si la cellule contient une signature, False sinon.
-        """
-        try:
-            sheet = self.wb.sheets[sheet_name]
-            cell = sheet.range(cell_address)
-
-            cell_left = cell.left
-            cell_top = cell.top
-            cell_right = cell_left + cell.width
-            cell_bottom = cell_top + cell.height
-
-            for shape in sheet.shapes:
-
-                if shape.type == 'Picture':
-
-                    shape_left = shape.left
-                    shape_top = shape.top
-                    shape_right = shape_left + shape.width
-                    shape_bottom = shape_top + shape.height
-
-                    if not (shape_right < cell_left or shape_left > cell_right
-                            or shape_bottom < cell_top
-                            or shape_top > cell_bottom):
-
-                        return True
-
-            return False
-
-        except Exception as e:
-            logger.error(
-                "Erreur lors de la vérification de la signature dans la cellule : %s",
-                e)
             return False

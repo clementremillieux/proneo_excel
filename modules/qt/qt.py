@@ -1,6 +1,9 @@
 import sys
 import os
 import shutil
+import platform
+import subprocess
+
 from typing import Dict, List, Optional
 
 from PyQt5.QtWidgets import (QMainWindow, QLabel, QVBoxLayout, QWidget,
@@ -15,12 +18,14 @@ from PyQt5.QtCore import (QThread, pyqtSignal, Qt, QFileSystemWatcher,
 from PyQt5.QtGui import QPainter, QColor, QBrush
 
 from modules.condition.schemas import CellsConditionReport, CellsConditionState
+from modules.excel.excel import add_xlwings_conf_sheet
 from modules.params.schemas import AppParams
 from modules.performances.time_counter import time_execution
 from modules.report import report_instance
 from modules.checker.checker import Checker
 from modules.condition import CELLS_CONDITIONS
 from modules.report.schemas import UIReportCell
+
 from modules.excel import excel_handler
 from modules.utils.utils import get_current_date_hour
 
@@ -302,8 +307,9 @@ class MainWindow(QMainWindow):
         """
         try:
             self.on_worker_finished()
+
             self.refresh_tabs(report_ui)
-            # self.status.setText("Status: OK")
+
         except Exception as e:
             self.error_stack_status += "\n" + str(e)
 
@@ -314,27 +320,28 @@ class MainWindow(QMainWindow):
     def create_new_excel(self):
         """Create a new Excel file by copying an existing one."""
         try:
-            new_file_name, ok = QInputDialog.getText(
-                self, "New Excel (xlsm)",
-                "Enter the file name (without extension):")
 
-            if ok and new_file_name:
-                new_file_name = f"{new_file_name}.xlsm"
+            desktop_path = QStandardPaths.writableLocation(
+                QStandardPaths.DesktopLocation)
+
+            file_name, _ = QFileDialog.getSaveFileName(
+                self, "Save the new Excel file", desktop_path,
+                "Excel Files (*.xlsm)")
+
+            if file_name:
+                if not file_name.lower().endswith('.xlsm'):
+                    file_name += '.xlsm'
 
                 source_file_path = AppParams().excel_abs_path
 
-                desktop_path = QStandardPaths.writableLocation(
-                    QStandardPaths.DesktopLocation)
+                shutil.copy(source_file_path, file_name)
 
-                destination_file_path = os.path.join(desktop_path,
-                                                     new_file_name)
-
-                shutil.copy(source_file_path, destination_file_path)
+                add_xlwings_conf_sheet(file_path=file_name)
 
                 self.file_path_label.setText(
-                    f"Configuring file {destination_file_path} ...")
+                    f"Configuring the file {file_name} ...")
 
-                excel_handler.load_excel(excel_abs_path=destination_file_path)
+                excel_handler.load_excel(excel_abs_path=file_name)
 
                 self.setup_file_watcher()
 
@@ -343,12 +350,9 @@ class MainWindow(QMainWindow):
                 self.start_worker()
 
         except Exception as e:
-            self.error_stack_status += "\n" + "Error creating new file => " + str(
-                e)
-
+            self.error_stack_status += "\n" + f"Error creating new file => {str(e)}"
             self.status.setText(f"Status: {str(self.error_stack_status)}")
-
-            logger.error("QT => Failed to create new Excel: %s", str(e))
+            logger.error("Failed to create new Excel file: %s", str(e))
 
     def load_excel_file(self):
         """Open a file dialog to load an Excel file."""

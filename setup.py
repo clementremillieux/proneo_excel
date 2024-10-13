@@ -1,8 +1,9 @@
 from setuptools import setup
 
 APP = ['excel.py']
+
 DATA_FILES = [
-    ('data', ['data/Plan et Rapport d\'audit certification V32.xlsm']),
+    ('data', ['data/Plan et Rapport d\'audit certification V33.xlsm']),
 ]
 
 OPTIONS = {

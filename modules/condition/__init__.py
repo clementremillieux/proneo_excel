@@ -7,7 +7,7 @@ from modules.condition.condition import (
     ConditionAtLeastOneCheckBoxAmongList, ConditionCheckAllSheetDropDown,
     ConditionCheckAllSheetReference, ConditionDateSup,
     ConditionDateDurationBetween, ConditionHasNc, ConditionHasToBeChecked,
-    ConditionHasToBeSigned, ConditionHasToBeValues,
+     ConditionHasToBeValues,
     ConditionIsNCFromCellNumber, ConditionIsNCFromCellText,
     ConditionIsNcMajFromCellNumber, ConditionNcAllJChoosed,
     ConditionOneCheckBoxAmongList, ConditionHasToBeFilled)

@@ -730,49 +730,6 @@ class ConditionOneByChecked(Condition):
                                     report_str="")
 
 
-class ConditionHasToBeSigned(Condition):
-    """_summary_
-
-    Args:
-        Condition (_type_): _description_
-    """
-
-    cell: BoxToCheck
-
-    def __init__(self, cell: BoxToCheck, is_parent_condition: bool) -> None:
-        """Initialize the ConditionDateSup with start and stop dates."""
-
-        super().__init__(condition_type=ConditionType.CELL_HAS_TO_BE_FILLED,
-                         is_parent_condition=is_parent_condition,
-                         cells_list=[cell])
-
-        self.cell: BoxToCheck = cell
-
-    def check(self) -> CellsConditionReport:
-
-        if not excel_handler.cell_contains_signature(
-                sheet_name=self.cell.sheet_name,
-                cell_address=self.cell.cell_address):
-            results: bool = False
-
-        else:
-            results = True
-
-        state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
-
-        if state == CellsConditionState.NOT_OK:
-            report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] doit contenir une signature"
-
-        else:
-            report_str = f"La cellule {self.cell.cell_address} [{self.cell.sheet_name}] contient une signature"
-
-        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
-                                            state=state,
-                                            report_str=report_str)
-
-        return cells_report
-
-
 class ConditionHasToBeValues(Condition):
     """_summary_
 
