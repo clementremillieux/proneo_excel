@@ -2,6 +2,7 @@ import sys
 import os
 import shutil
 
+import time
 from typing import Dict, List, Optional
 
 from PyQt5.QtWidgets import (QMainWindow, QLabel, QVBoxLayout, QWidget,
@@ -52,15 +53,24 @@ class Worker(QThread):
             Dict[str, List[UIReportCell]]: The report data for the UI.
         """
 
-        excel_handler.load_openpyxl(
-            excel_abs_path=excel_handler.excel_abs_path)
+        try:
 
-        cells_condition_report: List[
-            CellsConditionReport] = checker.check_cells_conditions()
 
-        report_instance.cells_condition_report = cells_condition_report
+            excel_handler.load_openpyxl(
+                excel_abs_path=excel_handler.excel_abs_path)
+            
 
-        report_ui: Dict[str, List[UIReportCell]] = report_instance.get_report()
+            cells_condition_report: List[
+                CellsConditionReport] = checker.check_cells_conditions()
+
+            report_instance.cells_condition_report = cells_condition_report
+
+            report_ui: Dict[str, List[UIReportCell]] = report_instance.get_report()
+
+            excel_handler.wb_openpyxl.close()
+        
+        except Exception as e:
+            logger.error(e, exc_info=True)
 
         return report_ui
 
@@ -287,7 +297,7 @@ class MainWindow(QMainWindow):
 
         self.error_stack_status += "\n" + error_message
 
-        logger.error("QT => Worker error: %s", error_message)
+        logger.error("QT => Worker error: %s", error_message, exc_info=True)
 
         self.status.setText(f"Status: {self.error_stack_status}")
 
@@ -331,6 +341,8 @@ class MainWindow(QMainWindow):
 
                 source_file_path = AppParams().excel_abs_path
 
+                time.sleep(5)
+
                 shutil.copy(source_file_path, file_name)
 
                 add_xlwings_conf_sheet(file_path=file_name)
@@ -349,7 +361,7 @@ class MainWindow(QMainWindow):
         except Exception as e:
             self.error_stack_status += "\n" + f"Error creating new file => {str(e)}"
             self.status.setText(f"Status: {str(self.error_stack_status)}")
-            logger.error("Failed to create new Excel file: %s", str(e))
+            logger.error("Failed to create new Excel file: %s", str(e), exc_info=True)
 
     def load_excel_file(self):
         """Open a file dialog to load an Excel file."""
@@ -395,7 +407,7 @@ class MainWindow(QMainWindow):
             self.file_watcher.removePath(excel_handler.excel_abs_path)
             self.file_watcher.deleteLater()
             self.file_watcher = None
-
+        logger.error(excel_handler.excel_abs_path)
         self.file_watcher = QFileSystemWatcher()
         self.file_watcher.addPath(excel_handler.excel_abs_path)
         self.file_watcher.fileChanged.connect(self.on_excel_file_changed)

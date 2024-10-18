@@ -3,6 +3,7 @@ import os
 
 from datetime import datetime
 
+import time
 from typing import List, Optional
 
 import openpyxl
@@ -34,6 +35,8 @@ def add_xlwings_conf_sheet(file_path: str):
 
         xlwings_conf_sheet.sheet_state = 'hidden'
 
+        folder_path = 'C:/Users/Remillieux/OneDrive - TowardsChange'
+
         config_data = [["ONEDRIVE_CONSUMER_MAC", folder_path],
                        ["ONEDRIVE_COMMERCIAL_MAC", folder_path],
                        ["SHAREPOINT_MAC", folder_path],
@@ -45,6 +48,8 @@ def add_xlwings_conf_sheet(file_path: str):
             xlwings_conf_sheet.cell(row=row_index, column=1, value=key)
             xlwings_conf_sheet.cell(row=row_index, column=2, value=value)
 
+        logger.warning(file_path)
+
         workbook.save(file_path)
 
         logger.info(
@@ -52,6 +57,8 @@ def add_xlwings_conf_sheet(file_path: str):
             file_path)
 
         workbook.close()
+
+        time.sleep(5)
 
     except Exception as e:
         logger.info("An error occurred while modifying the Excel file: %s", e)
@@ -68,11 +75,23 @@ class ExcelHandler:
     def load_excel(self, excel_abs_path: str) -> None:
         """_summary_
         """
+        try:
+            self.wb_openpyxl.close()
+
+            logger.warning("WB file closed")
+
+
+        except Exception as e:
+            logger.warning(e)
+
+        time.sleep(5)
+
+        logger.warning(excel_abs_path)
 
         try:
 
             self.wb_openpyxl = openpyxl.load_workbook(excel_abs_path,
-                                                      keep_vba=True)
+                                                      keep_vba=True, read_only=True)
 
             self.excel_abs_path = excel_abs_path
 
@@ -138,28 +157,23 @@ class ExcelHandler:
         """_summary_
         """
 
+        try:
+            self.wb_openpyxl.close()
+
+            logger.warning("WB file closed")
+
+
+        except Exception as e:
+            logger.warning(e)
+
+        time.sleep(5)
+
+        logger.warning(excel_abs_path)
+
         self.wb_openpyxl = openpyxl.load_workbook(excel_abs_path,
                                                   keep_vba=True)
 
         self.excel_abs_path = excel_abs_path
-
-        try:
-            self.app = xw.apps.active
-
-            if self.app is None:
-                self.app = xw.App(visible=True)
-
-            for book in self.app.books:
-                if book.fullname == excel_abs_path:
-                    self.wb = book
-
-                    break
-            else:
-
-                self.wb = self.app.books.open(excel_abs_path)
-
-        except Exception as e:
-            logger.error("Error openning openpy excel file : %s", e)
 
     def read_cell_value(self, sheet_name: str, cell_address: str) -> str:
         """_summary_
@@ -264,19 +278,19 @@ class ExcelHandler:
         #     self.load_excel_xlwings(excel_abs_path=self.excel_abs_path)
 
         try:
-            self.app = xw.apps.active
+            # self.app = xw.apps.active
 
-            if self.app is None:
-                self.app = xw.App(visible=True)
+            # if self.app is None:
+            #     self.app = xw.App(visible=True)
 
-            for book in self.app.books:
-                if book.fullname == self.excel_abs_path:
-                    self.wb = book
+            # for book in self.app.books:
+            #     if book.fullname == self.excel_abs_path:
+            #         self.wb = book
 
-                    break
-            else:
+            #         break
+            # else:
 
-                self.wb = self.app.books.open(self.excel_abs_path)
+            #     self.wb = self.app.books.open(self.excel_abs_path)
 
             sheet = self.wb.sheets[sheet_name]
 
@@ -296,14 +310,19 @@ class ExcelHandler:
             bool: _description_
         """
 
-        ws = self.wb_openpyxl[sheet_name]
+        try:
 
-        cell = ws[cell_adress]
+            ws = self.wb_openpyxl[sheet_name]
 
-        for dv in ws.data_validations.dataValidation:
-            if cell.coordinate in dv.cells:
+            cell = ws[cell_adress]
 
-                return True
+            for dv in ws.data_validations.dataValidation:
+                if cell.coordinate in dv.cells:
+
+                    return True
+                
+        except Exception as e:
+            pass
 
         return False
 
