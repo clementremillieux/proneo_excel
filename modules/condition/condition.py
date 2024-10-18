@@ -1111,38 +1111,38 @@ class ConditionCheckAllSheetDropDown(Condition):
 
                 if not excel_handler.is_merged(
                         sheet_name=SheetName.SHEET_5.value,
-                        cell_adress=f"J{row}"):
+                        cell_address=f"J{row}"):
                     current_j_value = excel_handler.read_cell_value(
                         sheet_name=SheetName.SHEET_5.value,
                         cell_address=f"J{row}")
 
-                cell_adress = f"{column}{row}"
+                cell_address = f"{column}{row}"
 
                 if current_j_value in [
                         "Non-conformité mineure", "Non-conformité majeure",
                         "Conformité", "None"
                 ] or current_j_value is None:
 
-                    if not excel_handler.is_line_hidden(
-                            sheet_name=self.sheet_name, cell_adress=cell_adress
+                    if not excel_handler.is_row_hidden(
+                            sheet_name=self.sheet_name, cell_address=cell_address
                     ) and not excel_handler.is_column_hidden(
                             sheet_name=self.sheet_name,
-                            cell_adress=cell_adress):
+                            cell_address=cell_address):
 
                         if excel_handler.is_drop_down(
                                 sheet_name=self.sheet_name,
-                                cell_adress=cell_adress):
+                                cell_address=cell_address):
                             cell = BoxToCheck(
                                 sheet_name=SheetName.SHEET_5.value,
-                                cell_address=cell_adress,
+                                cell_address=cell_address,
                             )
 
                             if not cell.get_value():
 
-                                if cell_adress in self.no_na_cells.keys():
+                                if cell_address in self.no_na_cells.keys():
 
                                     for adress_to_check in self.no_na_cells[
-                                            cell_adress]:
+                                            cell_address]:
                                         box_to_check = CheckBoxToCheck(
                                             sheet_name=SheetName.SHEET_2.value,
                                             checkbox_name=adress_to_check,
@@ -1150,14 +1150,14 @@ class ConditionCheckAllSheetDropDown(Condition):
                                             checkbox_params=checkbox_params)
 
                                         if box_to_check.get_value():
-                                            report_str = f"La valeur choisie pour la cellule {cell_adress} [{self.sheet_name}] doit être 'Oui' ou 'Non' car la checkbox {adress_to_check} [{SheetName.SHEET_2.value}] est cochée"
+                                            report_str = f"La valeur choisie pour la cellule {cell_address} [{self.sheet_name}] doit être 'Oui' ou 'Non' car la checkbox {adress_to_check} [{SheetName.SHEET_2.value}] est cochée"
 
                                             break
 
-                                        report_str = f"Une valeur doit être choisie pour la cellule {cell_adress} [{self.sheet_name}]"
+                                        report_str = f"Une valeur doit être choisie pour la cellule {cell_address} [{self.sheet_name}]"
 
                                 else:
-                                    report_str = f"Une valeur doit être choisie pour la cellule {cell_adress} [{self.sheet_name}]"
+                                    report_str = f"Une valeur doit être choisie pour la cellule {cell_address} [{self.sheet_name}]"
 
                                 self.cells_list = [cell]
 
@@ -1167,9 +1167,9 @@ class ConditionCheckAllSheetDropDown(Condition):
                                         state=CellsConditionState.NOT_OK,
                                         report_str=report_str))
 
-                            elif cell_adress in self.no_na_cells.keys():
+                            elif cell_address in self.no_na_cells.keys():
                                 for adress_to_check in self.no_na_cells[
-                                        cell_adress]:
+                                        cell_address]:
                                     box_to_check = CheckBoxToCheck(
                                         sheet_name=SheetName.SHEET_2.value,
                                         checkbox_name=adress_to_check,
@@ -1177,7 +1177,7 @@ class ConditionCheckAllSheetDropDown(Condition):
                                         checkbox_params=checkbox_params)
 
                                     if cell.get_value() not in ["Oui", "Non"]:
-                                        report_str = f"La valeur choisie pour la cellule {cell_adress} [{self.sheet_name}] doit être 'Oui' ou 'Non'"
+                                        report_str = f"La valeur choisie pour la cellule {cell_address} [{self.sheet_name}] doit être 'Oui' ou 'Non'"
 
                                         self.cells_list = [cell]
 
@@ -1202,7 +1202,7 @@ class ConditionCheckAllSheetDropDown(Condition):
                                         condition=copy.deepcopy(self),
                                         state=CellsConditionState.NOT_OK,
                                         report_str=
-                                        f"La cellule J{row} ne peut pas être conforme car la cellule {cell_adress} [{self.sheet_name}] est Non"
+                                        f"La cellule J{row} ne peut pas être conforme car la cellule {cell_address} [{self.sheet_name}] est Non"
                                     ))
 
         return cells_reports
@@ -1276,16 +1276,16 @@ def get_references_cells() -> List[str]:
     references_cells: List[str] = []
 
     is_l_column_hidden: bool = excel_handler.is_column_hidden(
-        sheet_name=SheetName.SHEET_5.value, cell_adress="L4")
+        sheet_name=SheetName.SHEET_5.value, cell_address="L4")
 
     is_n_column_hidden: bool = excel_handler.is_column_hidden(
-        sheet_name=SheetName.SHEET_5.value, cell_adress="N4")
+        sheet_name=SheetName.SHEET_5.value, cell_address="N4")
 
     is_p_column_hidden: bool = excel_handler.is_column_hidden(
-        sheet_name=SheetName.SHEET_5.value, cell_adress="P4")
+        sheet_name=SheetName.SHEET_5.value, cell_address="P4")
 
     is_r_column_hidden: bool = excel_handler.is_column_hidden(
-        sheet_name=SheetName.SHEET_5.value, cell_adress="R4")
+        sheet_name=SheetName.SHEET_5.value, cell_address="R4")
 
     current_j_value: Optional[str] = None
 
@@ -1300,7 +1300,7 @@ def get_references_cells() -> List[str]:
     for row in range(START_LINE_REPORT_AUDIT, NB_LINE_REPORT_AUDIT):
 
         if not excel_handler.is_merged(sheet_name=SheetName.SHEET_5.value,
-                                       cell_adress=f"J{row}"):
+                                       cell_address=f"J{row}"):
 
             current_j_value = excel_handler.read_cell_value(
                 sheet_name=SheetName.SHEET_5.value, cell_address=f"J{row}")
@@ -1326,8 +1326,8 @@ def get_references_cells() -> List[str]:
             cell_value: Optional[str] = excel_handler.read_cell_value(
                 sheet_name=SheetName.SHEET_5.value, cell_address=cell)
 
-            if cell_value and "Références" in cell_value and not excel_handler.is_line_hidden(
-                    sheet_name=SheetName.SHEET_5.value, cell_adress=cell):
+            if cell_value and "Références" in cell_value and not excel_handler.is_row_hidden(
+                    sheet_name=SheetName.SHEET_5.value, cell_address=cell):
                 if not is_l_column_hidden and current_b_value and current_b_value.lower(
                 ) == "x":
                     references_cells.append(f"L{row}")
@@ -1344,8 +1344,8 @@ def get_references_cells() -> List[str]:
                 ) == "x":
                     references_cells.append(f"R{row}")
 
-            if cell_value and "Description" in cell_value and not excel_handler.is_line_hidden(
-                    sheet_name=SheetName.SHEET_5.value, cell_adress=cell):
+            if cell_value and "Description" in cell_value and not excel_handler.is_row_hidden(
+                    sheet_name=SheetName.SHEET_5.value, cell_address=cell):
                 if not is_l_column_hidden and current_b_value and current_b_value.lower(
                 ) == "x":
                     references_cells.append(f"L{row}")
@@ -1389,11 +1389,11 @@ def count_nc_min() -> int:
     counter_nc_min: int = 0
 
     for row in range(START_LINE_REPORT_AUDIT, NB_LINE_REPORT_AUDIT):
-        cell_adress = f"J{row}"
+        cell_address = f"J{row}"
 
         cell = BoxToCheck(
             sheet_name=SheetName.SHEET_5.value,
-            cell_address=cell_adress,
+            cell_address=cell_address,
         )
 
         try:
@@ -1421,11 +1421,11 @@ def count_nc_maj() -> int:
     counter_nc_maj: int = 0
 
     for row in range(START_LINE_REPORT_AUDIT, NB_LINE_REPORT_AUDIT):
-        cell_adress = f"J{row}"
+        cell_address = f"J{row}"
 
         cell = BoxToCheck(
             sheet_name=SheetName.SHEET_5.value,
-            cell_address=cell_adress,
+            cell_address=cell_address,
         )
 
         try:
@@ -1477,11 +1477,11 @@ def count_not_none_in_nc_j() -> int:
     counter_nc_not_none: int = 0
 
     for row in range(START_LINE_REPORT_AUDIT, NB_LINE_REPORT_AUDIT):
-        cell_adress = f"J{row}"
+        cell_address = f"J{row}"
 
         cell = BoxToCheck(
             sheet_name=SheetName.SHEET_5.value,
-            cell_address=cell_adress,
+            cell_address=cell_address,
         )
 
         try:

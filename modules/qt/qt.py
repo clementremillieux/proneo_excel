@@ -52,15 +52,21 @@ class Worker(QThread):
             Dict[str, List[UIReportCell]]: The report data for the UI.
         """
 
-        excel_handler.load_openpyxl(
-            excel_abs_path=excel_handler.excel_abs_path)
+        try:
 
-        cells_condition_report: List[
-            CellsConditionReport] = checker.check_cells_conditions()
+            excel_handler.load_excel(
+                excel_abs_path=excel_handler.excel_abs_path)
 
-        report_instance.cells_condition_report = cells_condition_report
+            cells_condition_report: List[
+                CellsConditionReport] = checker.check_cells_conditions()
 
-        report_ui: Dict[str, List[UIReportCell]] = report_instance.get_report()
+            report_instance.cells_condition_report = cells_condition_report
+
+            report_ui: Dict[str, List[UIReportCell]] = report_instance.get_report()
+
+
+        except Exception as e:
+            logger.error(e, exc_info=True)
 
         return report_ui
 

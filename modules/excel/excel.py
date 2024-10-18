@@ -1,8 +1,10 @@
 """_summary_"""
 import os
+import shutil
 
 from datetime import datetime
 
+import time
 from typing import List, Optional
 
 import openpyxl
@@ -51,105 +53,34 @@ def add_xlwings_conf_sheet(file_path: str):
             "xlwings.conf sheet has been added and configured successfully in '%s'.",
             file_path)
 
-        workbook.close()
+        # workbook.close()
+
+
+        time.sleep(5)
 
     except Exception as e:
         logger.info("An error occurred while modifying the Excel file: %s", e)
 
-
 class ExcelHandler:
-    """_summary_"""
+    """Handles interaction with Excel files using xlwings."""
 
     def __init__(self) -> None:
-
         self.excel_abs_path: Optional[str] = None
+        self.app: Optional[xw.App] = None
+        self.wb: Optional[xw.Book] = None
 
     @time_execution
     def load_excel(self, excel_abs_path: str) -> None:
-        """_summary_
-        """
-
+        """Loads an Excel file with xlwings."""
         try:
-
-            self.wb_openpyxl = openpyxl.load_workbook(excel_abs_path,
-                                                      keep_vba=True)
-
             self.excel_abs_path = excel_abs_path
-
-        except Exception as e:
-            logger.error("Error openning excel file with openpyxl : %s",
-                         e,
-                         exc_info=True)
-
-        try:
-
             self.app = xw.apps.active
 
             if self.app is None:
                 self.app = xw.App(visible=True)
 
             for book in self.app.books:
-                book
-                if book.fullname == excel_abs_path:
-                    self.wb = book
-
-                    break
-            else:
-
-                self.wb = self.app.books.open(excel_abs_path)
-
-            self.wb.save()
-
-        except Exception as e:
-            logger.error("Error openning excel file with xlwings : %s",
-                         e,
-                         exc_info=True)
-
-    @time_execution
-    def load_excel_xlwings(self, excel_abs_path: str) -> None:
-        """_summary_
-        """
-
-        try:
-
-            self.app = xw.apps.active
-
-            if self.app is None:
-                self.app = xw.App(visible=True)
-
-            for book in self.app.books:
-                if book.fullname == excel_abs_path:
-                    self.wb = book
-
-                    break
-            else:
-
-                self.wb = self.app.books.open(excel_abs_path)
-
-            self.wb.save()
-
-            self.excel_abs_path = excel_abs_path
-
-        except Exception as e:
-            logger.error("Error openning excel xlwings file : %s", e)
-
-    @time_execution
-    def load_openpyxl(self, excel_abs_path: str) -> None:
-        """_summary_
-        """
-
-        self.wb_openpyxl = openpyxl.load_workbook(excel_abs_path,
-                                                  keep_vba=True)
-
-        self.excel_abs_path = excel_abs_path
-
-        try:
-            self.app = xw.apps.active
-
-            if self.app is None:
-                self.app = xw.App(visible=True)
-
-            for book in self.app.books:
+       
                 if book.fullname == excel_abs_path:
                     self.wb = book
 
@@ -159,218 +90,98 @@ class ExcelHandler:
                 self.wb = self.app.books.open(excel_abs_path)
 
         except Exception as e:
-            logger.error("Error openning openpy excel file : %s", e)
+            logger.error("Error opening Excel file with xlwings: %s", e, exc_info=True)
 
     def read_cell_value(self, sheet_name: str, cell_address: str) -> str:
-        """_summary_
-
-        Args:
-            sheet_name (str): _description_
-            cells_address (str): _description_
-
-        Returns:
-            str: _description_
-        """
-
+        """Reads the value from a specific cell."""
         try:
-
-            ws = self.wb_openpyxl[sheet_name]
-
-            cells_value = ws[cell_address].value
-
-            return cells_value
+            sheet = self.wb.sheets[sheet_name]
+            cell_value = sheet.range(cell_address).value
+            return cell_value
 
         except Exception as e:
-            logger.error("Error reading cells : %s", e)
-
+            logger.error("Error reading cell: %s", e)
             return ""
 
-    def read_cell_date_value(self, sheet_name: str,
-                             cell_address: str) -> datetime:
-        """_summary_
-
-        Args:
-            sheet_name (str): _description_
-            cells_address (str): _description_
-
-        Returns:
-            str: _description_
-        """
-
+    def read_cell_date_value(self, sheet_name: str, cell_address: str) -> datetime:
+        """Reads the value of a specific cell and returns it as a datetime."""
         try:
-
-            ws = self.wb_openpyxl[sheet_name]
-
-            cells_value: datetime = ws[cell_address].value
-
-            return cells_value
+            sheet = self.wb.sheets[sheet_name]
+            cell_value: datetime = sheet.range(cell_address).value
+            return cell_value
 
         except Exception as e:
-            logger.error("Error reading cell date : %s", e)
-
+            logger.error("Error reading cell date: %s", e)
             return datetime.min
 
     def get_checkbox_state(self, sheet_name: str, cell_address: str) -> bool:
-        """
-        Vérifie l'état d'une case à cocher dans un fichier Excel.
-
-        Args:
-        checkbox_params (CheckboxParams): Paramètres de la case à cocher
-        checkbox_name (str): Nom de la case à cocher
-
-        Returns:
-        bool: True si la case est cochée, False sinon
-        """
-
+        """Checks if a checkbox is checked."""
         try:
-
-            ws = self.wb_openpyxl[sheet_name]
-
-            cells_value: bool = ws[cell_address].value
-
-            return cells_value
+            sheet = self.wb.sheets[sheet_name]
+            checkbox_value: bool = sheet.range(cell_address).value
+            return checkbox_value
 
         except Exception as e:
-            logger.error("Error reading cells : %s", e)
-
+            logger.error("Error reading checkbox state: %s", e)
             return False
 
     def get_all_sheets(self) -> List[str]:
-        """Get all sheet names using openpyxl.
-
-        Returns:
-            List[str]: A list of sheet names.
-        """
+        """Gets all sheet names in the workbook."""
         try:
-            sheet_names = self.wb_openpyxl.sheetnames
-
+            sheet_names = [sheet.name for sheet in self.wb.sheets]
             return sheet_names
 
         except Exception as e:
-            logger.error("Error while getting sheet names: %s", e)
-
+            logger.error("Error getting sheet names: %s", e)
             return []
 
     def go_to_sheet_and_cell(self, sheet_name: str, cell_address: str) -> None:
-        """
-        Active la feuille spécifiée et sélectionne la cellule spécifiée.
-
-        Args:
-            sheet_name (str): Le nom de la feuille à activer.
-            cell_address (str): L'adresse de la cellule à sélectionner (par exemple, "E34").
-        """
-
-        # if self.excel_abs_path:
-        #     self.load_excel_xlwings(excel_abs_path=self.excel_abs_path)
-
+        """Activates a sheet and selects a specific cell."""
         try:
-            self.app = xw.apps.active
-
-            if self.app is None:
-                self.app = xw.App(visible=True)
-
-            for book in self.app.books:
-                if book.fullname == self.excel_abs_path:
-                    self.wb = book
-
-                    break
-            else:
-
-                self.wb = self.app.books.open(self.excel_abs_path)
-
+            self.load_excel(excel_abs_path=self.excel_abs_path)
             sheet = self.wb.sheets[sheet_name]
-
             sheet.activate()
-
             sheet.range(cell_address).select()
 
         except Exception as e:
-            logger.error(
-                "Erreur lors de la navigation vers %s dans la feuille %s : %s",
-                cell_address, sheet_name, e)
+            logger.error("Error navigating to %s in sheet %s: %s", cell_address, sheet_name, e)
 
-    def is_drop_down(self, sheet_name: str, cell_adress: str) -> bool:
-        """_summary_
-
-        Returns:
-            bool: _description_
-        """
-
-        ws = self.wb_openpyxl[sheet_name]
-
-        cell = ws[cell_adress]
-
-        for dv in ws.data_validations.dataValidation:
-            if cell.coordinate in dv.cells:
-
-                return True
-
-        return False
-
-    def is_merged(self, sheet_name: str, cell_adress: str) -> bool:
-        """_summary_
-
-        Returns:
-            bool: _description_
-        """
-
+    def is_merged(self, sheet_name: str, cell_address: str) -> bool:
+        """Checks if a cell is part of a merged range."""
         try:
-            ws = self.wb_openpyxl[sheet_name]
+            sheet = self.wb.sheets[sheet_name]
+            cell = sheet.range(cell_address)
+            return cell.merge_cells
 
-            cell = ws[cell_adress]
-
-            cell.column_letter
+        except Exception as e:
+            logger.error("Error reading merged state: %s", e)
 
             return False
 
-        except Exception:
-
-            return True
-
-    def is_column_hidden(self, sheet_name: str, cell_adress: str) -> bool:
-        """_summary_
-
-        Returns:
-            bool: _description_
-        """
-
+    def is_column_hidden(self, sheet_name: str, cell_address: str) -> bool:
+        """Checks if the column is hidden cross-platform (Windows and Mac)."""
         try:
-            ws = self.wb_openpyxl[sheet_name]
+            sheet = self.wb.sheets[sheet_name]
+            column = cell_address[0]  # Get the column letter
 
-            cell = ws[cell_adress]
+            # Check if the column width is 0, which means it is hidden
+            column_width = sheet.range(f'{column}:{column}').column_width
+            return column_width == 0
 
-            column_letter = cell.column_letter
-
-            if ws.column_dimensions[column_letter].hidden:
-
-                return True
-
+        except Exception as e:
+            logger.error(f"Error reading column hidden state: {e}")
             return False
 
-        except Exception:
-
-            return False
-
-    def is_line_hidden(self, sheet_name: str, cell_adress: str) -> bool:
-        """_summary_
-
-        Returns:
-            bool: _description_
-        """
-
+    def is_row_hidden(self, sheet_name: str, cell_address: str) -> bool:
+        """Checks if the row is hidden cross-platform (Windows and Mac)."""
         try:
-            ws = self.wb_openpyxl[sheet_name]
+            sheet = self.wb.sheets[sheet_name]
+            row = int(cell_address[1:])  # Get the row number
 
-            cell = ws[cell_adress]
+            # Check if the row height is 0, which means it is hidden
+            row_height = sheet.range(f'{row}:{row}').row_height
+            return row_height == 0
 
-            row_number = cell.row
-
-            if ws.row_dimensions[row_number].hidden:
-
-                return True
-
-            return False
-
-        except Exception:
-
+        except Exception as e:
+            logger.error(f"Error reading row hidden state: {e}")
             return False
