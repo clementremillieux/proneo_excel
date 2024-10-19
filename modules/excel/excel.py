@@ -3,6 +3,8 @@ import os
 
 from datetime import datetime
 
+
+import time
 from typing import List, Optional
 
 import openpyxl
@@ -16,32 +18,6 @@ from config.logger_config import logger
 from modules.performances.time_counter import time_execution
 
 
-def find_onedrive_root(file_path: str) -> str:
-    """
-    Find the root directory of OneDrive in the given file path.
-
-    Args:
-        file_path (str): The full path to the file.
-
-    Returns:
-        str: The root directory of OneDrive if found, otherwise an empty string.
-    """
-
-    path_parts = file_path.split(os.sep)
-
-    for index, part in enumerate(path_parts):
-        if "onedrive" in part.lower():
-
-            onedrive_root_folder = os.path.join(*path_parts[:index + 1])
-
-            logger.info(f"Detected OneDrive root: {onedrive_root_folder}")
-
-            return onedrive_root_folder
-
-    logger.warning("OneDrive root folder not found in the given file path.")
-    return ""
-
-
 def add_xlwings_conf_sheet(file_path: str):
     """
     Open an Excel file using openpyxl, create a hidden sheet named 'xlwings.conf',
@@ -52,14 +28,29 @@ def add_xlwings_conf_sheet(file_path: str):
     """
 
     try:
+        if "onedrive" not in file_path.lower():
+            return
+        
         workbook = openpyxl.load_workbook(file_path, keep_vba=True)
 
-        one_drive_root = find_onedrive_root(file_path)
+        one_drive_root = os.path.dirname(file_path)
+
+        while True:
+            logger.warning(one_drive_root.rsplit("/",1)[-1])
+            if "onedrive" not in one_drive_root.rsplit("/",1)[-1].lower():
+                one_drive_root = one_drive_root.rsplit("/",1)[0]
+            else:
+                break
+
+            if len(one_drive_root.rsplit("/",1)) < 2:
+                break
 
         xlwings_conf_sheet: Worksheet = workbook.create_sheet(
             title='xlwings.conf')
 
         xlwings_conf_sheet.sheet_state = 'hidden'
+
+        logger.warning(one_drive_root)
 
         config_data = [["ONEDRIVE_CONSUMER_MAC", one_drive_root],
                        ["ONEDRIVE_COMMERCIAL_MAC", one_drive_root],
@@ -76,10 +67,12 @@ def add_xlwings_conf_sheet(file_path: str):
         workbook.save(file_path)
 
         logger.info(
-            "xlwings.conf sheet has been added and configured successfully in '%s'.",
-            file_path)
+            "xlwings.conf [%s] sheet has been added and configured successfully in '%s'.",
+           one_drive_root, file_path)
 
         workbook.close()
+
+        time.sleep(10)
 
     except Exception as e:
         logger.info("An error occurred while modifying the Excel file: %s", e)
