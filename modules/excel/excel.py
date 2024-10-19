@@ -27,11 +27,18 @@ def find_onedrive_root(file_path: str) -> str:
         str: The root directory of OneDrive if found, otherwise an empty string.
     """
 
-    for part in file_path.split(os.sep):
-        if "OneDrive" in part:
-            return os.path.join(
-                *file_path.split(os.sep)[:file_path.split(os.sep).index(part) +
-                                         1])
+    path_parts = file_path.split(os.sep)
+
+    for index, part in enumerate(path_parts):
+        if "onedrive" in part.lower():
+
+            onedrive_root_folder = os.path.join(*path_parts[:index + 1])
+
+            logger.info(f"Detected OneDrive root: {onedrive_root_folder}")
+
+            return onedrive_root_folder
+
+    logger.warning("OneDrive root folder not found in the given file path.")
     return ""
 
 

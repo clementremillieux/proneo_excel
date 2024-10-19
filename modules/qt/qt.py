@@ -62,8 +62,8 @@ class Worker(QThread):
 
             report_instance.cells_condition_report = cells_condition_report
 
-            report_ui: Dict[str, List[UIReportCell]] = report_instance.get_report()
-
+            report_ui: Dict[str,
+                            List[UIReportCell]] = report_instance.get_report()
 
         except Exception as e:
             logger.error(e, exc_info=True)
