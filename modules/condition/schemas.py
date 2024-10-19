@@ -122,3 +122,15 @@ class CellsConditionReport(BaseModel):
         """_summary_"""
 
         arbitrary_types_allowed = True
+
+
+class ReportSheetCellState(BaseModel):
+    """_summary_
+
+    Args:
+        BaseModel (_type_): _description_
+    """
+
+    addresse: str
+
+    j_value: Optional[str]

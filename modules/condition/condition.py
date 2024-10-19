@@ -10,7 +10,7 @@ from typing import Dict, List, Optional
 
 from modules.cells.schemas import BoxToCheck, CheckBoxToCheck, DateToCheck
 
-from modules.condition.schemas import Condition, ConditionType, CellsConditionReport, CellsConditionState
+from modules.condition.schemas import Condition, ConditionType, CellsConditionReport, CellsConditionState, ReportSheetCellState
 
 from modules.excel import excel_handler
 
@@ -258,13 +258,13 @@ n'est pas remplies"
 
                 if results:
                     report_str = f"La durée de l'audit indiqué à la cellule {self.cell_duration.cell_address} [{self.cell_duration.sheet_name}]\
-     correspond aux dates de la cellule {self.cell_date_stop.cell_address} [{self.cell_date_stop.sheet_name}]\
-     et de la cellule {self.cell_date_start.cell_address} [{self.cell_date_start.sheet_name}]"
+ correspond aux dates de la cellule {self.cell_date_stop.cell_address} [{self.cell_date_stop.sheet_name}]\
+ et de la cellule {self.cell_date_start.cell_address} [{self.cell_date_start.sheet_name}]"
 
                 else:
-                    report_str = f"La durée l'audit indiqué à la cellule {self.cell_duration.cell_address} [{self.cell_duration.sheet_name}]\
-     ne correspond pas aux dates {self.cell_date_stop.cell_address} [{self.cell_date_stop.sheet_name}]\
-     et de la cellule {self.cell_date_start.cell_address} [{self.cell_date_start.sheet_name}]"
+                    report_str = f"La durée de l'audit indiqué à la cellule {self.cell_duration.cell_address} [{self.cell_duration.sheet_name}]\
+ ne correspond pas aux dates de la cellule {self.cell_date_stop.cell_address} [{self.cell_date_stop.sheet_name}]\
+ et de la cellule {self.cell_date_start.cell_address} [{self.cell_date_start.sheet_name}]"
 
             except Exception as e:
 
@@ -272,7 +272,7 @@ n'est pas remplies"
 
                 results = False
 
-                report_str = f"La valuer de la cellule {self.cell_duration.cell_address} [{self.cell_duration.sheet_name}] n'est pas un nombre"
+                report_str = f"La valeur de la cellule {self.cell_duration.cell_address} [{self.cell_duration.sheet_name}] n'est pas un nombre"
 
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
@@ -1068,7 +1068,7 @@ class ConditionNcAllJChoosed(Condition):
         return cells_report
 
 
-class ConditionCheckAllSheetDropDown(Condition):
+class ConditionCheckAllSheetReference(Condition):
     """_summary_
 
     Args:
@@ -1084,7 +1084,7 @@ class ConditionCheckAllSheetDropDown(Condition):
         """Initialize the ConditionDateSup with start and stop dates."""
 
         super().__init__(
-            condition_type=ConditionType.CHECK_ALL_SHEET_DROP_DOWN,
+            condition_type=ConditionType.CHECK_ALL_SHEET_REFERENCE,
             is_parent_condition=is_parent_condition,
             cells_list=[
                 BoxToCheck(
@@ -1100,164 +1100,105 @@ class ConditionCheckAllSheetDropDown(Condition):
     @time_execution
     def check(self) -> List[CellsConditionReport]:
 
-        report_str: str = ""
-
         cells_reports: List[CellsConditionReport] = []
 
-        current_j_value: Optional[str] = None
+        report_str: str = ""
 
-        for column in ["L", "M", "N", "O", "P", "Q", "R", "S"]:
-            for row in range(5, 186):
+        references_cells: List[ReportSheetCellState] = get_references_cells()
 
-                if not excel_handler.is_merged(
-                        sheet_name=SheetName.SHEET_5.value,
-                        cell_address=f"J{row}"):
-                    current_j_value = excel_handler.read_cell_value(
-                        sheet_name=SheetName.SHEET_5.value,
-                        cell_address=f"J{row}")
+        for cell_state in references_cells:
+            cell_address = cell_state.addresse
 
-                cell_address = f"{column}{row}"
+            if cell_address.startswith(("M", "O", "Q", "S")):
 
-                if current_j_value in [
-                        "Non-conformité mineure", "Non-conformité majeure",
-                        "Conformité", "None"
-                ] or current_j_value is None:
-
-                    if not excel_handler.is_row_hidden(
-                            sheet_name=self.sheet_name,
-                            cell_address=cell_address
-                    ) and not excel_handler.is_column_hidden(
-                            sheet_name=self.sheet_name,
-                            cell_address=cell_address):
-
-                        if excel_handler.is_drop_down(
-                                sheet_name=self.sheet_name,
-                                cell_address=cell_address):
-                            cell = BoxToCheck(
-                                sheet_name=SheetName.SHEET_5.value,
-                                cell_address=cell_address,
-                            )
-
-                            if not cell.get_value():
-
-                                if cell_address in self.no_na_cells.keys():
-
-                                    for adress_to_check in self.no_na_cells[
-                                            cell_address]:
-                                        box_to_check = CheckBoxToCheck(
-                                            sheet_name=SheetName.SHEET_2.value,
-                                            checkbox_name=adress_to_check,
-                                            cell_address=adress_to_check,
-                                            checkbox_params=checkbox_params)
-
-                                        if box_to_check.get_value():
-                                            report_str = f"La valeur choisie pour la cellule {cell_address} [{self.sheet_name}] doit être 'Oui' ou 'Non' car la checkbox {adress_to_check} [{SheetName.SHEET_2.value}] est cochée"
-
-                                            break
-
-                                        report_str = f"Une valeur doit être choisie pour la cellule {cell_address} [{self.sheet_name}]"
-
-                                else:
-                                    report_str = f"Une valeur doit être choisie pour la cellule {cell_address} [{self.sheet_name}]"
-
-                                self.cells_list = [cell]
-
-                                cells_reports.append(
-                                    CellsConditionReport(
-                                        condition=copy.deepcopy(self),
-                                        state=CellsConditionState.NOT_OK,
-                                        report_str=report_str))
-
-                            elif cell_address in self.no_na_cells.keys():
-                                for adress_to_check in self.no_na_cells[
-                                        cell_address]:
-                                    box_to_check = CheckBoxToCheck(
-                                        sheet_name=SheetName.SHEET_2.value,
-                                        checkbox_name=adress_to_check,
-                                        cell_address=adress_to_check,
-                                        checkbox_params=checkbox_params)
-
-                                    if cell.get_value() not in ["Oui", "Non"]:
-                                        report_str = f"La valeur choisie pour la cellule {cell_address} [{self.sheet_name}] doit être 'Oui' ou 'Non'"
-
-                                        self.cells_list = [cell]
-
-                                        cells_reports.append(
-                                            CellsConditionReport(
-                                                condition=copy.deepcopy(self),
-                                                state=CellsConditionState.
-                                                NOT_OK,
-                                                report_str=report_str))
-
-                                        break
-
-                            if excel_handler.read_cell_value(
-                                    sheet_name=SheetName.SHEET_5.value,
-                                    cell_address=cell.cell_address
-                            ) == "Non" and current_j_value == "Conformité":
-
-                                self.cells_list = [cell]
-
-                                cells_reports.append(
-                                    CellsConditionReport(
-                                        condition=copy.deepcopy(self),
-                                        state=CellsConditionState.NOT_OK,
-                                        report_str=
-                                        f"La cellule J{row} ne peut pas être conforme car la cellule {cell_address} [{self.sheet_name}] est Non"
-                                    ))
-
-        return cells_reports
-
-
-class ConditionCheckAllSheetReference(Condition):
-    """_summary_
-
-    Args:
-        Condition (_type_): _description_
-    """
-
-    sheet_name: str
-
-    def __init__(self, sheet_name: str, is_parent_condition: bool) -> None:
-        """Initialize the ConditionDateSup with start and stop dates."""
-
-        super().__init__(
-            condition_type=ConditionType.CHECK_ALL_SHEET_REFERENCE,
-            is_parent_condition=is_parent_condition,
-            cells_list=[
-                BoxToCheck(
+                cell_value = excel_handler.read_cell_value(
                     sheet_name=SheetName.SHEET_5.value,
-                    cell_address="L5",
+                    cell_address=cell_address)
+
+                cell = BoxToCheck(
+                    sheet_name=SheetName.SHEET_5.value,
+                    cell_address=cell_address,
                 )
-            ])
 
-        self.sheet_name = sheet_name
+                if not cell_value:
+                    if cell_address in self.no_na_cells.keys():
 
-    @time_execution
-    def check(self) -> List[CellsConditionReport]:
+                        for adress_to_check in self.no_na_cells[cell_address]:
+                            box_to_check = CheckBoxToCheck(
+                                sheet_name=SheetName.SHEET_2.value,
+                                checkbox_name=adress_to_check,
+                                cell_address=adress_to_check,
+                                checkbox_params=checkbox_params)
 
-        cells_reports: List[CellsConditionReport] = []
+                            if box_to_check.get_value():
+                                report_str = f"La valeur choisie pour la cellule {cell_address} [{self.sheet_name}] doit être 'Oui' ou 'Non' car la checkbox {adress_to_check} [{SheetName.SHEET_2.value}] est cochée"
+                                break
 
-        report_str: str = ""
+                            report_str = f"Une valeur doit être choisie pour la cellule {cell_address} [{self.sheet_name}]"
 
-        references_cells: List[str] = get_references_cells()
+                    else:
+                        report_str = f"Une valeur doit être choisie pour la cellule {cell_address} [{self.sheet_name}]"
 
-        for cell in references_cells:
-            if not excel_handler.read_cell_value(
-                    sheet_name=SheetName.SHEET_5.value, cell_address=cell):
-                report_str = f"La cellule {cell} [{SheetName.SHEET_5.value}] ne peut pas être vide"
+                    self.cells_list = [cell]
 
-                self.cells_list = [
-                    BoxToCheck(
+                    cells_reports.append(
+                        CellsConditionReport(condition=copy.deepcopy(self),
+                                             state=CellsConditionState.NOT_OK,
+                                             report_str=report_str))
+
+                elif cell_address in self.no_na_cells.keys():
+                    for adress_to_check in self.no_na_cells[cell_address]:
+                        box_to_check = CheckBoxToCheck(
+                            sheet_name=SheetName.SHEET_2.value,
+                            checkbox_name=adress_to_check,
+                            cell_address=adress_to_check,
+                            checkbox_params=checkbox_params)
+
+                        if cell.get_value() not in ["Oui", "Non"]:
+                            report_str = f"La valeur choisie pour la cellule {cell_address} [{self.sheet_name}] doit être 'Oui' ou 'Non'"
+
+                            self.cells_list = [cell]
+
+                            cells_reports.append(
+                                CellsConditionReport(
+                                    condition=copy.deepcopy(self),
+                                    state=CellsConditionState.NOT_OK,
+                                    report_str=report_str))
+
+                            break
+
+                if excel_handler.read_cell_value(
                         sheet_name=SheetName.SHEET_5.value,
-                        cell_address=cell,
-                    )
-                ]
+                        cell_address=cell.cell_address
+                ) == "Non" and cell_state.j_value == "Conformité":
 
-                cells_reports.append(
-                    CellsConditionReport(condition=copy.deepcopy(self),
-                                         state=CellsConditionState.NOT_OK,
-                                         report_str=report_str))
+                    self.cells_list = [cell]
+
+                    cells_reports.append(
+                        CellsConditionReport(
+                            condition=copy.deepcopy(self),
+                            state=CellsConditionState.NOT_OK,
+                            report_str=
+                            f"La cellule J{cell_address[-1]} ne peut pas être conforme car la cellule {cell_address} [{self.sheet_name}] est Non"
+                        ))
+
+            else:
+                if not excel_handler.read_cell_value(
+                        sheet_name=SheetName.SHEET_5.value,
+                        cell_address=cell_address):
+                    report_str = f"La cellule {cell_address} [{SheetName.SHEET_5.value}] ne peut pas être vide"
+
+                    self.cells_list = [
+                        BoxToCheck(
+                            sheet_name=SheetName.SHEET_5.value,
+                            cell_address=cell_address,
+                        )
+                    ]
+
+                    cells_reports.append(
+                        CellsConditionReport(condition=copy.deepcopy(self),
+                                             state=CellsConditionState.NOT_OK,
+                                             report_str=report_str))
 
         return cells_reports
 
@@ -1268,14 +1209,14 @@ NB_LINE_REPORT_AUDIT = 188
 
 
 @time_execution
-def get_references_cells() -> List[str]:
+def get_references_cells() -> List[ReportSheetCellState]:
     """_summary_
 
     Returns:
         List[str]: _description_
     """
 
-    references_cells: List[str] = []
+    references_cells: List[ReportSheetCellState] = []
 
     is_l_column_hidden: bool = excel_handler.is_column_hidden(
         sheet_name=SheetName.SHEET_5.value, cell_address="L4")
@@ -1337,61 +1278,85 @@ def get_references_cells() -> List[str]:
             if current_k_value and "Références" in current_k_value and not is_row_hidden:
                 if not is_l_column_hidden and current_b_value and current_b_value.lower(
                 ) == "x":
-                    references_cells.append(f"L{row}")
+                    references_cells.append(
+                        ReportSheetCellState(addresse=f"L{row}",
+                                             j_value=current_j_value))
 
                 if not is_n_column_hidden and current_c_value and current_c_value.lower(
                 ) == "x":
-                    references_cells.append(f"N{row}")
+                    references_cells.append(
+                        ReportSheetCellState(addresse=f"N{row}",
+                                             j_value=current_j_value))
 
                 if not is_p_column_hidden and current_d_value and current_d_value.lower(
                 ) == "x":
-                    references_cells.append(f"P{row}")
+                    references_cells.append(
+                        ReportSheetCellState(addresse=f"P{row}",
+                                             j_value=current_j_value))
 
                 if not is_r_column_hidden and current_e_value and current_e_value.lower(
                 ) == "x":
-                    references_cells.append(f"R{row}")
+                    references_cells.append(
+                        ReportSheetCellState(addresse=f"R{row}",
+                                             j_value=current_j_value))
 
-            if current_k_value and "Description" in current_k_value and is_row_hidden:
+            if current_k_value and "Description" in current_k_value and not is_row_hidden:
                 if not is_l_column_hidden and current_b_value and current_b_value.lower(
                 ) == "x":
-                    references_cells.append(f"L{row}")
+                    references_cells.append(
+                        ReportSheetCellState(addresse=f"L{row}",
+                                             j_value=current_j_value))
 
                 if not is_n_column_hidden and current_c_value and current_c_value.lower(
                 ) == "x":
-                    references_cells.append(f"N{row}")
+                    references_cells.append(
+                        ReportSheetCellState(addresse=f"N{row}",
+                                             j_value=current_j_value))
 
                 if not is_p_column_hidden and current_d_value and current_d_value.lower(
                 ) == "x":
-                    references_cells.append(f"P{row}")
+                    references_cells.append(
+                        ReportSheetCellState(addresse=f"P{row}",
+                                             j_value=current_j_value))
 
                 if not is_r_column_hidden and current_e_value and current_e_value.lower(
                 ) == "x":
-                    references_cells.append(f"R{row}")
+                    references_cells.append(
+                        ReportSheetCellState(addresse=f"R{row}",
+                                             j_value=current_j_value))
 
-            if current_k_value and "Vérification" in current_k_value and is_row_hidden:
+            if current_k_value and "Vérification" in current_k_value and not is_row_hidden:
                 if not is_l_column_hidden and current_b_value and current_b_value.lower(
                 ) == "x" and not excel_handler.is_merged(
                         sheet_name=SheetName.SHEET_5.value,
                         cell_address=f"M{row}"):
-                    references_cells.append(f"M{row}")
+                    references_cells.append(
+                        ReportSheetCellState(addresse=f"M{row}",
+                                             j_value=current_j_value))
 
                 if not is_n_column_hidden and current_c_value and current_c_value.lower(
                 ) == "x" and not excel_handler.is_merged(
                         sheet_name=SheetName.SHEET_5.value,
                         cell_address=f"O{row}"):
-                    references_cells.append(f"O{row}")
+                    references_cells.append(
+                        ReportSheetCellState(addresse=f"O{row}",
+                                             j_value=current_j_value))
 
                 if not is_p_column_hidden and current_d_value and current_d_value.lower(
                 ) == "x" and not excel_handler.is_merged(
                         sheet_name=SheetName.SHEET_5.value,
                         cell_address=f"Q{row}"):
-                    references_cells.append(f"Q{row}")
+                    references_cells.append(
+                        ReportSheetCellState(addresse=f"Q{row}",
+                                             j_value=current_j_value))
 
                 if not is_r_column_hidden and current_e_value and current_e_value.lower(
                 ) == "x" and not excel_handler.is_merged(
                         sheet_name=SheetName.SHEET_5.value,
                         cell_address=f"S{row}"):
-                    references_cells.append(f"S{row}")
+                    references_cells.append(
+                        ReportSheetCellState(addresse=f"S{row}",
+                                             j_value=current_j_value))
 
     return references_cells
 

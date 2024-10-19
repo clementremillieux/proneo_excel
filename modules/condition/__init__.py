@@ -4,13 +4,12 @@ from modules.cells.schemas import BoxToCheck, CheckBoxToCheck, DateToCheck
 
 from modules.condition.condition import (
     CellsConditions, ConditionAtLeastOneCellAmongList,
-    ConditionAtLeastOneCheckBoxAmongList, ConditionCheckAllSheetDropDown,
-    ConditionCheckAllSheetReference, ConditionDateSup,
-    ConditionDateDurationBetween, ConditionHasNc, ConditionHasToBeChecked,
-    ConditionHasToBeValues, ConditionIsNCFromCellNumber,
-    ConditionIsNCFromCellText, ConditionIsNcMajFromCellNumber,
-    ConditionNcAllJChoosed, ConditionOneCheckBoxAmongList,
-    ConditionHasToBeFilled)
+    ConditionAtLeastOneCheckBoxAmongList, ConditionCheckAllSheetReference,
+    ConditionDateSup, ConditionDateDurationBetween, ConditionHasNc,
+    ConditionHasToBeChecked, ConditionHasToBeValues,
+    ConditionIsNCFromCellNumber, ConditionIsNCFromCellText,
+    ConditionIsNcMajFromCellNumber, ConditionNcAllJChoosed,
+    ConditionOneCheckBoxAmongList, ConditionHasToBeFilled)
 
 from modules.excel.schemas import CheckboxParams
 
@@ -1392,13 +1391,20 @@ CELLS_CONDITION_RAPPORT_J = CellsConditions(conditions=[
 
 ######################################
 
-# RAPPORT DESCRIPTION REPORT ################
+# # RAPPORT DROPDOWN REPORT ################
 
-CELLS_CONDITION_DROPDOWN_REPORT = CellsConditions(conditions=[
-    ConditionCheckAllSheetDropDown(
-        sheet_name=SheetName.SHEET_5.value,
-        is_parent_condition=False,
-        no_na_cells={
+# CELLS_CONDITION_DESCRIPTION_REPORT = CellsConditions(conditions=[
+#     ConditionCheckAllSheetDescription(sheet_name=SheetName.SHEET_5.value,
+#                                       is_parent_condition=False)
+# ])
+
+# ######################################
+
+# RAPPORT REF REPORT ################
+
+CELLS_CONDITION_REF_REPORT = CellsConditions(conditions=[
+    ConditionCheckAllSheetReference(sheet_name=SheetName.SHEET_5.value,
+                                    is_parent_condition=False, no_na_cells={
             "M50": ["B33"],
             "M102": ["B33"],
             "S50": ["B33"],
@@ -1483,24 +1489,6 @@ CELLS_CONDITION_DROPDOWN_REPORT = CellsConditions(conditions=[
             "S139": ["B41"],
             "S140": ["B41"],
         })
-])
-
-######################################
-
-# # RAPPORT DROPDOWN REPORT ################
-
-# CELLS_CONDITION_DESCRIPTION_REPORT = CellsConditions(conditions=[
-#     ConditionCheckAllSheetDescription(sheet_name=SheetName.SHEET_5.value,
-#                                       is_parent_condition=False)
-# ])
-
-# ######################################
-
-# RAPPORT REF REPORT ################
-
-CELLS_CONDITION_REF_REPORT = CellsConditions(conditions=[
-    ConditionCheckAllSheetReference(sheet_name=SheetName.SHEET_5.value,
-                                    is_parent_condition=False)
 ])
 
 ######################################

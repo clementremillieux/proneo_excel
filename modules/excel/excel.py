@@ -16,6 +16,25 @@ from config.logger_config import logger
 from modules.performances.time_counter import time_execution
 
 
+def find_onedrive_root(file_path: str) -> str:
+    """
+    Find the root directory of OneDrive in the given file path.
+
+    Args:
+        file_path (str): The full path to the file.
+
+    Returns:
+        str: The root directory of OneDrive if found, otherwise an empty string.
+    """
+
+    for part in file_path.split(os.sep):
+        if "OneDrive" in part:
+            return os.path.join(
+                *file_path.split(os.sep)[:file_path.split(os.sep).index(part) +
+                                         1])
+    return ""
+
+
 def add_xlwings_conf_sheet(file_path: str):
     """
     Open an Excel file using openpyxl, create a hidden sheet named 'xlwings.conf',
@@ -28,19 +47,19 @@ def add_xlwings_conf_sheet(file_path: str):
     try:
         workbook = openpyxl.load_workbook(file_path, keep_vba=True)
 
-        folder_path = os.path.dirname(file_path)
+        one_drive_root = find_onedrive_root(file_path)
 
         xlwings_conf_sheet: Worksheet = workbook.create_sheet(
             title='xlwings.conf')
 
         xlwings_conf_sheet.sheet_state = 'hidden'
 
-        config_data = [["ONEDRIVE_CONSUMER_MAC", folder_path],
-                       ["ONEDRIVE_COMMERCIAL_MAC", folder_path],
-                       ["SHAREPOINT_MAC", folder_path],
-                       ["ONEDRIVE_CONSUMER_WIN", folder_path],
-                       ["ONEDRIVE_COMMERCIAL_WIN", folder_path],
-                       ["SHAREPOINT_WIN", folder_path]]
+        config_data = [["ONEDRIVE_CONSUMER_MAC", one_drive_root],
+                       ["ONEDRIVE_COMMERCIAL_MAC", one_drive_root],
+                       ["SHAREPOINT_MAC", one_drive_root],
+                       ["ONEDRIVE_CONSUMER_WIN", one_drive_root],
+                       ["ONEDRIVE_COMMERCIAL_WIN", one_drive_root],
+                       ["SHAREPOINT_WIN", one_drive_root]]
 
         for row_index, (key, value) in enumerate(config_data, start=1):
             xlwings_conf_sheet.cell(row=row_index, column=1, value=key)
