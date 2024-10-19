@@ -7,10 +7,10 @@ from modules.condition.condition import (
     ConditionAtLeastOneCheckBoxAmongList, ConditionCheckAllSheetDropDown,
     ConditionCheckAllSheetReference, ConditionDateSup,
     ConditionDateDurationBetween, ConditionHasNc, ConditionHasToBeChecked,
-     ConditionHasToBeValues,
-    ConditionIsNCFromCellNumber, ConditionIsNCFromCellText,
-    ConditionIsNcMajFromCellNumber, ConditionNcAllJChoosed,
-    ConditionOneCheckBoxAmongList, ConditionHasToBeFilled)
+    ConditionHasToBeValues, ConditionIsNCFromCellNumber,
+    ConditionIsNCFromCellText, ConditionIsNcMajFromCellNumber,
+    ConditionNcAllJChoosed, ConditionOneCheckBoxAmongList,
+    ConditionHasToBeFilled)
 
 from modules.excel.schemas import CheckboxParams
 
@@ -1679,9 +1679,8 @@ CELLS_CONDITIONS = [
     CELLS_CONDITION_SIGN_IN_OPEN_FUNCTION, CELLS_CONDITION_SIGN_IN_CLOSE_NAME,
     CELLS_CONDITION_SIGN_IN_CLOSE_LASTNAME,
     CELLS_CONDITION_SIGN_IN_CLOSE_FUNCTION, CELLS_CONDITION_RAPPORT_J,
-    CELLS_CONDITION_DROPDOWN_REPORT, CELLS_CONDITION_REF_REPORT,
-    CELLS_CONDITION_RAPPORT_J15, CELLS_CONDITION_RAPPORT_J37,
-    CELLS_CONDITION_RAPPORT_J62, CELLS_CONDITION_RAPPORT_J80,
-    CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J141,
+    CELLS_CONDITION_REF_REPORT, CELLS_CONDITION_RAPPORT_J15,
+    CELLS_CONDITION_RAPPORT_J37, CELLS_CONDITION_RAPPORT_J62,
+    CELLS_CONDITION_RAPPORT_J80, CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J141,
     CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J145, CELLS_CONDITION_SIGNATURE
 ]

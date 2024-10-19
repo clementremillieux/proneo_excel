@@ -7,10 +7,11 @@ from modules.params.schemas import AppParams
 excel_handler = ExcelHandler()
 
 excel_handler.load_excel(
-    excel_abs_path="C:/Users/Remillieux/OneDrive - TowardsChange/tests_sync_excel67.xlsm")
+    excel_abs_path="/Users/remillieux/Downloads/test_pornie_de.xlsm")
 
-
-is_drop_down: bool = excel_handler.is_drop_down(sheet_name="Rapport d'audit",
-                                                cell_address="O7", excel_abs_path="C:/Users/Remillieux/OneDrive - TowardsChange/tests_sync_excel67.xlsm")
+is_drop_down: bool = excel_handler.is_drop_down(
+    sheet_name="Rapport d'audit",
+    cell_address="L7",
+    excel_abs_path="/Users/remillieux/Downloads/test_pornie_de.xlsm")
 
 print(is_drop_down)

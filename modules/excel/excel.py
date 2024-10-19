@@ -1,6 +1,7 @@
 """_summary_"""
+from math import log10
 import os
-import shutil
+import subprocess
 
 from datetime import datetime
 
@@ -53,13 +54,11 @@ def add_xlwings_conf_sheet(file_path: str):
             "xlwings.conf sheet has been added and configured successfully in '%s'.",
             file_path)
 
-        # workbook.close()
-
-
-        time.sleep(5)
+        workbook.close()
 
     except Exception as e:
         logger.info("An error occurred while modifying the Excel file: %s", e)
+
 
 class ExcelHandler:
     """Handles interaction with Excel files using xlwings."""
@@ -80,7 +79,7 @@ class ExcelHandler:
                 self.app = xw.App(visible=True)
 
             for book in self.app.books:
-       
+
                 if book.fullname == excel_abs_path:
                     self.wb = book
 
@@ -90,7 +89,9 @@ class ExcelHandler:
                 self.wb = self.app.books.open(excel_abs_path)
 
         except Exception as e:
-            logger.error("Error opening Excel file with xlwings: %s", e, exc_info=True)
+            logger.error("Error opening Excel file with xlwings: %s",
+                         e,
+                         exc_info=True)
 
     def read_cell_value(self, sheet_name: str, cell_address: str) -> str:
         """Reads the value from a specific cell."""
@@ -103,7 +104,8 @@ class ExcelHandler:
             logger.error("Error reading cell: %s", e)
             return ""
 
-    def read_cell_date_value(self, sheet_name: str, cell_address: str) -> datetime:
+    def read_cell_date_value(self, sheet_name: str,
+                             cell_address: str) -> datetime:
         """Reads the value of a specific cell and returns it as a datetime."""
         try:
             sheet = self.wb.sheets[sheet_name]
@@ -144,18 +146,24 @@ class ExcelHandler:
             sheet.range(cell_address).select()
 
         except Exception as e:
-            logger.error("Error navigating to %s in sheet %s: %s", cell_address, sheet_name, e)
+            logger.error("Error navigating to %s in sheet %s: %s",
+                         cell_address, sheet_name, e)
 
     def is_merged(self, sheet_name: str, cell_address: str) -> bool:
         """Checks if a cell is part of a merged range."""
         try:
             sheet = self.wb.sheets[sheet_name]
             cell = sheet.range(cell_address)
-            return cell.merge_cells
+
+            if cell.merge_area.count > 1:
+                # Check if the cell is the top-left cell of the merged range
+                return cell.address != cell.merge_area[0].address
+
+            return False
 
         except Exception as e:
-            logger.error("Error reading merged state: %s", e)
-
+            logger.error(
+                f"Error checking if cell {cell_address} is merged: {e}")
             return False
 
     def is_column_hidden(self, sheet_name: str, cell_address: str) -> bool:
@@ -185,47 +193,3 @@ class ExcelHandler:
         except Exception as e:
             logger.error(f"Error reading row hidden state: {e}")
             return False
-        
-    def is_drop_down(self, excel_abs_path: str, sheet_name: str, cell_address: str) -> bool:
-        """Checks if the cell has a drop-down (data validation) using openpyxl.
-
-        Args:
-            excel_abs_path (str): Path to the Excel file.
-            sheet_name (str): The name of the sheet.
-            cell_address (str): The address of the cell to check (e.g., "A1").
-
-        Returns:
-            bool: True if the cell has a drop-down (data validation), False otherwise.
-        """
-    
-        sheet = self.wb.sheets[sheet_name]
-        cell = sheet.range(cell_address)
-
-        # Access the cell's data validation settings via the Excel API
-        validation = cell.api.Validation
-
-        # Check if the cell has a data validation drop-down list (Type 3 indicates a list)
-        if validation.Type == 3:  # 3 indicates a list validation (drop-down)
-            # Get the formula for the drop-down list (the source range of the values)
-            formula1 = validation.Formula1
-            print(f"Drop-down source formula: {formula1}")
-
-            # Extract the range of the drop-down values from the formula
-            if formula1.startswith('='):
-                # Remove the equals sign and get the range
-                dropdown_range = formula1[1:]  # Remove '=' at the start
-                dropdown_values = sheet.range(dropdown_range).value  # Read values from that range
-                
-                # If it's a single column or row, flatten the values into a list
-                if isinstance(dropdown_values[0], list):
-                    dropdown_values = [item[0] for item in dropdown_values if item[0] is not None]  # Flatten columns
-                else:
-                    dropdown_values = [item for item in dropdown_values if item is not None]  # Rows
-                    
-                return dropdown_values
-            else:
-                print("No range found in the validation formula.")
-                return None
-        else:
-            print(f"Cell {cell_address} does not contain a drop-down list.")
-            return None
