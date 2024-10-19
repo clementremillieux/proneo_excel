@@ -1289,14 +1289,6 @@ def get_references_cells() -> List[str]:
     is_r_column_hidden: bool = excel_handler.is_column_hidden(
         sheet_name=SheetName.SHEET_5.value, cell_address="R4")
 
-    # logger.info('L hidden : %s', is_l_column_hidden)
-
-    # logger.info('N hidden : %s', is_n_column_hidden)
-
-    # logger.info('P hidden : %s', is_p_column_hidden)
-
-    # logger.info('R hidden : %s', is_r_column_hidden)
-
     current_j_value: Optional[str] = None
 
     current_b_value: Optional[str] = None
@@ -1339,8 +1331,10 @@ def get_references_cells() -> List[str]:
         ] or current_j_value is None:
             cell = f"K{row}"
 
-            if current_k_value and "Références" in current_k_value and not excel_handler.is_row_hidden(
-                    sheet_name=SheetName.SHEET_5.value, cell_address=cell):
+            is_row_hidden: bool = excel_handler.is_row_hidden(
+                sheet_name=SheetName.SHEET_5.value, cell_address=cell)
+
+            if current_k_value and "Références" in current_k_value and not is_row_hidden:
                 if not is_l_column_hidden and current_b_value and current_b_value.lower(
                 ) == "x":
                     references_cells.append(f"L{row}")
@@ -1357,8 +1351,7 @@ def get_references_cells() -> List[str]:
                 ) == "x":
                     references_cells.append(f"R{row}")
 
-            if current_k_value and "Description" in current_k_value and not excel_handler.is_row_hidden(
-                    sheet_name=SheetName.SHEET_5.value, cell_address=cell):
+            if current_k_value and "Description" in current_k_value and is_row_hidden:
                 if not is_l_column_hidden and current_b_value and current_b_value.lower(
                 ) == "x":
                     references_cells.append(f"L{row}")
@@ -1375,8 +1368,7 @@ def get_references_cells() -> List[str]:
                 ) == "x":
                     references_cells.append(f"R{row}")
 
-            if current_k_value and "Vérification" in current_k_value and not excel_handler.is_row_hidden(
-                    sheet_name=SheetName.SHEET_5.value, cell_address=cell):
+            if current_k_value and "Vérification" in current_k_value and is_row_hidden:
                 if not is_l_column_hidden and current_b_value and current_b_value.lower(
                 ) == "x" and not excel_handler.is_merged(
                         sheet_name=SheetName.SHEET_5.value,

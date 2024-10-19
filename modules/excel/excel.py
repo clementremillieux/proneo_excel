@@ -1,11 +1,8 @@
 """_summary_"""
-from math import log10
 import os
-import subprocess
 
 from datetime import datetime
 
-import time
 from typing import List, Optional
 
 import openpyxl
@@ -27,6 +24,7 @@ def add_xlwings_conf_sheet(file_path: str):
     Args:
         file_path (str): Path to the Excel file where the hidden sheet should be added.
     """
+
     try:
         workbook = openpyxl.load_workbook(file_path, keep_vba=True)
 
@@ -46,6 +44,7 @@ def add_xlwings_conf_sheet(file_path: str):
 
         for row_index, (key, value) in enumerate(config_data, start=1):
             xlwings_conf_sheet.cell(row=row_index, column=1, value=key)
+
             xlwings_conf_sheet.cell(row=row_index, column=2, value=value)
 
         workbook.save(file_path)
@@ -65,7 +64,9 @@ class ExcelHandler:
 
     def __init__(self) -> None:
         self.excel_abs_path: Optional[str] = None
+
         self.app: Optional[xw.App] = None
+
         self.wb: Optional[xw.Book] = None
 
     @time_execution
@@ -73,6 +74,7 @@ class ExcelHandler:
         """Loads an Excel file with xlwings."""
         try:
             self.excel_abs_path = excel_abs_path
+
             self.app = xw.apps.active
 
             if self.app is None:
@@ -97,11 +99,14 @@ class ExcelHandler:
         """Reads the value from a specific cell."""
         try:
             sheet = self.wb.sheets[sheet_name]
+
             cell_value = sheet.range(cell_address).value
+
             return cell_value
 
         except Exception as e:
             logger.error("Error reading cell: %s", e)
+
             return ""
 
     def read_cell_date_value(self, sheet_name: str,
@@ -109,18 +114,23 @@ class ExcelHandler:
         """Reads the value of a specific cell and returns it as a datetime."""
         try:
             sheet = self.wb.sheets[sheet_name]
+
             cell_value: datetime = sheet.range(cell_address).value
+
             return cell_value
 
         except Exception as e:
             logger.error("Error reading cell date: %s", e)
+
             return datetime.min
 
     def get_checkbox_state(self, sheet_name: str, cell_address: str) -> bool:
         """Checks if a checkbox is checked."""
         try:
             sheet = self.wb.sheets[sheet_name]
+
             checkbox_value: bool = sheet.range(cell_address).value
+
             return checkbox_value
 
         except Exception as e:
@@ -131,6 +141,7 @@ class ExcelHandler:
         """Gets all sheet names in the workbook."""
         try:
             sheet_names = [sheet.name for sheet in self.wb.sheets]
+
             return sheet_names
 
         except Exception as e:
@@ -139,10 +150,14 @@ class ExcelHandler:
 
     def go_to_sheet_and_cell(self, sheet_name: str, cell_address: str) -> None:
         """Activates a sheet and selects a specific cell."""
+
         try:
             self.load_excel(excel_abs_path=self.excel_abs_path)
+
             sheet = self.wb.sheets[sheet_name]
+
             sheet.activate()
+
             sheet.range(cell_address).select()
 
         except Exception as e:
@@ -153,10 +168,10 @@ class ExcelHandler:
         """Checks if a cell is part of a merged range."""
         try:
             sheet = self.wb.sheets[sheet_name]
+
             cell = sheet.range(cell_address)
 
             if cell.merge_area.count > 1:
-                # Check if the cell is the top-left cell of the merged range
                 return cell.address != cell.merge_area[0].address
 
             return False
@@ -170,10 +185,11 @@ class ExcelHandler:
         """Checks if the column is hidden cross-platform (Windows and Mac)."""
         try:
             sheet = self.wb.sheets[sheet_name]
-            column = cell_address[0]  # Get the column letter
 
-            # Check if the column width is 0, which means it is hidden
+            column = cell_address[0]
+
             column_width = sheet.range(f'{column}:{column}').column_width
+
             return column_width == 0
 
         except Exception as e:
@@ -184,10 +200,11 @@ class ExcelHandler:
         """Checks if the row is hidden cross-platform (Windows and Mac)."""
         try:
             sheet = self.wb.sheets[sheet_name]
-            row = int(cell_address[1:])  # Get the row number
 
-            # Check if the row height is 0, which means it is hidden
+            row = int(cell_address[1:])
+
             row_height = sheet.range(f'{row}:{row}').row_height
+
             return row_height == 0
 
         except Exception as e:
