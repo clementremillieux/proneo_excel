@@ -10,7 +10,7 @@ from typing import Dict, List, Optional
 
 from modules.cells.schemas import BoxToCheck, CheckBoxToCheck, DateToCheck
 
-from modules.condition.schemas import Condition, ConditionType, CellsConditionReport, CellsConditionState, ReportSheetCellState
+from modules.condition.schemas import Condition, ConditionType, CellsConditionReport, CellsConditionState, OutputJAnalyze, ReportSheetCellState
 
 from modules.excel import excel_handler
 
@@ -648,6 +648,58 @@ class ConditionHasToBeChecked(Condition):
         return f". Car la checkbox {self.cell.cell_address} [{self.cell.sheet_name}] est cochée."
 
 
+class ConditionHasToBeEmpty(Condition):
+    """_summary_
+
+    Args:
+        Condition (_type_): _description_
+    """
+
+    cell: CheckBoxToCheck
+
+    def __init__(self, cell: CheckBoxToCheck,
+                 is_parent_condition: bool) -> None:
+        """Initialize the ConditionDateSup with start and stop dates."""
+
+        super().__init__(condition_type=ConditionType.CELL_HAS_TO_BE_FILLED,
+                         is_parent_condition=is_parent_condition,
+                         cells_list=[cell])
+
+        self.cell: CheckBoxToCheck = cell
+
+    def check(self) -> CellsConditionReport:
+        cell_value: Optional[bool] = self.cell.get_value()
+
+        if not cell_value:
+            results: bool = True
+
+        else:
+            results = False
+
+        state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
+
+        if state == CellsConditionState.NOT_OK:
+            report_str = f"La checkbox {self.cell.alias_name if  self.cell.alias_name else self.cell.cell_address} [{self.cell.sheet_name}] doit être vide"
+
+        else:
+            report_str = f"La checkbox {self.cell.alias_name if  self.cell.alias_name else self.cell.cell_address} [{self.cell.sheet_name}] est vide"
+
+        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
+                                            state=state,
+                                            report_str=report_str)
+
+        return cells_report
+
+    def get_parent_condition_str(self) -> str:
+        """_summary_
+
+        Returns:
+            str: _description_
+        """
+
+        return ""
+
+
 class ConditionOneByChecked(Condition):
     """_summary_
 
@@ -1034,15 +1086,17 @@ class ConditionNcAllJChoosed(Condition):
         self.cell = cell
 
     @time_execution
-    def check(self) -> CellsConditionReport:
+    def check(self) -> List[CellsConditionReport]:
 
         ref: str = get_ref()
 
         nb_inc_for_ref: int = REF_TO_NB_INDIC[ref]
 
-        nb_not_none: int = count_not_none_in_nc_j()
+        output_j_analyze: OutputJAnalyze = count_not_none_in_nc_j()
 
-        if nb_inc_for_ref > nb_not_none:
+        cells_reports: List[CellsConditionReport] = []
+
+        if nb_inc_for_ref > output_j_analyze.nb_j:
             results: bool = False
 
             report_str: str = "Toutes les conformités des indicateurs doivent être définies [Rapport d'audit :colonne J]"
@@ -1054,11 +1108,39 @@ class ConditionNcAllJChoosed(Condition):
 
         state = CellsConditionState.OK if results else CellsConditionState.NOT_OK
 
-        cells_report = CellsConditionReport(condition=copy.deepcopy(self),
-                                            state=state,
-                                            report_str=report_str)
+        cells_reports.append(
+            CellsConditionReport(condition=copy.deepcopy(self),
+                                 state=state,
+                                 report_str=report_str))
 
-        return cells_report
+        if output_j_analyze.is_issue_audit_complementaire:
+            cells_reports.append(
+                CellsConditionReport(
+                    condition=copy.deepcopy(self),
+                    state=CellsConditionState.NOT_OK,
+                    report_str=
+                    "Les conformités d'indicateur ne peuvent pas être < Non audité (audit complémentaire) >"
+                ))
+
+        if output_j_analyze.is_issue_audit_surveillance:
+            cells_reports.append(
+                CellsConditionReport(
+                    condition=copy.deepcopy(self),
+                    state=CellsConditionState.NOT_OK,
+                    report_str=
+                    "Les conformités d'indicateur ne peuvent pas être < Non-audité (audit de surveillance) >"
+                ))
+
+        for j_adress in output_j_analyze.j_adress_issue:
+            cells_reports.append(
+                CellsConditionReport(
+                    condition=copy.deepcopy(self),
+                    state=CellsConditionState.NOT_OK,
+                    report_str=
+                    f"La cellule {j_adress} [{self.cell.sheet_name}] ne peut pas être non applicable dans le cas d'un audit de surveillance"
+                ))
+
+        return cells_reports
 
 
 class ConditionCheckAllSheetReference(Condition):
@@ -1260,10 +1342,11 @@ def get_references_cells() -> List[ReportSheetCellState]:
             current_k_value = excel_handler.read_cell_value(
                 sheet_name=SheetName.SHEET_5.value, cell_address=f"K{row}")
 
-        if current_j_value in [
-                "Non-conformité mineure", "Non-conformité majeure",
-                "Conformité", "None"
-        ] or current_j_value is None:
+        if (current_j_value
+                and current_j_value.strip().lower().replace("-", " ") in [
+                    "non conformité mineure", "non conformité majeure",
+                    "conformité", "None"
+                ]) or current_j_value is None:
             cell = f"K{row}"
 
             is_row_hidden: bool = excel_handler.is_row_hidden(
@@ -1391,8 +1474,8 @@ def count_nc_min() -> int:
             cell_value: Optional[str] = cell.get_value()
 
             if cell_value and isinstance(
-                    cell_value,
-                    str) and cell_value.strip() == "Non-conformité mineure":
+                    cell_value, str) and cell_value.strip().lower().replace(
+                        "-", " ") == "non conformité mineure":
                 counter_nc_min += 1
 
         except Exception:
@@ -1423,8 +1506,8 @@ def count_nc_maj() -> int:
             cell_value: Optional[str] = cell.get_value()
 
             if cell_value and isinstance(
-                    cell_value,
-                    str) and cell_value.strip() == "Non-conformité majeure":
+                    cell_value, str) and cell_value.strip().lower().replace(
+                        "-", " ") == "non conformité majeure":
                 counter_nc_maj += 1
 
         except Exception:
@@ -1458,7 +1541,7 @@ def get_ref() -> str:
 
 
 @time_execution
-def count_not_none_in_nc_j() -> int:
+def count_not_none_in_nc_j() -> OutputJAnalyze:
     """_summary_
 
     Returns:
@@ -1466,6 +1549,22 @@ def count_not_none_in_nc_j() -> int:
     """
 
     counter_nc_not_none: int = 0
+
+    cell_audit_complementaire_value = BoxToCheck(
+        sheet_name=SheetName.SHEET_2.value,
+        cell_address="F32",
+    ).get_value()
+
+    cell_audit_surveillance_value = BoxToCheck(
+        sheet_name=SheetName.SHEET_2.value,
+        cell_address="F29",
+    ).get_value()
+
+    is_issue_audit_complementaire: bool = False
+
+    is_issue_audit_surveillance: bool = False
+
+    j_adress_issue: List[str] = []
 
     for row in range(START_LINE_REPORT_AUDIT, NB_LINE_REPORT_AUDIT):
         cell_address = f"J{row}"
@@ -1482,10 +1581,36 @@ def count_not_none_in_nc_j() -> int:
             if cell_value:
                 counter_nc_not_none += 1
 
-        except Exception as _:
+            if cell_value and cell_value.strip().lower().replace(
+                    "-", " "
+            ) == "non audité (audit complémentaire)" and not cell_audit_complementaire_value:
+                is_issue_audit_complementaire = True
+
+            if cell_value and cell_value.strip().lower().replace(
+                    "-", " "
+            ) == "non audité (audit de surveillance)" and not cell_audit_surveillance_value:
+                is_issue_audit_surveillance = True
+
+            if cell_value and cell_audit_surveillance_value and cell_value.strip(
+            ).lower().replace("-", " ") not in [
+                    "non conformité mineure", "non conformité majeure",
+                    "conformité"
+            ] and cell_address in [
+                    "J5", "J15", "J20", "J26", "J32", "J37", "J51", "J57",
+                    "J71", "J76", "J80", "J84", "J97", 'J104', "J111", "J116",
+                    "J136", "J141", "J149", "J161", "J164", "J167", "J170"
+            ]:
+
+                j_adress_issue.append(cell_address)
+
+        except Exception:
             pass
 
-    return counter_nc_not_none
+    return OutputJAnalyze(
+        nb_j=counter_nc_not_none,
+        is_issue_audit_complementaire=is_issue_audit_complementaire,
+        is_issue_audit_surveillance=is_issue_audit_surveillance,
+        j_adress_issue=j_adress_issue)
 
 
 def extract_ids(input_text: Optional[str]) -> List[str]:

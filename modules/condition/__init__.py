@@ -9,7 +9,8 @@ from modules.condition.condition import (
     ConditionHasToBeChecked, ConditionHasToBeValues,
     ConditionIsNCFromCellNumber, ConditionIsNCFromCellText,
     ConditionIsNcMajFromCellNumber, ConditionNcAllJChoosed,
-    ConditionOneCheckBoxAmongList, ConditionHasToBeFilled)
+    ConditionOneCheckBoxAmongList, ConditionHasToBeFilled,
+    ConditionHasToBeEmpty)
 
 from modules.excel.schemas import CheckboxParams
 
@@ -1511,7 +1512,13 @@ cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                          cell_address="B37",
                          checkbox_params=checkbox_params)
 
+cell_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="",
+                         cell_address="F32",
+                         checkbox_params=checkbox_params)
+
 CELLS_CONDITION_RAPPORT_J15 = CellsConditions(conditions=[
+    ConditionHasToBeEmpty(cell=cell_2, is_parent_condition=True),
     ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
     ConditionHasToBeValues(cell=cell_value,
                            is_parent_condition=False,
@@ -1534,7 +1541,13 @@ cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                          cell_address="B37",
                          checkbox_params=checkbox_params)
 
+cell_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="",
+                         cell_address="F32",
+                         checkbox_params=checkbox_params)
+
 CELLS_CONDITION_RAPPORT_J37 = CellsConditions(conditions=[
+    ConditionHasToBeEmpty(cell=cell_2, is_parent_condition=True),
     ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
     ConditionHasToBeValues(cell=cell_value,
                            is_parent_condition=False,
@@ -1554,7 +1567,13 @@ cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                          cell_address="B37",
                          checkbox_params=checkbox_params)
 
+cell_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="",
+                         cell_address="F32",
+                         checkbox_params=checkbox_params)
+
 CELLS_CONDITION_RAPPORT_J80 = CellsConditions(conditions=[
+    ConditionHasToBeEmpty(cell=cell_2, is_parent_condition=True),
     ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
     ConditionHasToBeValues(cell=cell_value,
                            is_parent_condition=False,
@@ -1570,11 +1589,17 @@ CELLS_CONDITION_RAPPORT_J80 = CellsConditions(conditions=[
 cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value, cell_address="J62")
 
 cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-                         checkbox_name="Check Box 103",
+                         checkbox_name="",
                          cell_address="B36",
                          checkbox_params=checkbox_params)
 
+cell_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="",
+                         cell_address="F32",
+                         checkbox_params=checkbox_params)
+
 CELLS_CONDITION_RAPPORT_J62 = CellsConditions(conditions=[
+    ConditionHasToBeEmpty(cell=cell_2, is_parent_condition=True),
     ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
     ConditionHasToBeValues(cell=cell_value,
                            is_parent_condition=False,
@@ -1598,7 +1623,13 @@ cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                          cell_address="B39",
                          checkbox_params=checkbox_params)
 
+cell_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="",
+                         cell_address="F32",
+                         checkbox_params=checkbox_params)
+
 CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J141 = CellsConditions(conditions=[
+    ConditionHasToBeEmpty(cell=cell_2, is_parent_condition=True),
     ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
     ConditionHasToBeValues(cell=cell_value,
                            is_parent_condition=False,
@@ -1619,7 +1650,13 @@ cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                          cell_address="B34",
                          checkbox_params=checkbox_params)
 
+cell_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="",
+                         cell_address="F32",
+                         checkbox_params=checkbox_params)
+
 CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J145 = CellsConditions(conditions=[
+    ConditionHasToBeEmpty(cell=cell_2, is_parent_condition=True),
     ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
     ConditionHasToBeValues(cell=cell_value,
                            is_parent_condition=False,

@@ -134,3 +134,19 @@ class ReportSheetCellState(BaseModel):
     addresse: str
 
     j_value: Optional[str]
+
+
+class OutputJAnalyze(BaseModel):
+    """_summary_
+
+    Args:
+        BaseModel (_type_): _description_
+    """
+
+    nb_j: int
+
+    is_issue_audit_complementaire: bool
+
+    is_issue_audit_surveillance: bool
+
+    j_adress_issue: List[str]
