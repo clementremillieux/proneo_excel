@@ -6,7 +6,7 @@ from modules.cells.schemas import BoxToCheck, CheckBoxToCheck
 
 from modules.excel import excel_handler
 
-from modules.condition.condition import CellsConditions, ConditionAtLeastOneCheckBoxAmongList, ConditionHasToBeChecked, ConditionHasToBeFilled, ConditionOneByChecked, ConditionOneCheckBoxAmongList
+from modules.condition.condition import CellsConditions, ConditionHasToBeFilled, ConditionOneByChecked, ConditionOneCheckBoxAmongList
 
 from modules.condition.schemas import CellsConditionReport
 
@@ -85,18 +85,6 @@ class Checker:
 
         for sheet_name in nc_sheets:
 
-            # self.nc_cells_conditions.append(
-            #     self.create_af_condition(sheet_name=sheet_name))
-
-            # self.nc_cells_conditions.append(
-            #     self.create_vae_condition(sheet_name=sheet_name))
-
-            # self.nc_cells_conditions.append(
-            #     self.create_bc_condition(sheet_name=sheet_name))
-
-            # self.nc_cells_conditions.append(
-            #     self.create_training_condition(sheet_name=sheet_name))
-
             self.nc_cells_conditions.append(
                 self.create_orga_type_condition(sheet_name=sheet_name))
 
@@ -114,11 +102,12 @@ class Checker:
 
             self.nc_cells_conditions.append(
                 self.create_date_filled_condition(sheet_name=sheet_name))
-            
-            self.nc_cells_conditions.append(self.create_default_condition(sheet_name=sheet_name))
-            
-            self.nc_cells_conditions.append(self.create_clue_condition(sheet_name=sheet_name))
 
+            self.nc_cells_conditions.append(
+                self.create_default_condition(sheet_name=sheet_name))
+
+            self.nc_cells_conditions.append(
+                self.create_clue_condition(sheet_name=sheet_name))
 
     def create_orga_type_condition(self, sheet_name: str) -> CellsConditions:
         """_summary_
@@ -131,203 +120,91 @@ class Checker:
         """
 
         cell_af = CheckBoxToCheck(sheet_name=sheet_name,
-                               checkbox_name="Check Box 3",
-                               cell_address="H20",
-                               checkbox_params=checkbox_params,
-                               alias_name="D20 (Action de formation)")
-        
+                                  checkbox_name="Check Box 3",
+                                  cell_address="H20",
+                                  checkbox_params=checkbox_params,
+                                  alias_name="D20 (Action de formation)")
+
         cell_bc = CheckBoxToCheck(sheet_name=sheet_name,
-                               checkbox_name="Check Box 3",
-                               cell_address="J20",
-                               checkbox_params=checkbox_params,
-                               alias_name="D20 (Bilan de compétences)")
-        
+                                  checkbox_name="Check Box 3",
+                                  cell_address="J20",
+                                  checkbox_params=checkbox_params,
+                                  alias_name="D20 (Bilan de compétences)")
+
         cell_vae = CheckBoxToCheck(sheet_name=sheet_name,
-                               checkbox_name="Check Box 3",
-                               cell_address="I20",
-                               checkbox_params=checkbox_params,
-                               alias_name="D20 (VAE)")
-        
+                                   checkbox_name="Check Box 3",
+                                   cell_address="I20",
+                                   checkbox_params=checkbox_params,
+                                   alias_name="D20 (VAE)")
+
         cell_a = CheckBoxToCheck(sheet_name=sheet_name,
-                               checkbox_name="Check Box 3",
-                               cell_address="K20",
-                               checkbox_params=checkbox_params,
-                               alias_name="D20 (Apprentissage)")
-        
-        cell_to_check_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-                                        checkbox_name="Check Box 41",
-                                        cell_address="F22",
-                                        checkbox_params=checkbox_params, alias_name="D20 (Action de formation)")
+                                 checkbox_name="Check Box 3",
+                                 cell_address="K20",
+                                 checkbox_params=checkbox_params,
+                                 alias_name="D20 (Apprentissage)")
 
-        cell_to_check_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-                                          checkbox_name="Check Box 45",
-                                          cell_address="G22",
-                                          checkbox_params=checkbox_params, alias_name="D20 (Action de formation)")
-        
-        cell_to_check_3 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-                                        checkbox_name="Check Box 41",
-                                        cell_address="F23",
-                                        checkbox_params=checkbox_params, alias_name="D20 (Bilan de compétences)")
+        cell_to_check_1 = CheckBoxToCheck(
+            sheet_name=SheetName.SHEET_2.value,
+            checkbox_name="Check Box 41",
+            cell_address="F22",
+            checkbox_params=checkbox_params,
+            alias_name="D20 (Action de formation)")
 
-        cell_to_check_4 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-                                          checkbox_name="Check Box 45",
-                                          cell_address="G23",
-                                          checkbox_params=checkbox_params, alias_name="D20 (Bilan de compétences)")
-        
+        cell_to_check_2 = CheckBoxToCheck(
+            sheet_name=SheetName.SHEET_2.value,
+            checkbox_name="Check Box 45",
+            cell_address="G22",
+            checkbox_params=checkbox_params,
+            alias_name="D20 (Action de formation)")
+
+        cell_to_check_3 = CheckBoxToCheck(
+            sheet_name=SheetName.SHEET_2.value,
+            checkbox_name="Check Box 41",
+            cell_address="F23",
+            checkbox_params=checkbox_params,
+            alias_name="D20 (Bilan de compétences)")
+
+        cell_to_check_4 = CheckBoxToCheck(
+            sheet_name=SheetName.SHEET_2.value,
+            checkbox_name="Check Box 45",
+            cell_address="G23",
+            checkbox_params=checkbox_params,
+            alias_name="D20 (Bilan de compétences)")
+
         cell_to_check_5 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-                                        checkbox_name="Check Box 41",
-                                        cell_address="F24",
-                                        checkbox_params=checkbox_params, alias_name="D20 (VAE)")
+                                          checkbox_name="Check Box 41",
+                                          cell_address="F24",
+                                          checkbox_params=checkbox_params,
+                                          alias_name="D20 (VAE)")
 
         cell_to_check_6 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                                           checkbox_name="Check Box 45",
                                           cell_address="G24",
-                                          checkbox_params=checkbox_params, alias_name="D20 (VAE)")
-        
-        cell_to_check_7= CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-                                        checkbox_name="Check Box 41",
-                                        cell_address="F25",
-                                        checkbox_params=checkbox_params, alias_name="D20 (Apprentissage)")
+                                          checkbox_params=checkbox_params,
+                                          alias_name="D20 (VAE)")
+
+        cell_to_check_7 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                                          checkbox_name="Check Box 41",
+                                          cell_address="F25",
+                                          checkbox_params=checkbox_params,
+                                          alias_name="D20 (Apprentissage)")
 
         cell_to_check_8 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
                                           checkbox_name="Check Box 45",
                                           cell_address="G25",
-                                          checkbox_params=checkbox_params, alias_name="D20 (Apprentissage)")
+                                          checkbox_params=checkbox_params,
+                                          alias_name="D20 (Apprentissage)")
 
-
-        return CellsConditions(conditions=[ConditionOneByChecked(cells_to_check=[cell_af, cell_bc, cell_vae, cell_a],possible_cells=[cell_to_check_1,cell_to_check_2,cell_to_check_3, cell_to_check_4, cell_to_check_5, cell_to_check_6, cell_to_check_7, cell_to_check_8], is_parent_condition=False)])
-
-    # def create_af_condition(self, sheet_name: str) -> CellsConditions:
-    #     """_summary_
-
-    #     Args:
-    #         sheet_name (str): _description_
-
-    #     Returns:
-    #         CellsConditions: _description_
-    #     """
-
-    #     cell = CheckBoxToCheck(sheet_name=sheet_name,
-    #                            checkbox_name="Check Box 3",
-    #                            cell_address="H20",
-    #                            checkbox_params=checkbox_params,
-    #                            alias_name="D20 (Action de formation)")
-
-    #     cell_to_check = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-    #                                     checkbox_name="Check Box 41",
-    #                                     cell_address="F22",
-    #                                     checkbox_params=checkbox_params)
-
-    #     cell_to_check_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-    #                                       checkbox_name="Check Box 45",
-    #                                       cell_address="G22",
-    #                                       checkbox_params=checkbox_params)
-
-    #     return CellsConditions(conditions=[
-    #         ConditionAtLeastOneCheckBoxAmongList(
-    #             cells=[cell_to_check, cell_to_check_2],
-    #             is_parent_condition=True),
-    #         ConditionHasToBeChecked(cell=cell, is_parent_condition=False),
-    #     ])
-
-    # def create_vae_condition(self, sheet_name: str) -> CellsConditions:
-    #     """_summary_
-
-    #     Args:
-    #         sheet_name (str): _description_
-
-    #     Returns:
-    #         CellsConditions: _description_
-    #     """
-
-    #     cell = CheckBoxToCheck(sheet_name=sheet_name,
-    #                            checkbox_name="Check Box 3",
-    #                            cell_address="I20",
-    #                            checkbox_params=checkbox_params,
-    #                            alias_name="D20 (VAE)")
-
-    #     cell_to_check = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-    #                                     checkbox_name="Check Box 41",
-    #                                     cell_address="F24",
-    #                                     checkbox_params=checkbox_params)
-
-    #     cell_to_check_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-    #                                       checkbox_name="Check Box 45",
-    #                                       cell_address="G24",
-    #                                       checkbox_params=checkbox_params)
-
-    #     return CellsConditions(conditions=[
-    #         ConditionAtLeastOneCheckBoxAmongList(
-    #             cells=[cell_to_check, cell_to_check_2],
-    #             is_parent_condition=True),
-    #         ConditionHasToBeChecked(cell=cell, is_parent_condition=False),
-    #     ])
-
-    # def create_bc_condition(self, sheet_name: str) -> CellsConditions:
-    #     """_summary_
-
-    #     Args:
-    #         sheet_name (str): _description_
-
-    #     Returns:
-    #         CellsConditions: _description_
-    #     """
-
-    #     cell = CheckBoxToCheck(sheet_name=sheet_name,
-    #                            checkbox_name="Check Box 3",
-    #                            cell_address="J20",
-    #                            checkbox_params=checkbox_params,
-    #                            alias_name="D20 (Bilan de compétences)")
-
-    #     cell_to_check = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-    #                                     checkbox_name="Check Box 41",
-    #                                     cell_address="F23",
-    #                                     checkbox_params=checkbox_params)
-
-    #     cell_to_check_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-    #                                       checkbox_name="Check Box 45",
-    #                                       cell_address="G23",
-    #                                       checkbox_params=checkbox_params)
-
-    #     return CellsConditions(conditions=[
-    #         ConditionAtLeastOneCheckBoxAmongList(
-    #             cells=[cell_to_check, cell_to_check_2],
-    #             is_parent_condition=True),
-    #         ConditionHasToBeChecked(cell=cell, is_parent_condition=False),
-    #     ])
-
-    # def create_training_condition(self, sheet_name: str) -> CellsConditions:
-    #     """_summary_
-
-    #     Args:
-    #         sheet_name (str): _description_
-
-    #     Returns:
-    #         CellsConditions: _description_
-    #     """
-
-    #     cell = CheckBoxToCheck(sheet_name=sheet_name,
-    #                            checkbox_name="Check Box 3",
-    #                            cell_address="K20",
-    #                            checkbox_params=checkbox_params,
-    #                            alias_name="D20 (Apprentissage)")
-
-    #     cell_to_check = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-    #                                     checkbox_name="Check Box 41",
-    #                                     cell_address="F25",
-    #                                     checkbox_params=checkbox_params)
-
-    #     cell_to_check_2 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
-    #                                       checkbox_name="Check Box 45",
-    #                                       cell_address="G25",
-    #                                       checkbox_params=checkbox_params)
-
-    #     return CellsConditions(conditions=[
-    #         ConditionAtLeastOneCheckBoxAmongList(
-    #             cells=[cell_to_check, cell_to_check_2],
-    #             is_parent_condition=True),
-    #         ConditionHasToBeChecked(cell=cell, is_parent_condition=False),
-    #     ])
+        return CellsConditions(conditions=[
+            ConditionOneByChecked(
+                cells_to_check=[cell_af, cell_bc, cell_vae, cell_a],
+                possible_cells=[
+                    cell_to_check_1, cell_to_check_2, cell_to_check_3,
+                    cell_to_check_4, cell_to_check_5, cell_to_check_6,
+                    cell_to_check_7, cell_to_check_8
+                ],
+                is_parent_condition=False)
+        ])
 
     def create_date_company_condition(self,
                                       sheet_name: str) -> CellsConditions:
@@ -462,11 +339,13 @@ class Checker:
         cell = BoxToCheck(sheet_name=sheet_name, cell_address="A21")
 
         default_condition = ConditionHasToBeFilled(
-            cell=cell, is_parent_condition=False, sentence_to_remove="Défaillance identifiée au regard de l'exigence :")
-        
+            cell=cell,
+            is_parent_condition=False,
+            sentence_to_remove=
+            "Défaillance identifiée au regard de l'exigence :")
 
         return CellsConditions(conditions=[default_condition])
-    
+
     def create_clue_condition(self, sheet_name: str) -> CellsConditions:
         """_summary_
 
@@ -480,7 +359,8 @@ class Checker:
         cell = BoxToCheck(sheet_name=sheet_name, cell_address="A22")
 
         default_condition = ConditionHasToBeFilled(
-            cell=cell, is_parent_condition=False, sentence_to_remove="Preuve, constat factuel :")
-        
+            cell=cell,
+            is_parent_condition=False,
+            sentence_to_remove="Preuve, constat factuel :")
 
         return CellsConditions(conditions=[default_condition])

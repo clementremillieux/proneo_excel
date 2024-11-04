@@ -1159,12 +1159,12 @@ CELLS_CONDITION_PLAN_DATE_1 = CellsConditions(
 
 ######################################
 
-# PLAN DATE 1 ################
+# # PLAN DATE 1 ################
 
-cell = BoxToCheck(sheet_name=SheetName.SHEET_4.value, cell_address="A18")
+# cell = BoxToCheck(sheet_name=SheetName.SHEET_4.value, cell_address="A18")
 
-CELLS_CONDITION_PLAN_DATE_1 = CellsConditions(
-    conditions=[ConditionHasToBeFilled(cell=cell, is_parent_condition=False)])
+# CELLS_CONDITION_PLAN_DATE_1 = CellsConditions(
+#     conditions=[ConditionHasToBeFilled(cell=cell, is_parent_condition=False)])
 
 ######################################
 
@@ -1260,10 +1260,17 @@ CELLS_CONDITION_PLAN_DATE_11 = CellsConditions(
 
 # PLAN DATE 12 ################
 
+cell_parent = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                              checkbox_name="Check Box 103",
+                              cell_address="B10",
+                              checkbox_params=checkbox_params)
+
 cell = BoxToCheck(sheet_name=SheetName.SHEET_4.value, cell_address="A28")
 
-CELLS_CONDITION_PLAN_DATE_12 = CellsConditions(
-    conditions=[ConditionHasToBeFilled(cell=cell, is_parent_condition=False)])
+CELLS_CONDITION_PLAN_DATE_12 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_parent, is_parent_condition=True),
+    ConditionHasToBeFilled(cell=cell, is_parent_condition=False)
+])
 
 # ######################################
 
@@ -1403,8 +1410,10 @@ CELLS_CONDITION_RAPPORT_J = CellsConditions(conditions=[
 # RAPPORT REF REPORT ################
 
 CELLS_CONDITION_REF_REPORT = CellsConditions(conditions=[
-    ConditionCheckAllSheetReference(sheet_name=SheetName.SHEET_5.value,
-                                    is_parent_condition=False, no_na_cells={
+    ConditionCheckAllSheetReference(
+        sheet_name=SheetName.SHEET_5.value,
+        is_parent_condition=False,
+        no_na_cells={
             "M50": ["B33"],
             "M102": ["B33"],
             "S50": ["B33"],
@@ -1667,8 +1676,9 @@ CELLS_CONDITIONS = [
     CELLS_CONDITION_SIGN_IN_OPEN_FUNCTION, CELLS_CONDITION_SIGN_IN_CLOSE_NAME,
     CELLS_CONDITION_SIGN_IN_CLOSE_LASTNAME,
     CELLS_CONDITION_SIGN_IN_CLOSE_FUNCTION, CELLS_CONDITION_RAPPORT_J,
-    CELLS_CONDITION_REF_REPORT, CELLS_CONDITION_RAPPORT_J15,
-    CELLS_CONDITION_RAPPORT_J37, CELLS_CONDITION_RAPPORT_J62,
-    CELLS_CONDITION_RAPPORT_J80, CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J141,
-    CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J145, CELLS_CONDITION_SIGNATURE
+    CELLS_CONDITION_RAPPORT_J15, CELLS_CONDITION_RAPPORT_J37,
+    CELLS_CONDITION_RAPPORT_J62, CELLS_CONDITION_RAPPORT_J80,
+    CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J141,
+    CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J145, CELLS_CONDITION_REF_REPORT,
+    CELLS_CONDITION_SIGNATURE
 ]

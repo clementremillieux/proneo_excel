@@ -254,7 +254,7 @@ n'est pas remplies"
                 date_stop: dt = date_stop_cell_value
 
                 results = (date_stop -
-                           date_start).days >= duration_cell_value_int
+                           date_start).days >= (duration_cell_value_int - 1)
 
                 if results:
                     report_str = f"La durée de l'audit indiqué à la cellule {self.cell_duration.cell_address} [{self.cell_duration.sheet_name}]\
@@ -593,7 +593,7 @@ class ConditionHasToBeFilled(Condition):
             str: _description_
         """
 
-        return f". Car la cellule {self.cell.cell_address} est remplie."
+        return f". Car la cellule {self.cell.cell_address} [{self.cell.sheet_name}] est remplie."
 
 
 class ConditionHasToBeChecked(Condition):
@@ -751,12 +751,12 @@ class ConditionHasToBeValues(Condition):
 
         self.cell: BoxToCheck = cell
 
-        self.value: List[str] = value
+        self.value: List[str] = [val.lower().strip() for val in value]
 
     def check(self) -> CellsConditionReport:
         cell_value: Optional[str] = self.cell.get_value()
 
-        if not cell_value or cell_value not in self.value:
+        if not cell_value or cell_value.lower().strip() not in self.value:
             results: bool = False
 
         else:
@@ -892,14 +892,7 @@ class ConditionIsNCFromCellNumber(Condition):
                 f"Les nombre de NC mineure de la cellule {self.cell.cell_address} n'est pas un nombre"
             )
 
-        #nb_nc_min_sheet: int = count_nc_min_sheet()
-
         nb_nc_min: int = count_nc_min()
-
-        # if cell_value_int != nb_nc_min_sheet:
-        #     results: bool = False
-
-        #     report_str: str = f"Le nombre de NC mineure définie à la cellule {self.cell.cell_address} ({cell_value_int}) ne correspond pas au nombre de fiche NC mineur créée ({nb_nc_min_sheet})"
 
         if cell_value_int != nb_nc_min:
             results = False
@@ -1154,8 +1147,9 @@ class ConditionCheckAllSheetReference(Condition):
                             cell_address=adress_to_check,
                             checkbox_params=checkbox_params)
 
-                        if cell.get_value() not in ["Oui", "Non"]:
-                            report_str = f"La valeur choisie pour la cellule {cell_address} [{self.sheet_name}] doit être 'Oui' ou 'Non'"
+                        if box_to_check.get_value() and cell.get_value(
+                        ) not in ["Oui", "Non"]:
+                            report_str = f"La valeur choisie pour la cellule {cell_address} [{self.sheet_name}] doit être 'Oui' ou 'Non' car la checkbox {adress_to_check} [{SheetName.SHEET_2.value}] est cochée"
 
                             self.cells_list = [cell]
 
