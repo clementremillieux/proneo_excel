@@ -37,6 +37,7 @@ def add_xlwings_conf_sheet(file_path: str):
 
         while True:
             logger.warning(one_drive_root.rsplit("/",1)[-1])
+            
             if "onedrive" not in one_drive_root.rsplit("/",1)[-1].lower():
                 one_drive_root = one_drive_root.rsplit("/",1)[0]
             else:

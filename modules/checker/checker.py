@@ -75,7 +75,7 @@ class Checker:
         all_sheets: List[str] = excel_handler.get_all_sheets()
 
         nc_sheets: List[str] = [
-            sheet for sheet in all_sheets if sheet.startswith("NC ind")
+            sheet for sheet in all_sheets if sheet.startswith("NC")
         ]
 
         self.create_nc_condition(nc_sheets=nc_sheets)
