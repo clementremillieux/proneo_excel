@@ -1668,6 +1668,204 @@ CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J145 = CellsConditions(conditions=[
 
 ######################################
 
+# J177 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value,
+                        cell_address="J177")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box B 10",
+                         cell_address="B10",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_J177 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=[
+                               "Conformité",
+                               "Non-conformité",
+                           ])
+])
+
+######################################
+
+# J178 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value,
+                        cell_address="J178")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box B 10",
+                         cell_address="B10",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_J178 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=[
+                               "Conformité",
+                               "Non-conformité",
+                           ])
+])
+
+######################################
+
+# J179 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value,
+                        cell_address="J179")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box B 10",
+                         cell_address="B10",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_J179 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=[
+                               "Conformité",
+                               "Non-conformité",
+                           ])
+])
+
+######################################
+
+# J180 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value,
+                        cell_address="J180")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box B 10",
+                         cell_address="B10",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_J180 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=[
+                               "Conformité",
+                               "Non-conformité",
+                           ])
+])
+
+######################################
+
+# J181 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value,
+                        cell_address="J181")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box B 10",
+                         cell_address="B10",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_J181 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=[
+                               "Conformité",
+                               "Non-conformité",
+                           ])
+])
+
+######################################
+
+# J182 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value,
+                        cell_address="J182")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box B 10",
+                         cell_address="B10",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_J182 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=[
+                               "Conformité",
+                               "Non-conformité",
+                           ])
+])
+
+######################################
+
+# J183 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value,
+                        cell_address="J183")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box B 10",
+                         cell_address="B10",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_J183 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=[
+                               "Conformité",
+                               "Non-conformité",
+                           ])
+])
+
+######################################
+
+# J184 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value,
+                        cell_address="J184")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box B 10",
+                         cell_address="B10",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_J184 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=[
+                               "Conformité",
+                               "Non-conformité",
+                           ])
+])
+
+######################################
+
+# J185 ################
+
+cell_value = BoxToCheck(sheet_name=SheetName.SHEET_5.value,
+                        cell_address="J185")
+
+cell_1 = CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                         checkbox_name="Check Box B 10",
+                         cell_address="B10",
+                         checkbox_params=checkbox_params)
+
+CELLS_CONDITION_J185 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_1, is_parent_condition=True),
+    ConditionHasToBeValues(cell=cell_value,
+                           is_parent_condition=False,
+                           value=[
+                               "Conformité",
+                               "Non-conformité",
+                           ])
+])
+
+######################################
+
 cell = BoxToCheck(sheet_name=SheetName.SHEET_2.value, cell_address="E71")
 
 CELLS_CONDITION_SIGNATURE = CellsConditions(
@@ -1715,6 +1913,9 @@ CELLS_CONDITIONS = [
     CELLS_CONDITION_SIGN_IN_CLOSE_FUNCTION, CELLS_CONDITION_RAPPORT_J,
     CELLS_CONDITION_RAPPORT_J15, CELLS_CONDITION_RAPPORT_J37,
     CELLS_CONDITION_RAPPORT_J62, CELLS_CONDITION_RAPPORT_J80,
+    CELLS_CONDITION_J177, CELLS_CONDITION_J178, CELLS_CONDITION_J179,
+    CELLS_CONDITION_J180, CELLS_CONDITION_J181, CELLS_CONDITION_J182,
+    CELLS_CONDITION_J183, CELLS_CONDITION_J184, CELLS_CONDITION_J185,
     CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J141,
     CELLS_CONDITION_RAPPORT_PERIOD_COMPANY_J145, CELLS_CONDITION_REF_REPORT,
     CELLS_CONDITION_SIGNATURE

@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (QMainWindow, QLabel, QVBoxLayout, QWidget,
                              QApplication, QProgressBar, QStackedWidget)
 
 from PyQt5.QtCore import (QThread, pyqtSignal, Qt, QFileSystemWatcher,
-                          QStandardPaths, QTimer)
+                          QStandardPaths, QTimer, QEvent)
 
 from PyQt5.QtGui import QPainter, QColor, QBrush
 
@@ -120,6 +120,7 @@ class MainWindow(QMainWindow):
         self.original_scroll_content = None  # To store the original content
         self.stack = QStackedWidget()
         self.placeholder_label = None
+        self.no_errors_widget = None
 
         self.setup_ui()
         self.position_window()
@@ -127,6 +128,19 @@ class MainWindow(QMainWindow):
         self.connect_signals()
 
         self.error_stack_status = ""
+
+    def setup_no_errors_widget(self):
+        """Set up the 'No Errors' widget."""
+        self.no_errors_widget = QWidget()
+        layout = QVBoxLayout(self.no_errors_widget)
+        layout.setContentsMargins(10, 10, 10, 10)
+        layout.setSpacing(10)
+        label = QLabel("Aucune erreur détectée ✅")
+        label.setAlignment(Qt.AlignCenter)
+        label.setStyleSheet("font-size: 24px; color: green;")
+        layout.addStretch()
+        layout.addWidget(label)
+        layout.addStretch()
 
     def setup_ui(self):
         """Set up the UI components."""
@@ -140,12 +154,14 @@ class MainWindow(QMainWindow):
         self.setup_placeholder()
         self.setup_loading_indicator()  # Set up the loading indicator widget
         self.setup_tab_widget()
+        self.setup_no_errors_widget()
 
         # Add placeholder, loading indicator, and tab widget to the stack
         self.stack.addWidget(self.placeholder_label)
         self.stack.addWidget(
             self.loading_widget)  # Add loading widget to the stack
         self.stack.addWidget(self.tab_widget)
+        self.stack.addWidget(self.no_errors_widget)
 
         # Initially show the placeholder
         self.stack.setCurrentWidget(self.placeholder_label)
@@ -227,12 +243,6 @@ class MainWindow(QMainWindow):
         self.new_file_button.setFixedSize(140, 40)
         self.new_file_button.clicked.connect(self.create_new_excel)
 
-        # # Check button
-        # self.check_button = QPushButton("Vérifier")
-        # self.check_button.setFixedSize(160, 50)
-        # self.check_button.setStyleSheet("font-size: 18px; font-weight: bold;")
-        # self.check_button.clicked.connect(self.manual_check)
-
         # Add widgets to the button layout
         button_layout.addStretch()
         button_layout.addWidget(self.load_button)
@@ -271,18 +281,18 @@ class MainWindow(QMainWindow):
     def on_worker_started(self):
         """Handle the event when the worker starts."""
         logger.info("Worker started.")
-        if self.stack.currentWidget() == self.tab_widget:
-            self.show_wait_indicator_in_current_tab()
-        # If we're on the loading widget, no need to show the wait indicator in the tab
+        self.show_wait_indicator_over_current_widget()
 
     def on_worker_finished(self):
         """Handle the event when the worker finishes."""
         logger.info("Worker finished.")
+        self.hide_wait_indicator_over_current_widget()
+        # If we're on the loading widget, switch to the appropriate widget
         if self.stack.currentWidget() == self.loading_widget:
-            # Switch to the tab widget
-            self.stack.setCurrentWidget(self.tab_widget)
-        else:
-            self.hide_wait_indicator_in_current_tab()
+            if self.tab_widget.count() == 0:
+                self.stack.setCurrentWidget(self.no_errors_widget)
+            else:
+                self.stack.setCurrentWidget(self.tab_widget)
 
     def on_worker_error(self, error_message):
         """Handle errors from the worker thread.
@@ -501,6 +511,12 @@ class MainWindow(QMainWindow):
                 f"{excel_handler.excel_abs_path} vérifié le {get_current_date_hour().lower()}"
             )
 
+        if self.tab_widget.count() == 0:
+            self.stack.setCurrentWidget(self.no_errors_widget)
+        else:
+            # There are tabs, display the tab widget
+            self.stack.setCurrentWidget(self.tab_widget)
+
     def create_tab(self, sheet_name: str,
                    report_cells: List[UIReportCell]) -> QWidget:
         """Create a tab with report cells for a given sheet."""
@@ -590,30 +606,44 @@ class MainWindow(QMainWindow):
         excel_handler.go_to_sheet_and_cell(sheet_name=sheet_name,
                                            cell_address=cell_address)
 
-    def show_wait_indicator_in_current_tab(self):
-        """Show a wait indicator in the current tab using a QProgressBar."""
-        current_index = self.tab_widget.currentIndex()
-        if current_index < 0:
+    def show_wait_indicator_over_current_widget(self):
+        """Show a wait indicator over the current widget using a QProgressBar."""
+
+        # Get the current widget in the stack
+        current_widget = self.stack.currentWidget()
+
+        if current_widget is None:
             return
 
-        current_tab = self.tab_widget.widget(current_index)
-        if current_tab is None:
+        # If the overlay already exists, show it
+        if hasattr(self,
+                   'loading_overlay') and self.loading_overlay is not None:
+            self.loading_overlay.show()
             return
 
-        # Access the scroll area in the current tab
-        scroll_area = current_tab.findChild(QScrollArea)
-        if scroll_area is None:
-            return
+        # Create the overlay widget
+        self.loading_overlay = QWidget(current_widget)
+        self.loading_overlay.setStyleSheet(
+            'background-color: rgba(0, 0, 0, 150);'  # Semi-transparent background
+        )
+        self.loading_overlay.setGeometry(0, 0, current_widget.width(),
+                                         current_widget.height())
+        self.loading_overlay.setAttribute(Qt.WA_TransparentForMouseEvents)
+        self.loading_overlay.show()
 
-        # Save the original widget to restore later
-        self.original_scroll_content = scroll_area.takeWidget()
+        # Create a layout in the loading overlay
+        overlay_layout = QVBoxLayout(self.loading_overlay)
+        overlay_layout.setContentsMargins(0, 0, 0, 0)
+        overlay_layout.setAlignment(Qt.AlignCenter)
 
-        # Create indeterminate progress bar
-        self.loading_indicator_tab = QProgressBar()
-        self.loading_indicator_tab.setRange(0, 0)  # Indeterminate mode
-        self.loading_indicator_tab.setTextVisible(False)
-        self.loading_indicator_tab.setFixedHeight(20)
-        self.loading_indicator_tab.setStyleSheet("""
+        # Create the loading indicator similar to setup_loading_indicator
+        self.loading_indicator = QProgressBar()
+        self.loading_indicator.setRange(0, 0)  # Indeterminate mode
+        self.loading_indicator.setTextVisible(False)
+        self.loading_indicator.setFixedHeight(20)
+        self.loading_indicator.setFixedWidth(current_widget.width() //
+                                             3)  # Adjust width as needed
+        self.loading_indicator.setStyleSheet("""
             QProgressBar {
                 background-color: #F0F0F0;
                 border: none;
@@ -625,38 +655,33 @@ class MainWindow(QMainWindow):
             }
         """)
 
-        # Create a widget to hold the progress bar
-        loading_widget = QWidget()
-        layout = QVBoxLayout(loading_widget)
-        layout.addStretch()
-        layout.addWidget(self.loading_indicator_tab, alignment=Qt.AlignCenter)
-        layout.addStretch()
+        overlay_layout.addStretch()
+        overlay_layout.addWidget(self.loading_indicator,
+                                 alignment=Qt.AlignCenter)
+        overlay_layout.addStretch()
 
-        # Set the loading widget as the new widget in the scroll area
-        scroll_area.setWidget(loading_widget)
+        # Adjust the overlay when the current widget is resized
+        current_widget.installEventFilter(self)
+        self.loading_overlay_parent = current_widget  # Keep a reference to the parent
 
-    def hide_wait_indicator_in_current_tab(self):
-        """Hide the wait indicator in the current tab and restore content."""
-        current_index = self.tab_widget.currentIndex()
-        if current_index < 0:
-            return
+    def hide_wait_indicator_over_current_widget(self):
+        """Hide the wait indicator over the current widget."""
+        if hasattr(self,
+                   'loading_overlay') and self.loading_overlay is not None:
+            self.loading_overlay.hide()
+            if hasattr(self, 'loading_overlay_parent'):
+                self.loading_overlay_parent.removeEventFilter(self)
+            self.loading_overlay = None
+            self.loading_overlay_parent = None
 
-        current_tab = self.tab_widget.widget(current_index)
-        if current_tab is None:
-            return
-
-        scroll_area = current_tab.findChild(QScrollArea)
-        if scroll_area is None:
-            return
-
-        # Remove loading indicator
-        if self.loading_indicator_tab:
-            self.loading_indicator_tab = None
-
-        # Restore the original content
-        if self.original_scroll_content:
-            scroll_area.setWidget(self.original_scroll_content)
-            self.original_scroll_content = None
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.Resize:
+            if hasattr(self,
+                       'loading_overlay') and self.loading_overlay is not None:
+                if obj == self.loading_overlay_parent:
+                    self.loading_overlay.setGeometry(0, 0, obj.width(),
+                                                     obj.height())
+        return super(MainWindow, self).eventFilter(obj, event)
 
     def apply_styles(self):
         """Apply styles to the main window."""
@@ -685,7 +710,11 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == "__main__":
+
     app = QApplication(sys.argv)
+
     main_window = MainWindow()
+
     main_window.show()
+
     sys.exit(app.exec_())
