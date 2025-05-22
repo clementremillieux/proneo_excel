@@ -484,6 +484,63 @@ CELLS_CONDITION_OPAC_AF_FOLDER = CellsConditions(conditions=[
     ConditionHasToBeFilled(cell=cell, is_parent_condition=False),
 ])
 
+# CONDITION H22 ################
+
+cell_parent =  CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                                  checkbox_name="Check Box 45",
+                                  cell_address="G22",
+                                  checkbox_params=checkbox_params)
+
+cell = BoxToCheck(sheet_name=SheetName.SHEET_2.value, cell_address="H22")
+
+CELLS_CONDITION_H22 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_parent, is_parent_condition=True),
+    ConditionHasToBeFilled(cell=cell, is_parent_condition=False)
+])
+
+# CONDITION H23 ################
+
+cell_parent =  CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                                  checkbox_name="Check Box 45",
+                                  cell_address="G23",
+                                  checkbox_params=checkbox_params)
+
+cell = BoxToCheck(sheet_name=SheetName.SHEET_2.value, cell_address="H23")
+
+CELLS_CONDITION_H23 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_parent, is_parent_condition=True),
+    ConditionHasToBeFilled(cell=cell, is_parent_condition=False)
+])
+
+# CONDITION H24 ################
+
+cell_parent =  CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                                  checkbox_name="Check Box 45",
+                                  cell_address="G24",
+                                  checkbox_params=checkbox_params)
+
+cell = BoxToCheck(sheet_name=SheetName.SHEET_2.value, cell_address="H24")
+
+CELLS_CONDITION_H24 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_parent, is_parent_condition=True),
+    ConditionHasToBeFilled(cell=cell, is_parent_condition=False)
+])
+
+# CONDITION H25 ################
+
+cell_parent =  CheckBoxToCheck(sheet_name=SheetName.SHEET_2.value,
+                                  checkbox_name="Check Box 45",
+                                  cell_address="G25",
+                                  checkbox_params=checkbox_params)
+
+cell = BoxToCheck(sheet_name=SheetName.SHEET_2.value, cell_address="H25")
+
+CELLS_CONDITION_H25 = CellsConditions(conditions=[
+    ConditionHasToBeChecked(cell=cell_parent, is_parent_condition=True),
+    ConditionHasToBeFilled(cell=cell, is_parent_condition=False)
+])
+
+
 ######################################
 
 # OPAC AF JUSTIFY ################
@@ -1888,6 +1945,7 @@ CELLS_CONDITIONS = [
     CELLS_CONDITION_OPAC_VAE_JUSTIFY, CELLS_CONDITION_OPAC_BC_FOLDER,
     CELLS_CONDITION_OPAC_BC_JUSTIFY, CELLS_CONDITION_OPAC_FA_FOLDER,
     CELLS_CONDITION_OPAC_FA_JUSTIFY, CELLS_CONDITION_MORE_2_DAY_VAE_FA_BC,
+    CELLS_CONDITION_H22, CELLS_CONDITION_H23, CELLS_CONDITION_H24, CELLS_CONDITION_H25,
     CELLS_CONDITION_OPAC_AUDITOR_NAME, CELLS_CONDITION_OPAC_AUDITOR_PHONE,
     CELLS_CONDITION_OPAC_AUDITOR_MAIL, CELLS_CONDITION_OPAC_REMOTE_CONDITION,
     CELLS_CONDITION_OPAC_REMOTE_GOAL, CELLS_CONDITION_OPAC_REMOTE_TOOLS,
